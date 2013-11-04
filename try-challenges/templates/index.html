@@ -1,0 +1,346 @@
+<!doctype html>
+<!--[if lt IE 7 ]><html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]><html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]><html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]><html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta name="author" content="ThemeFuse">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab41</title>
+
+<!-- main JS libs -->
+<script src="/static/js/libs/modernizr.min.js"></script>
+<script src="/static/js/libs/jquery-1.10.0.js"></script>
+<script src="/static/js/libs/jquery-ui.min.js"></script>
+<script src="/static/js/libs/bootstrap.min.js"></script>
+
+<!-- Style CSS -->
+<link href="/static/css/bootstrap.css" media="screen" rel="stylesheet">
+<link href="/static/css/style.css" media="screen" rel="stylesheet">
+
+<!-- scripts -->
+<script src="/static/js/general.js"></script>
+
+<!-- custom input -->
+<script src="/static/js/jquery.customInput.js"></script>
+<script type="text/javascript" src="/static/js/custom.js"></script>
+<!-- Placeholders -->
+<script type="text/javascript" src="/static/js/jquery.powerful-placeholder.min.js"></script>
+<!-- Progress Bars -->
+<script src="/static/js/progressbar.js"></script>
+<!-- Calendar -->
+<link href="/static/css/jquery-ui-1.8.20.custom.css" rel="stylesheet">
+<script src="/static/js/jquery-ui.multidatespicker.js"></script>
+<!-- range sliders -->
+<script src="/static/js/jquery.slider.bundle.js"></script>
+<script src="/static/js/jquery.slider.js"></script>
+<link rel="stylesheet" href="/static/css/jslider.css">
+<!-- Video Player -->
+<link href="/static/css/video-js.css" rel="stylesheet">
+<script src="/static/js/video.js"></script>
+<!-- Audio Player -->
+<link href="/static/css/jplayer.css" rel="stylesheet">
+<script src="/static/js/jquery.jplayer.min.js"></script>
+<script src="/static/js/jplayer.playlist.min.js"></script>
+
+<!-- Scroll Bars -->
+<script src="/static/js/jquery.mousewheel.js"></script>
+<script src="/static/js/jquery.jscrollpane.min.js"></script>
+<script type="text/javascript">
+	jQuery(function()
+	{
+		jQuery('.scrollbar').jScrollPane({
+			verticalDragMaxHeight: 9,
+			verticalDragMinHeight:9
+		});
+
+		jQuery('.scrollbar.scrollbar-yellow').jScrollPane({
+			verticalDragMaxHeight: 20,
+			verticalDragMinHeight:20
+		});
+
+		jQuery('.scrollbar.scrollbar-red').jScrollPane({
+			verticalDragMaxHeight: 5,
+			verticalDragMinHeight:5
+		});
+
+		jQuery('.scrollbar.scrollbar-blue').jScrollPane({
+			verticalDragMaxHeight: 50,
+			verticalDragMinHeight:50
+		});
+	});
+</script>
+
+<!--[if lt IE 9]><script src="js/respond.min.js"></script><![endif]-->
+<!--[if gte IE 9]>
+<style type="text/css">
+    .gradient {filter: none !important;}
+</style>
+<![endif]-->
+</head>
+
+<body>
+
+<div class="container container-wide">
+
+<!-- content -->
+<div class="content " role="main">
+
+<div class="col-sm-12">
+<!-- Simple Message Field -->
+<div class="comment-list styled clearfix">
+    <ol>
+        <li class="comment">
+            <div class="comment-body boxed">
+                <div class="comment-arrow"></div>
+                <div class="comment-avatar">
+                    <div class="avatar"><img src="/static/images/l41/lab41-square.png" alt="" /></div>
+                </div>
+                <div class="comment-text">
+                    <div class="comment-author clearfix">
+                        <a href="https://www.lab41.org" class="link-author">Lab41</a>
+                    </div>
+                    <div class="comment-entry">
+                        Lab41 is a unique initiative operating under the broader <a href="https://www.iqt.org/">In-Q-Tel</a> umbrella. This unclassified, collaborative environment is home to a rotating cast of data scientists, engineers, and innovative thinkers who are re-imagining ways to manage, understand, and visualize the expanding universe of data. Lab41 challenge teams are committed to working collaboratively to build proof-of-concepts, and to deliver findings within 3 to 12 months.
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </li>
+    </ol>
+</div>
+<!--/ Simple Message Field -->
+
+<!-- Tabs -->
+<div class="tabs_framed styled">
+    <ul class="tabs clearfix">
+        <li class="active"><a href="#dendrite" data-toggle="tab">Dendrite</a></li>
+        <li><a href="#redwood" data-toggle="tab">Redwood</a></li>
+        <li><a href="#hemlock" data-toggle="tab">Hemlock</a></li>
+    </ul>
+
+    <div class="tab-content boxed clearfix">
+        <div class="tab-pane fade in active" id="dendrite">
+            <div class="inner clearfix">
+                <div class="tab_image pull-left"><img src="/static/images/l41/dendrite-logo.png" alt=""><sub>D3.js <a href="http://bl.ocks.org/mbostock/1062288">example</a> by Mike Bostock</sub></div>
+                <h2><a href="#">Challenge: Dendrite</a></h2>
+                <!-- Rating Stars -->
+                <div class="rating">
+                    <span class="star on"><input type="hidden" value="1"></span><!--
+                                    --><span class="star on"><input type="hidden" value="2"></span><!--
+                                    --><span class="star on"><input type="hidden" value="3"></span><!--
+                                    --><span class="star on"><input type="hidden" value="4"></span><!--
+                                    --><span class="star off"><input type="hidden" value="5"></span>
+                </div>
+                <!--/ Rating Stars -->
+                <div class="tab-text">
+                    <p>People. Places. Things. Graphs.
+                       <br ><br />
+It turns out that much of the world, both physical and virtual, can be represented as a graph. Graphs describe things that are linked together such as web pages and human societies. Like many other topics, Web technologies can make these types of powerful mathematical concepts more accessible to everyday users. Dendrite is a Lab41 exploration of ways to analyze, manipulate, version, and share extremely large graphs:
+                       <br />&emsp;&emsp;&emsp;&#8226;&emsp;&emsp;&emsp;The Web frontend leverages AngularJS to provide a responsive data-driven experience
+                       <br />&emsp;&emsp;&emsp;&#8226;&emsp;&emsp;&emsp;The UI interacts with a backend instance of the Titan Distributed Graph Database
+                    </p>
+                </div>
+            </div>
+            <div class="bottom clearfix">
+                <div class="tagcloud pull-right">
+                    <a href="#" class="tag-link-1" title="2 topics"><span>Tag 1</span></a>
+                    <a href="#" class="tag-link-2" title="3 topics"><span>Tag 2</span></a>
+                    <a href="#" class="tag-link-3" title="5 topics"><span>Tag 3</span></a>
+                    <a href="#" class="tag-link-4" title="8 topics"><span>Tag 4</span></a>
+                    <a href="#" class="tag-link-5" title="9 topics"><span>Tag 5</span></a>
+                    <a href="#" class="tag-link-6" title="3 topics"><span>Tag 6</span></a>
+                </div>
+                <h3>Status:</h3>
+                <p>
+                    <a href="https://travis-ci.org/Lab41/Dendrite" alt="Build Status"><img src="https://travis-ci.org/Lab41/Dendrite.png?branch=master" alt="Build Status"></a>
+                    <a href="https://coveralls.io/r/Lab41/Dendrite" alt="Coverage Status"><img src="https://coveralls.io/repos/Lab41/Dendrite/badge.png" alt="Coverage Status"></a>
+                </p>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="redwood">
+            <div class="inner clearfix">
+                <div class="tab_image pull-right"><img src="/static/images/l41/redwood.png" alt=""></div>
+                <h2><a href="#">Challenge: Redwood</a></h2>
+                <!-- Rating Stars -->
+                <div class="rating">
+                    <span class="star on"><input type="hidden" value="1"></span><!--
+                                    --><span class="star on"><input type="hidden" value="2"></span><!--
+                                    --><span class="star on"><input type="hidden" value="3"></span><!--
+                                    --><span class="star off"><input type="hidden" value="4"></span><!--
+                                    --><span class="star off"><input type="hidden" value="5"></span>
+                </div>
+                <!--/ Rating Stars -->
+                <div class="tab-text"><p>This project implements statistical methods to assist in identifying anomalous files from a larger data set.</p></div>
+            </div>
+            <div class="bottom clearfix">
+                <div class="tagcloud pull-left">
+                    <a href="#" class="tag-link-1" title="2 topics"><span>Tag 1</span></a>
+                    <a href="#" class="tag-link-2" title="3 topics"><span>Tag 2</span></a>
+                    <a href="#" class="tag-link-3" title="5 topics"><span>Tag 3</span></a>
+                    <a href="#" class="tag-link-4" title="8 topics"><span>Tag 4</span></a>
+                    <a href="#" class="tag-link-5" title="9 topics"><span>Tag 5</span></a>
+                    <a href="#" class="tag-link-6" title="3 topics"><span>Tag 6</span></a>
+                </div>
+                <h3>Status:</h3>
+                <p></p>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="hemlock">
+            <div class="inner clearfix">
+                <div class="tab_image pull-left"><img src="/static/images/l41/hemlock-square.png" alt=""></div>
+                <h2><a href="#">Experiment: Hemlock</a></h2>
+                <!-- Rating Stars -->
+                <div class="rating">
+                    <span class="star on"><input type="hidden" value="1"></span><!--
+                                    --><span class="star off"><input type="hidden" value="2"></span><!--
+                                    --><span class="star off"><input type="hidden" value="3"></span><!--
+                                    --><span class="star off"><input type="hidden" value="4"></span><!--
+                                    --><span class="star off"><input type="hidden" value="5"></span>
+                </div>
+                <!--/ Rating Stars -->
+                <div class="tab-text"><p>Hemlock is a way of providing a common data access layer. <a href="http://lab41.github.io/Hemlock/">Learn more.</a> <br /><br /> Hemlock is an open-source project exploring ways to create a common data access layer that eliminates the need to understand underlying data topologies but still preserving the requirements of each data source such as access control, performance, and formats.<img src="https://raw.github.com/Lab41/Hemlock/master/docs/images/overview_hemlock.png" alt="" width="500px"></p></div>
+            </div>
+            <div class="bottom clearfix">
+                <div class="tagcloud pull-right">
+                    <a href="#" class="tag-link-1" title="2 topics"><span>Metadata</span></a>
+                    <a href="#" class="tag-link-2" title="3 topics"><span>NoSQL</span></a>
+                    <a href="#" class="tag-link-3" title="5 topics"><span>Distributed</span></a>
+                    <a href="#" class="tag-link-4" title="8 topics"><span>Heterogeneous</span></a>
+                    <a href="#" class="tag-link-5" title="9 topics"><span>Cache</span></a>
+                    <a href="#" class="tag-link-6" title="3 topics"><span>Aggregator</span></a>
+                    <a href="#" class="tag-link-7" title="4 topics"><span>Database Abstraction</span></a>
+                </div>
+                <h3>Status:</h3>
+                <p>
+                    <a href="http://badge.fury.io/py/hemlock" alt="PyPI Version"><img src="https://badge.fury.io/py/hemlock.png" alt="PyPI Version"></a>
+                    <a href="https://travis-ci.org/Lab41/Hemlock" alt="Build Status"><img src="https://travis-ci.org/Lab41/Hemlock.png?branch=master" alt="Build Status"></a><br />
+                    <a href="http://crate.io/packages/hemlock/" alt="Downloads"><img src="https://pypip.in/d/hemlock/badge.png" alt="Downloads"></a>
+                    <a href="https://coveralls.io/r/Lab41/Hemlock?branch=master" alt="Coverage Status"><img src="https://coveralls.io/repos/Lab41/Hemlock/badge.png?branch=master" alt="Coverage Status"></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ Tabs -->
+
+<!--pricing box-->
+<div class="pricing_box">
+    <ul class="clearfix">
+        <li class="price_col price_col_blue ">
+            <!--pricing item-->
+            <div class="price_item boxed">
+                <div class="price_col_head">
+                    <span class="badge"></span>
+                    <span class="price"><sup>DENDRITE</sup></span>
+                </div>
+                <div class="price_col_body clearfix">
+                    <div class="price_body_inner">
+                        <div class="price_body_top">
+                            <span>Collaborate</span>
+                            <strong>Graphs</strong>
+                            <div class="line"></div>
+                        </div>
+                        <ul>
+                            <li>Titan &amp; GraphLab</li>
+                            <li>AngularJS</li>
+                            <li>Spring Framework</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="price_col_foot">
+                    <div class="sign_up"><a href="#" class="btn btn-blue btn-small"><span>Try Now</span></a></div>
+                </div>
+            </div>
+            <!--/ pricing-item -->
+        </li>
+
+        <li class="price_col price_col_red col_active">
+            <div class="price_item boxed">
+                <div class="price_col_head">
+                    <span class="price"><sup>REDWOOD</sup></span>
+                </div>
+                <div class="price_col_body clearfix">
+                    <div class="price_body_inner">
+                        <div class="price_body_top">
+                            <span>Find</span>
+                            <strong>Anomalies</strong>
+                            <div class="line"></div>
+                        </div>
+                        <ul>
+                            <li>Python Library</li>
+                            <li>SciPy</li>
+                            <li>NumPy</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="price_col_foot">
+                    <div class="sign_up"><a href="#" class="btn btn-red"><span>Try Now</span></a></div>
+                </div>
+            </div>
+        </li>
+
+        <li class="price_col price_col_green ">
+            <div class="price_item boxed">
+                <div class="price_col_head">
+                    <span class="badge"></span>
+                    <span class="price"><sup>HEMLOCK</sup></span>
+                </div>
+                <div class="price_col_body clearfix">
+                    <div class="price_body_inner">
+                        <div class="price_body_top">
+                            <span>Explore</span>
+                            <strong>Metadata</strong>
+                            <div class="line"></div>
+                        </div>
+                        <ul>
+                            <li>CLI and RESTful API</li>
+                            <li>ElasticSearch</li>
+                            <li>Kibana</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="price_col_foot">
+                    <div class="sign_up"><a id="button" class="btn btn-green btn-small"><span>Try Now</span></a></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<!--/pricing box-->
+</div>
+</div>
+<!--/ row -->
+
+</div>
+<!--/ content -->
+
+</div>
+<!--/ container -->
+
+</body>
+        <script type="text/javascript">
+            $("#button").click(function() {
+                $.ajax({
+                    url: '/new',
+                    type: 'POST',
+                    dataType: 'json'
+                    }).done(function(response) {
+                        console.log(response);
+                        window.location = build_url(response);
+                    });
+                });
+
+            function build_url(response) {
+                pathArray = window.location.href.split( '/' );
+                protocol = pathArray[0];
+                host = pathArray[2];
+                url = protocol + '//' + host + "/details/" + response.url;
+                return url;
+            }
+
+        </script>
+</html>
