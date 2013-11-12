@@ -45,7 +45,7 @@ def index():
 
 @app.route('/new', methods=["POST"])
 def new():
-    container = c.create_container(IMAGE_NAME1, COMMAND, ports=[EXPOSED_PORT1])
+    container = c.create_container(IMAGE_NAME1, ports=[EXPOSED_PORT1])
     container_id = container["Id"]
     c.start(container_id)
     container_port = c.port(container_id, EXPOSED_PORT1)
