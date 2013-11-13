@@ -14,9 +14,10 @@
         <script src="/static/js/jquery.countdown.js"></script>
         <script type="text/javascript">
           $(function(){
+            $('#instance').hide();
             $('#counter').countdown({
-              startTime: '00:10',
-              timerEnd: function(){ alert('end!'); },
+              until: '59',
+              onExpiry: function(){ $("#instance").show(); $("#jcountdown").hide();},
               format: 'mm:ss'
             });
           });
@@ -45,13 +46,10 @@
             <div class="row-fluid marketing">
                 <div class="span12 well">
                     <h4>Instance Details..</h4>
+                    <p id="jcountdown">Your instance will be availabe in:</p>
                     <div id="counter"></div>
-                    <div class="desc">
-                        <div>Minutes</div>
-                        <div>Seconds</div>
-                    </div>
                     <p id="instance">Go now, your instance is waiting: <a href="http://{{ url }}/dendrite">{{ url }}/dendrite</a></p>
-                    <p class="muted">Please note: this is a fully functional trial of Dendrite. The instance is constrained to 50mb of space, and limited cpu/memory so as to prevent abuse. Due to such a high demand, your instance will not be guaranteed to exist for longer than 15 minutes.</p>
+                    <p><br /><br /><br />Please note: this is a fully functional trial of Dendrite. The instance is constrained to 50mb of space, and limited cpu/memory so as to prevent abuse. Due to such a high demand, your instance will not be guaranteed to exist for longer than 15 minutes.</p>
                     <p>If you'd like more information, please <a href="mailto:charliel@lab41.org">email me</a>.</p>
                 </div>
             </div>
