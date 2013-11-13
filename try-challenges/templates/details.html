@@ -8,13 +8,13 @@
         <link href="/static/css/bootstrap.css" rel="stylesheet">
         <link href="/static/css/bootstrap-landing.css" rel="stylesheet">
         <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/static/css/jquery.countdown.css" rel="stylesheet">
 
         <script src="/static/js/libs/jquery-1.10.1.js"></script>
-        <script src="/static/js/jquery.countdown.min.js"></script>
+        <script src="/static/js/jquery.countdown.js"></script>
         <script type="text/javascript">
           $(function(){
             $('#counter').countdown({
-              image: 'static/images/digits.png',
               startTime: '00:10',
               timerEnd: function(){ alert('end!'); },
               format: 'mm:ss'
