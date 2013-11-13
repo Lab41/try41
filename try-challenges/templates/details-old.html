@@ -11,16 +11,6 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script src="/static/js/jquery.countdown.min.js"></script>
-        <script type="text/javascript">
-          $(function(){
-            $('#counter').countdown({
-              image: 'static/images/digits.png',
-              startTime: '00:10',
-              timerEnd: function(){ alert('end!'); },
-              format: 'mm:ss'
-            });
-          });
-        </script>
 
         <title>Your Dendrite Instance Details</title>
 
@@ -45,14 +35,19 @@
             <div class="row-fluid marketing">
                 <div class="span12 well">
                     <h4>Instance Details..</h4>
-                    <div id="counter"></div>
-                    <div class="desc">
-                        <div>Minutes</div>
-                        <div>Seconds</div>
-                    </div>
                     <p id="instance">Go now, your instance is waiting: <a href="http://{{ url }}/dendrite">{{ url }}/dendrite</a></p>
-                    <p class="muted">Please note: this is a fully functional trial of Dendrite. The instance is constrained to 50mb of space, and limited cpu/memory so as to prevent abuse. Due to such a high demand, your instance will not be guaranteed to exist for longer than 15 minutes.</p>
-                    <p>If you'd like more information, please <a href="mailto:charliel@lab41.org">email me</a>.</p>
+                    <h2>Try it in python</h2>
+                    <p><pre>
+from pymongo import Connection
+
+HOST="{{ url.split(":")[0] }}"
+PORT={{ url.split(":")[1] }}
+c = Connection(host=HOST, port=PORT)
+print "connected successfully"
+</pre></p>
+
+                    <p class="muted">Please note: this is a fully functional trial of MongoDB. The instance is constrained 50mb of space, and limited cpu/memory so as to prevent abuse. Due to such a high demand, your instance will not be guaranteed to exist for longer than 15 minutes.</p>
+                    <p>If you'd like more information, please <a href="mailto:clewis@lab41.org">email me</a>.</p>
                 </div>
             </div>
 
