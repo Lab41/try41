@@ -62,9 +62,55 @@ def new():
             hipache_port=HIPACHE_PORT,
             id=container_id)
 
+@app.route('/new2', methods=["POST"])
+def new2():
+    container = c.create_container(IMAGE_NAME1, ports=[EXPOSED_PORT1])
+    container_id = container["Id"]
+    c.start(container_id)
+    container_port = c.port(container_id, EXPOSED_PORT1)
+    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
+    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
+    if HIPACHE_PORT == "80":
+        url = "%s:%s" % (DOMAIN, container_port)
+    else:
+        url="%s:%s" % (DOMAIN, container_port)
+
+    return jsonify(
+            url=url,
+            port=container_port,
+            hipache_port=HIPACHE_PORT,
+            id=container_id)
+
+@app.route('/new3', methods=["POST"])
+def new3():
+    container = c.create_container(IMAGE_NAME1, ports=[EXPOSED_PORT1])
+    container_id = container["Id"]
+    c.start(container_id)
+    container_port = c.port(container_id, EXPOSED_PORT1)
+    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
+    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
+    if HIPACHE_PORT == "80":
+        url = "%s:%s" % (DOMAIN, container_port)
+    else:
+        url="%s:%s" % (DOMAIN, container_port)
+
+    return jsonify(
+            url=url,
+            port=container_port,
+            hipache_port=HIPACHE_PORT,
+            id=container_id)
+
 @app.route('/details/<url>')
 def details(url):
     return render_template("details.html",url=url)
+
+@app.route('/details2/<url>')
+def details2(url):
+    return render_template("details2.html",url=url)
+
+@app.route('/details3/<url>')
+def details3(url):
+    return render_template("details3.html",url=url)
 
 @app.route('/robot.txt')
 def robot():

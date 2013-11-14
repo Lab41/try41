@@ -1,0 +1,66 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-landing.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/static/css/jquery.countdown.css" rel="stylesheet">
+
+        <script src="/static/js/libs/jquery-1.10.1.js"></script>
+        <script src="/static/js/jquery.countdown.js"></script>
+        <script type="text/javascript">
+          $(function(){
+            $('#instance').hide();
+            $('#counter').countdown({
+              until: '59',
+              onExpiry: function(){ $("#instance").show(); $("#jcountdown").hide();},
+              format: 'mm:ss'
+            });
+          });
+        </script>
+
+        <title>Your Dendrite Instance Details</title>
+
+    </head>
+
+    <body>
+
+        <div class="container-narrow">
+
+            <!-- nav -->
+            <div class="masthead">
+                <ul class="nav nav-pills pull-right">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="http://lab41.github.io/Dendrite/">Dendrite</a></li>
+                    <li><a href="http://docker.io">Docker</a></li>
+                </ul>
+                <h3 class="muted">Try Dendrite</h3>
+            </div>
+
+            <hr>
+
+            <div class="row-fluid marketing">
+                <div class="span12 well">
+                    <h4>Instance Details..</h4>
+                    <p id="jcountdown">Your instance will be available in:</p>
+                    <div id="counter"></div>
+                    <p id="instance">Go now, your instance is waiting: <a href="http://{{ url }}/dendrite">{{ url }}/dendrite</a></p>
+                    <p><br /><br /><br />Please note: this is a fully functional trial of Dendrite. The instance is constrained to 50mb of space, and limited cpu/memory so as to prevent abuse. Due to such a high demand, your instance will not be guaranteed to exist for longer than 15 minutes.</p>
+                    <p>If you'd like more information, please <a href="mailto:charliel@lab41.org">email me</a>.</p>
+                </div>
+            </div>
+
+        <div class="footer">
+            <div class="container">
+                <p class="muted credit">Origin based on <a href="https://github.com/keeb/any-saas">any-saas</a> by Nick Stinemates
+            </div>
+        </div>
+
+        </div> <!-- /container -->
+
+</html>
+

@@ -298,7 +298,7 @@ It turns out that much of the world, both physical and virtual, can be represent
                     </div>
                 </div>
                 <div class="price_col_foot">
-                    <div class="sign_up"><a href="#" class="btn btn-red"><span>Try Now</span></a></div>
+                    <div class="sign_up"><a id="button2" class="btn btn-red"><span>Try Now</span></a></div>
                 </div>
             </div>
         </li>
@@ -324,7 +324,7 @@ It turns out that much of the world, both physical and virtual, can be represent
                     </div>
                 </div>
                 <div class="price_col_foot">
-                    <div class="sign_up"><a href="#" class="btn btn-green btn-small"><span>Try Now</span></a></div>
+                    <div class="sign_up"><a id="buttone3" class="btn btn-green btn-small"><span>Try Now</span></a></div>
                 </div>
             </div>
         </li>
@@ -359,6 +359,42 @@ It turns out that much of the world, both physical and virtual, can be represent
                 protocol = pathArray[0];
                 host = pathArray[2];
                 url = protocol + '//' + host + "/details/" + response.url;
+                return url;
+            }
+            $("#button2").click(function() {
+                $.ajax({
+                    url: '/new2',
+                    type: 'POST',
+                    dataType: 'json'
+                    }).done(function(response) {
+                        console.log(response);
+                        window.location = build_url2(response);
+                    });
+                });
+
+            function build_url2(response) {
+                pathArray = window.location.href.split( '/' );
+                protocol = pathArray[0];
+                host = pathArray[2];
+                url = protocol + '//' + host + "/details2/" + response.url;
+                return url;
+            }
+            $("#button3").click(function() {
+                $.ajax({
+                    url: '/new3',
+                    type: 'POST',
+                    dataType: 'json'
+                    }).done(function(response) {
+                        console.log(response);
+                        window.location = build_url3(response);
+                    });
+                });
+
+            function build_url3(response) {
+                pathArray = window.location.href.split( '/' );
+                protocol = pathArray[0];
+                host = pathArray[2];
+                url = protocol + '//' + host + "/details3/" + response.url;
                 return url;
             }
 
