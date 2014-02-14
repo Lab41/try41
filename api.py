@@ -4,10 +4,7 @@ from flask import render_template
 from flask import request
 from flask import send_from_directory
 
-
 from docker import client
-
-from os import environ
 
 import redis
 
@@ -15,29 +12,35 @@ app = Flask(__name__)
 app.debug = True
 
 # set defaults
-IMAGE_NAME1 = "172.17.42.1:80/dendrite"
-IMAGE_NAME2 = "172.17.42.1:80/dendrite"
-IMAGE_NAME3 = "172.17.42.1:80/dendrite"
-DOMAIN = "localhost"
-HIPACHE_PORT="80"
-EXPOSED_PORT1="8080"
-EXPOSED_PORT2="3306"
-EXPOSED_PORT3="22"
+IMAGE_NAME1 = "dendrite"
+IMAGE_NAME2 = "redwood"
+IMAGE_NAME3 = "hemlock"
 
-# environment variables, must be set in order for application to function
-try:
-    REDIS_PORT=environ["REDIS_PORT"]
-    REDIS_HOST=environ["REDIS_HOST"]
-    HIPACHE_PORT=environ["HIPACHE_PORT"]
-    DOCKER_HOST=environ["DOCKER_HOST"]
-except Exception, e:
-    print e
-    print "environment not properly configured"
-    print environ
-    import sys; sys.exit(1)
+DOCKER_HOST="172.17.42.1"
+DOMAIN = "localhost"
+REDIS_HOST="localhost"
+REDIS_PORT=6379
+EXPOSED_PORT1=8080
+EXPOSED_PORT2=8080
+EXPOSED_PORT3=8080
 
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
-c = client.Client(base_url='http://%s:4243' % DOCKER_HOST)
+c = client.Client(version="1.6", base_url='http://%s:4243' % DOCKER_HOST)
+
+def store_metadata(exposed_ports, container_id, container):
+    for exposed_port in exposed_ports:
+        container_port = c.port(container_id, exposed_port)
+        #r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
+        #r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
+        # !! TODO more than one url when there is more than one exposed_port
+        url = "%s:%s" % (DOMAIN, container_port)
+
+    hmap = {}
+    hmap['container_id'] = container_id
+    hmap['container'] = container
+    hmap['url'] = url
+    #r.hmset(url, hmap)
+    return url
 
 @app.route('/')
 def index():
@@ -45,22 +48,13 @@ def index():
 
 @app.route('/new', methods=["POST"])
 def new():
-    container = c.create_container(IMAGE_NAME1, ports=[EXPOSED_PORT1])
+    exposed_ports = [EXPOSED_PORT1]
+    container = c.create_container(IMAGE_NAME1)
     container_id = container["Id"]
-    c.start(container_id)
-    container_port = c.port(container_id, EXPOSED_PORT1)
-    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
-    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
-    if HIPACHE_PORT == "80":
-        url = "%s:%s" % (DOMAIN, container_port)
-    else:
-        url="%s:%s" % (DOMAIN, container_port)
-
-    return jsonify(
-            url=url,
-            port=container_port,
-            hipache_port=HIPACHE_PORT,
-            id=container_id)
+    c.start(container, publish_all_ports=True)
+    b = c.inspect_container(container)
+    url = store_metadata(exposed_ports, container_id, container)
+    return jsonify(url=url)
 
 @app.route('/new2', methods=["POST"])
 def new2():
@@ -70,10 +64,7 @@ def new2():
     container_port = c.port(container_id, EXPOSED_PORT2)
     r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
     r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
-    if HIPACHE_PORT == "80":
-        url = "%s:%s" % (DOMAIN, container_port)
-    else:
-        url="%s:%s" % (DOMAIN, container_port)
+    url="%s:%s" % (DOMAIN, container_port)
 
     container = c.create_container(IMAGE_NAME3, ports=[EXPOSED_PORT3])
     container_id = container["Id"]
@@ -81,15 +72,11 @@ def new2():
     container_port = c.port(container_id, EXPOSED_PORT3)
     r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
     r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
-    if HIPACHE_PORT == "80":
-        url = "%s:%s" % (DOMAIN, container_port)
-    else:
-        url="%s:%s" % (DOMAIN, container_port)
+    url="%s:%s" % (DOMAIN, container_port)
 
     return jsonify(
             url=url,
             port=container_port,
-            hipache_port=HIPACHE_PORT,
             id=container_id)
 
 @app.route('/new3', methods=["POST"])
@@ -100,15 +87,11 @@ def new3():
     container_port = c.port(container_id, EXPOSED_PORT1)
     r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
     r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
-    if HIPACHE_PORT == "80":
-        url = "%s:%s" % (DOMAIN, container_port)
-    else:
-        url="%s:%s" % (DOMAIN, container_port)
+    url="%s:%s" % (DOMAIN, container_port)
 
     return jsonify(
             url=url,
             port=container_port,
-            hipache_port=HIPACHE_PORT,
             id=container_id)
 
 @app.route('/details/<url>')

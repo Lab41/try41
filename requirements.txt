@@ -1,4 +1,4 @@
 Flask==0.10.1
-docker-py
+docker-py==0.2.3
 redis==2.7.6
 requests==1.2.3

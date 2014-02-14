@@ -1,7 +1,7 @@
 from boxcar/raring
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-02-14
+ENV REFRESHED_AT 2014-02-14 21:17
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get upgrade -y
