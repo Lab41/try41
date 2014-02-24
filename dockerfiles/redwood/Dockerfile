@@ -1,7 +1,7 @@
 from boxcar/raring
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-02-19
+ENV REFRESHED_AT 2014-02-24
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i /etc/apt/sources.list
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -33,7 +33,7 @@ RUN echo 'mysql-server-5.5 mysql-server/root_password_again password password' |
 RUN apt-get update && apt-get install -y mysql-server && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
-ENV REDWOOD_PULLED_AT 2014-02-20
+ENV REDWOOD_PULLED_AT 2014-02-24
 RUN git clone https://github.com/Lab41/Redwood.git
 ADD visual.py /Redwood/redwood/helpers/visual.py
 ADD redwood /Redwood/bin/redwood

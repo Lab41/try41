@@ -14,6 +14,8 @@ chsh -s /bin/bash docker
 chown -R docker:docker /home/docker/*
 
 # start the tty webapp
+cp /src/favicon.ico /node_modules/tty.js/static/favicon.ico
+cp /src/index.html /node_modules/tty.js/static/index.html
 cp /src/tty.js /node_modules/tty.js/bin/tty.js
 chmod +x /node_modules/tty.js/bin/tty.js
 su -c '/node_modules/tty.js/bin/tty.js --port 8000 --daemonize' - docker

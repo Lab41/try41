@@ -1,0 +1,45 @@
+<!doctype html>
+<title>tty.js</title>
+<link rel="stylesheet" href="/style.css">
+
+<h1>Redwood Demo</h1>
+
+<div id="help">
+  <p>
+    <script>
+      var host = location.hostname;
+      var port = parseInt(location.port)+1;
+      document.write("Redwood sample synthetic dataset: <a href=\"http://"+host+":"+port+"/data\" target=\"_blank\">Data</a><br />");
+      document.write("Redwood reports: <a href=\"http://"+host+":"+port+"/reports\" target=\"_blank\">Reports</a><br />");
+      document.write("Redwood filter results: <a href=\"http://"+host+":"+port+"/\" target=\"_blank\">Results</a>");
+    </script>
+  </p>
+  <p>Redwood quick start:</p>
+    <ul>
+      <li>Load the data by performing <code>load_csv data</code> (this loads the data found in the link above into your Redwood environment)</li>
+      <li>Once the data is loaded, 20 sources will be available: 0-19.  For example, source_0 is the first source from the dataset.</li>
+      <li> At any time you can type <code>help</code> or <code>help COMMAND</code> to get additional information</li>
+      <li>Try running a filter, for example Prevalence:</li>
+      <ul>
+        <li><pre>filter<pre></li>
+        <li><pre>list<pre></li>
+        <li><pre>discover 2<pre></li>
+        <li><pre>histogram_by_source source_3 output.png<pre></li>
+        <li>Go see the results of the filter at the results link above</li>
+      </ul>
+      <li>Try running the reports for a source:</li>
+      <ul>
+        <li><pre>filter<pre></li>
+        <li><pre>run_survey source_3<pre></li>
+      </ul>
+    </ul>
+  </p>
+</div>
+
+<button id="open">Open Terminal</button>
+<button id="lights">Light Switch</button>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/term.js"></script>
+<script src="/options.js"></script>
+<script src="/tty.js"></script>
