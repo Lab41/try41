@@ -69,7 +69,7 @@ def visualize_scatter(counts, codes, data, codebook, num_clusters, xlabel="", yl
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     #plt.show()
-    plt.savefig('/Redwood/images/foo.png')
+    plt.savefig('/home/docker/foo.png')
     plt.close()
 
 
