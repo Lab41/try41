@@ -6,9 +6,9 @@ var tty = require('../');
 
 var app = tty.createServer({
   shell: 'bash',
-  shellArgs: ['-c', 'redwood /src/redwood.cfg'],
+  shellArgs: ['-c', 'redwood /src/redwood.cfg /Redwood/Filters'],
   port: 8000,
-  cwd: "/Redwood"
+  cwd: "/Redwood/reports/output"
 });
 
 app.listen();

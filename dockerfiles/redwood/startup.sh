@@ -26,5 +26,9 @@ echo "CREATE DATABASE redwood;" | mysql -ppassword
 mysql -ppassword -Dredwood < /Redwood/sql/create_redwood_db.sql
 mysql -ppassword -Dredwood < /Redwood/sql/create_redwood_sp.sql
 
+# untar the data
+cd /src; tar xfz data.tar.gz -C /Redwood/reports/output
+chown -R docker /Redwood
+
 # serve up directory for images, TODO
-cd /Redwood/images; python -m SimpleHTTPServer 8080
+cd /Redwood/reports/output; python -m SimpleHTTPServer 8080
