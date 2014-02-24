@@ -20,9 +20,13 @@ DOCKER_HOST="172.17.42.1"
 DOMAIN = "localhost"
 REDIS_HOST="localhost"
 REDIS_PORT=6379
+# dendrite
 EXPOSED_PORT1=8080
-EXPOSED_PORT2=8080
+# redwood
+EXPOSED_PORT2=8000
 EXPOSED_PORT3=8080
+# hemlock
+EXPOSED_PORT4=8080
 
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
 c = client.Client(version="1.6", base_url='http://%s:4243' % DOCKER_HOST)
@@ -58,26 +62,13 @@ def new():
 
 @app.route('/new2', methods=["POST"])
 def new2():
-    container = c.create_container(IMAGE_NAME2, ports=[EXPOSED_PORT2])
+    exposed_ports = [EXPOSED_PORT2]
+    container = c.create_container(IMAGE_NAME2)
     container_id = container["Id"]
-    c.start(container_id)
-    container_port = c.port(container_id, EXPOSED_PORT2)
-    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
-    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
-    url="%s:%s" % (DOMAIN, container_port)
-
-    container = c.create_container(IMAGE_NAME3, ports=[EXPOSED_PORT3])
-    container_id = container["Id"]
-    c.start(container_id)
-    container_port = c.port(container_id, EXPOSED_PORT3)
-    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
-    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
-    url="%s:%s" % (DOMAIN, container_port)
-
-    return jsonify(
-            url=url,
-            port=container_port,
-            id=container_id)
+    c.start(container, publish_all_ports=True)
+    b = c.inspect_container(container)
+    url = store_metadata(exposed_ports, container_id, container)
+    return jsonify(url=url)
 
 @app.route('/new3', methods=["POST"])
 def new3():
