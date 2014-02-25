@@ -1,0 +1,25 @@
+<!doctype html>
+<title>tty.js</title>
+<link rel="stylesheet" href="/style.css">
+
+<h1>Hemlock Demo</h1>
+
+<div id="help">
+  <p>
+    <script>
+      var host = location.hostname;
+      var port = parseInt(location.port)+1;
+      document.write("Hemlock sample synthetic dataset: <a href=\"http://"+host+":"+port+"/data\" target=\"_blank\">Data</a>");
+    </script>
+  </p>
+  <p>Hemlock quick start:</p>
+  </p>
+</div>
+
+<button id="open">Open Terminal</button>
+<button id="lights">Light Switch</button>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/term.js"></script>
+<script src="/options.js"></script>
+<script src="/tty.js"></script>
