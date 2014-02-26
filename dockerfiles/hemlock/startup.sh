@@ -29,5 +29,16 @@ echo "CREATE DATABASE hemlock;" | mysql -ppassword
 # untar the data
 chown -R docker /Hemlock
 
+# set env for docker user
+echo export HEMLOCK_MYSQL_SERVER=localhost >> /home/docker/.bashrc
+echo export HEMLOCK_MYSQL_USERNAME=root >> /home/docker/.bashrc
+echo export HEMLOCK_MYSQL_DB=hemlock >> /home/docker/.bashrc
+echo export HEMLOCK_MYSQL_PW=password >> /home/docker/.bashrc
+echo export HEMLOCK_COUCHBASE_SERVER=localhost >> /home/docker/.bashrc
+echo export HEMLOCK_COUCHBASE_BUCKET=hemlock >> /home/docker/.bashrc
+echo export HEMLOCK_COUCHBASE_USERNAME=Administrator >> /home/docker/.bashrc
+echo export HEMLOCK_COUCHBASE_PW=password >> /home/docker/.bashrc
+echo export HEMLOCK_ELASTICSEARCH_ENDPOINT=http://127.0.0.1:9200 >> /home/docker/.bashrc
+
 # serve up directory for images, TODO
 cd /; python -m SimpleHTTPServer 8080
