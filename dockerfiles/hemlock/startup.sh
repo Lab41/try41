@@ -58,6 +58,20 @@ echo export HEMLOCK_COUCHBASE_BUCKET=hemlock >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_USERNAME=Administrator >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_PW=password >> /home/docker/.bashrc
 echo export HEMLOCK_ELASTICSEARCH_ENDPOINT=http://127.0.0.1:9200 >> /home/docker/.bashrc
+echo alias kill='' >> /home/docker/.bashrc
+echo alias fg='' >> /home/docker/.bashrc
+echo alias bg='' >> /home/docker/.bashrc
+echo alias dirs='' >> /home/docker/.bashrc
+echo alias jobs='' >> /home/docker/.bashrc
+echo alias unset='' >> /home/docker/.bashrc
+echo alias history='' >> /home/docker/.bashrc
+echo alias set='' >> /home/docker/.bashrc
+echo alias export='' >> /home/docker/.bashrc
+echo alias exit='' >> /home/docker/.bashrc
+echo alias help='' >> /home/docker/.bashrc
+echo alias pwd='' >> /home/docker/.bashrc
+echo alias echo='' >> /home/docker/.bashrc
+echo alias alias='' >> /home/docker/.bashrc
 
 /home/docker/.bash_logout clear
 
