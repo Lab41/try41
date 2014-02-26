@@ -5,7 +5,7 @@ process.title = 'tty.js';
 var tty = require('../');
 
 var app = tty.createServer({
-  shell: 'bash',
+  shell: 'rbash',
   port: 8000,
   cwd: "/Hemlock"
 });

@@ -30,6 +30,25 @@ echo "CREATE DATABASE hemlock;" | mysql -ppassword
 chown -R docker /Hemlock
 
 # set env for docker user
+ln -s /bin/bash /bin/rbash
+ls -la /bin/rbash lrwxrwxrwx
+mkdir /usr/rbin
+
+echo "if [ -f ~/.bashrc ]; then" >> /etc/rbash_profile
+echo "    . ~/.bashrc" >> /etc/rbash_profile
+echo "fi" >> /etc/rbash_profile
+echo PATH=/usr/rbin >> /etc/rbash_profile
+echo export PATH >> /etc/rbash_profile
+echo unset USERNAME >> /etc/rbash_profile
+
+rm /home/docker/.bash_profile
+rm /home/docker/.bashrc
+rm /home/docker/.profile
+ln -s /etc/rbash_profile /home/docker/.bash_profile
+chown root: /home/docker/.bash_logout /home/docker/.bashrc /home/docker/.bash_profile
+
+echo PATH=/usr/rbin >> /home/docker/.bashrc
+echo export PATH >> /home/docker/.bashrc
 echo export HEMLOCK_MYSQL_SERVER=localhost >> /home/docker/.bashrc
 echo export HEMLOCK_MYSQL_USERNAME=root >> /home/docker/.bashrc
 echo export HEMLOCK_MYSQL_DB=hemlock >> /home/docker/.bashrc
@@ -39,6 +58,13 @@ echo export HEMLOCK_COUCHBASE_BUCKET=hemlock >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_USERNAME=Administrator >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_PW=password >> /home/docker/.bashrc
 echo export HEMLOCK_ELASTICSEARCH_ENDPOINT=http://127.0.0.1:9200 >> /home/docker/.bashrc
+
+/home/docker/.bash_logout clear
+
+ln -s /usr/local/bin/hemlock /usr/rbin/hemlock
+ln -s /usr/bin/clear /usr/rbin/clear
+
+sed -i s/bash/rbash/g /etc/passwd
 
 # serve up directory for images, TODO
 cd /; python -m SimpleHTTPServer 8080
