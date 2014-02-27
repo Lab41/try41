@@ -2,4 +2,4 @@ MYSQL_SERVER=localhost
 MYSQL_DB=hemlock
 #MYSQL_TABLE=table1
 MYSQL_USERNAME=root
-MYSQL_PW=passwood
+MYSQL_PW=password

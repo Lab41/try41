@@ -57,7 +57,7 @@ echo export HEMLOCK_COUCHBASE_SERVER=localhost >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_BUCKET=hemlock >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_USERNAME=Administrator >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_PW=password >> /home/docker/.bashrc
-echo export HEMLOCK_ELASTICSEARCH_ENDPOINT=http://127.0.0.1:9200 >> /home/docker/.bashrc
+echo export HEMLOCK_ELASTICSEARCH_ENDPOINT=127.0.0.1:9200 >> /home/docker/.bashrc
 echo alias kill='' >> /home/docker/.bashrc
 echo alias fg='' >> /home/docker/.bashrc
 echo alias bg='' >> /home/docker/.bashrc
@@ -79,6 +79,9 @@ ln -s /usr/local/bin/hemlock /usr/rbin/hemlock
 ln -s /usr/bin/clear /usr/rbin/clear
 
 sed -i s/bash/rbash/g /etc/passwd
+
+# start elasticsearch
+/usr/share/elasticsearch/bin/elasticsearch
 
 # serve up directory for images, TODO
 cd /; python -m SimpleHTTPServer 8080

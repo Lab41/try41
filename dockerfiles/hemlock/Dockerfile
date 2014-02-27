@@ -20,10 +20,19 @@ RUN apt-get install -y python-setuptools
 RUN easy_install pip
 RUN pip install texttable
 RUN pip install requests
+RUN pip install six==1.5.2
+RUN pip install pyes
 RUN apt-get install -y python-mysqldb
 RUN apt-get install -y git
 RUN npm config set registry http://registry.npmjs.org/
 RUN npm install tty.js
+RUN apt-get install -y openjdk-6-jdk
+RUN apt-get install -y wget
+RUN apt-get install -y dpkg
+RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.2.deb
+RUN dpkg -i elasticsearch-0.90.2.deb
+RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
+RUN service elasticsearch stop
 
 # sets root password to password, but isn't accessible from the outside
 RUN echo 'mysql-server-5.5 mysql-server/root_password password password' | debconf-set-selections
@@ -38,6 +47,6 @@ RUN cd /Hemlock; python setup.py install
 
 ADD . /src
 
-EXPOSE 8000 8080
+EXPOSE 8000 8080 9200
 
 CMD ["/bin/bash", "/src/startup.sh"]
