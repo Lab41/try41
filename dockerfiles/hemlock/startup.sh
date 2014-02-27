@@ -1,5 +1,14 @@
 #!/bin/bash
 
+untilsuccessful () {
+        "$@"
+        while [ $? -ne 0 ]; do
+                echo Retrying...
+                sleep 1
+                "$@"
+        done
+}
+
 # Add docker user and generate a random password with 12 characters that includes at least one capital letter and number.
 DOCKER_PASSWORD=`pwgen -c -n -1 12`
 echo User: docker Password: $DOCKER_PASSWORD
@@ -82,6 +91,12 @@ sed -i s/bash/rbash/g /etc/passwd
 
 # start elasticsearch
 /usr/share/elasticsearch/bin/elasticsearch
+
+# start couchbase
+couchbase-start
+
+# add index for elasticsearch
+untilsuccessful curl -XPUT 'http://localhost:9200/hemlock/'
 
 # serve up directory for images, TODO
 cd /; python -m SimpleHTTPServer 8080
