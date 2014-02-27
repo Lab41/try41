@@ -61,7 +61,7 @@ RUN echo 'mysql-server-5.5 mysql-server/root_password_again password password' |
 RUN apt-get install -y mysql-server --fix-missing --fix-broken && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
-ENV REDWOOD_PULLED_AT 2014-02-26
+ENV HEMLOCK_PULLED_AT 2014-02-27
 RUN git clone https://github.com/Lab41/Hemlock.git
 RUN cd /Hemlock; python setup.py install
 

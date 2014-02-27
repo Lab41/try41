@@ -27,7 +27,5 @@ else
 	untilsuccessful couchbase-cli cluster-init -c $IP \
 		--cluster-init-username=$CB_USERNAME \
 		--cluster-init-password=$CB_PASSWORD
-	untilsuccessful couchbase-cli bucket-create -c $IP \
-		-u $CB_USERNAME -p $CB_PASSWORD \
-		--bucket=hemlock --bucket-ramsize=128
+	untilsuccessful couchbase-cli bucket-create -c 127.0.0.1:8091 --bucket=hemlock --bucket-password=password --bucket-type=couchbase --bucket-port=11211 --bucket-ramsize=128 --bucket-replica=0 -u Administrator -p password
 fi
