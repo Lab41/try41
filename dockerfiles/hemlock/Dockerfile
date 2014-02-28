@@ -1,10 +1,11 @@
 from boxcar/raring
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-02-26
+ENV REFRESHED_AT 2014-02-27
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i /etc/apt/sources.list
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN add-apt-repository ppa:fkrull/deadsnakes
 RUN apt-get update
 RUN apt-get upgrade -y
 
@@ -12,6 +13,7 @@ RUN apt-get upgrade -y
 RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -s /bin/true /sbin/initctl
 
+RUN apt-get install -y python2.7
 RUN apt-get install -y pwgen
 RUN apt-get install -y g++-4.7 c++-4.7
 RUN apt-get install -y node
@@ -64,6 +66,12 @@ RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysq
 ENV HEMLOCK_PULLED_AT 2014-02-27
 RUN git clone https://github.com/Lab41/Hemlock.git
 RUN cd /Hemlock; python setup.py install
+
+# kibana
+RUN apt-get install -y zip
+RUN wget http://download.elasticsearch.org/kibana/kibana/kibana-latest.zip
+RUN unzip kibana-latest.zip
+ADD config.js /kibana-latest/
 
 # Download Couchbase Server package to /tmp & install
 ADD $CB_DOWNLOAD_URL/$CB_VERSION/$CB_PACKAGE /tmp/$CB_PACKAGE
