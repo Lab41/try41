@@ -67,7 +67,20 @@ echo export HEMLOCK_COUCHBASE_BUCKET=hemlock >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_USERNAME=Administrator >> /home/docker/.bashrc
 echo export HEMLOCK_COUCHBASE_PW=password >> /home/docker/.bashrc
 echo export HEMLOCK_ELASTICSEARCH_ENDPOINT=127.0.0.1:9200 >> /home/docker/.bashrc
-echo alias kill='' >> /home/docker/.bashrc
+echo alias read='' >> /home/docker/.bashrc
+echo alias ulimit='' >> /home/docker/.bashrc
+echo alias typeset='' >> /home/docker/.bashrc
+echo alias type='' >> /home/docker/.bashrc
+echo alias source='' >> /home/docker/.bashrc
+echo alias printf='' >> /home/docker/.bashrc
+echo alias logout='' >> /home/docker/.bashrc
+echo alias local='' >> /home/docker/.bashrc
+echo alias let='' >> /home/docker/.bashrc
+echo alias enable='' >> /home/docker/.bashrc
+echo alias declare='' >> /home/docker/.bashrc
+echo alias command='' >> /home/docker/.bashrc
+echo alias builtin='' >> /home/docker/.bashrc
+echo alias bind='' >> /home/docker/.bashrc
 echo alias fg='' >> /home/docker/.bashrc
 echo alias bg='' >> /home/docker/.bashrc
 echo alias dirs='' >> /home/docker/.bashrc
@@ -80,7 +93,41 @@ echo alias export='' >> /home/docker/.bashrc
 echo alias exit='' >> /home/docker/.bashrc
 echo alias help='' >> /home/docker/.bashrc
 echo alias pwd='' >> /home/docker/.bashrc
+echo alias kill='' >> /home/docker/.bashrc
 echo alias echo='' >> /home/docker/.bashrc
+echo alias unalias='' >> /home/docker/.bashrc
+echo "function read() { clear; }" >> /home/docker/.bashrc
+echo "function ulimit() { clear; }" >> /home/docker/.bashrc
+echo "function typeset() { clear; }" >> /home/docker/.bashrc
+echo "function type() { clear; }" >> /home/docker/.bashrc
+echo "function source() { clear; }" >> /home/docker/.bashrc
+echo "function printf() { clear; }" >> /home/docker/.bashrc
+echo "function logout() { clear; }" >> /home/docker/.bashrc
+echo "function local() { clear; }" >> /home/docker/.bashrc
+echo "function let() { clear; }" >> /home/docker/.bashrc
+echo "function enable() { clear; }" >> /home/docker/.bashrc
+echo "function declare() { clear; }" >> /home/docker/.bashrc
+echo "function command() { clear; }" >> /home/docker/.bashrc
+echo "function builtin() { clear; }" >> /home/docker/.bashrc
+echo "function bind() { clear; }" >> /home/docker/.bashrc
+echo "function fg() { clear; }" >> /home/docker/.bashrc
+echo "function bg() { clear; }" >> /home/docker/.bashrc
+echo "function dirs() { clear; }" >> /home/docker/.bashrc
+echo "function jobs() { clear; }" >> /home/docker/.bashrc
+echo "function unset() { clear; }" >> /home/docker/.bashrc
+echo "function history() { clear; }" >> /home/docker/.bashrc
+echo "function set() { clear; }" >> /home/docker/.bashrc
+echo "function shopt() { clear; }" >> /home/docker/.bashrc
+echo "function export() { clear; }" >> /home/docker/.bashrc
+echo "function exit() { clear; }" >> /home/docker/.bashrc
+echo "function help() { clear; }" >> /home/docker/.bashrc
+echo "function pwd() { clear; }" >> /home/docker/.bashrc
+echo "function kill() { clear; }" >> /home/docker/.bashrc
+echo "function echo() { clear; }" >> /home/docker/.bashrc
+echo "function alias() { clear; }" >> /home/docker/.bashrc
+echo "function unalias() { clear; }" >> /home/docker/.bashrc
+echo "function function() { clear; }" >> /home/docker/.bashrc
+echo alias function='' >> /home/docker/.bashrc
 echo alias alias='' >> /home/docker/.bashrc
 
 /home/docker/.bash_logout clear
