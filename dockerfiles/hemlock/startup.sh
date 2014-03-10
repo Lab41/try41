@@ -75,6 +75,7 @@ echo alias jobs='' >> /home/docker/.bashrc
 echo alias unset='' >> /home/docker/.bashrc
 echo alias history='' >> /home/docker/.bashrc
 echo alias set='' >> /home/docker/.bashrc
+echo alias shopt='' >> /home/docker/.bashrc
 echo alias export='' >> /home/docker/.bashrc
 echo alias exit='' >> /home/docker/.bashrc
 echo alias help='' >> /home/docker/.bashrc
