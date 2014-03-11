@@ -7,7 +7,7 @@ RUN apt-get update
 
 # Keep upstart from complaining
 RUN dpkg-divert --local --rename --add /sbin/initctl
-RUN ln -s /bin/true /sbin/initctl
+RUN ln -f -s /bin/true /sbin/initctl
 
 RUN apt-get install -y git
 RUN apt-get install -y python-setuptools
