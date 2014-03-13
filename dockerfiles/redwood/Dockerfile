@@ -6,7 +6,6 @@ RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i /etc/apt/sources.list
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
 RUN apt-get update
-RUN apt-get upgrade -y
 
 # Keep upstart from complaining
 RUN dpkg-divert --local --rename --add /sbin/initctl
