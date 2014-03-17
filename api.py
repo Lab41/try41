@@ -16,7 +16,7 @@ IMAGE_NAME1 = "dendrite"
 IMAGE_NAME2 = "redwood"
 IMAGE_NAME3 = "hemlock"
 
-DOCKER_HOST="172.17.42.1"
+DOCKER_HOST="localhost"
 DOMAIN = "localhost"
 REDIS_HOST="localhost"
 REDIS_PORT=6379
@@ -26,7 +26,7 @@ EXPOSED_PORT1=8080
 EXPOSED_PORT2=8000
 EXPOSED_PORT3=8080
 # hemlock
-EXPOSED_PORT4=8080
+EXPOSED_PORT4=8000
 
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
 c = client.Client(version="1.6", base_url='http://%s:4243' % DOCKER_HOST)
@@ -72,18 +72,13 @@ def new2():
 
 @app.route('/new3', methods=["POST"])
 def new3():
-    container = c.create_container(IMAGE_NAME1, ports=[EXPOSED_PORT1])
+    exposed_ports = [EXPOSED_PORT4]
+    container = c.create_container(IMAGE_NAME3)
     container_id = container["Id"]
-    c.start(container_id)
-    container_port = c.port(container_id, EXPOSED_PORT1)
-    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
-    r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
-    url="%s:%s" % (DOMAIN, container_port)
-
-    return jsonify(
-            url=url,
-            port=container_port,
-            id=container_id)
+    c.start(container, publish_all_ports=True)
+    b = c.inspect_container(container)
+    url = store_metadata(exposed_ports, container_id, container)
+    return jsonify(url=url)
 
 @app.route('/details/<url>')
 def details(url):
