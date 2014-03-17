@@ -7,7 +7,6 @@ RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i 
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
 RUN add-apt-repository ppa:fkrull/deadsnakes
 RUN apt-get update
-RUN apt-get upgrade -y
 
 # Keep upstart from complaining
 RUN dpkg-divert --local --rename --add /sbin/initctl
