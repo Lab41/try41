@@ -4,7 +4,8 @@
  */
 define(['settings'],
 function (Settings) {
-
+  "use strict";
+  var port = parseInt(location.port)+2;
   return new Settings({
 
     /**
@@ -17,7 +18,7 @@ function (Settings) {
      * elasticsearch host
      * @type {String}
      */
-    elasticsearch: "http://"+window.location.hostname+":9200",
+    elasticsearch: "http://"+window.location.hostname+":"+port,
 
     /**
      * The default ES index to use for storing Kibana specific object
@@ -47,7 +48,8 @@ function (Settings) {
       'trends',
       'bettermap',
       'query',
-      'terms'
+      'terms',
+      'sparklines'
     ]
   });
 });

@@ -68,9 +68,9 @@ RUN cd /Hemlock; python setup.py install
 
 # kibana
 RUN apt-get install -y zip
-RUN wget http://download.elasticsearch.org/kibana/kibana/kibana-latest.zip
-RUN unzip kibana-latest.zip
-ADD config.js /kibana-latest/
+RUN git clone https://github.com/elasticsearch/kibana.git
+RUN cd /kibana; git checkout 322fa427ab 
+ADD config.js /kibana/src/
 
 # Download Couchbase Server package to /tmp & install
 ADD $CB_DOWNLOAD_URL/$CB_VERSION/$CB_PACKAGE /tmp/$CB_PACKAGE
