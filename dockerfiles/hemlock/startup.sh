@@ -139,6 +139,7 @@ sed -i s/bash/rbash/g /etc/passwd
 
 # start elasticsearch
 /usr/share/elasticsearch/bin/elasticsearch
+untilsuccessful curl -XPUT http://localhost:9200/_template/couchbase -d @/usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
 
 # start couchbase
 couchbase-start

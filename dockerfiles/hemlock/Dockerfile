@@ -33,13 +33,13 @@ RUN npm install tty.js
 RUN apt-get install -y openjdk-6-jdk
 RUN apt-get install -y wget
 RUN apt-get install -y dpkg
+RUN apt-get install -y unzip
 RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.2.deb
 RUN dpkg -i elasticsearch-0.90.2.deb
 RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
-RUN service elasticsearch stop
 
 # couchbase
-ENV CB_VERSION 2.1.1
+ENV CB_VERSION 2.0.1
 ENV CB_DOWNLOAD_URL http://packages.couchbase.com/releases
 ENV CB_PACKAGE couchbase-server-community_x86_64_$CB_VERSION.deb
 ENV CB_USERNAME         Administrator
@@ -83,6 +83,12 @@ ADD couchbase-start /usr/local/bin/
 
 ADD . /src
 
-EXPOSE 8000 8080 9200 8091 8092 11210 11211
+# couchbase plugin with elasticsearch
+RUN mkdir /usr/share/elasticsearch/plugins/transport-couchbase
+RUN unzip -f /src/elasticsearch-transport-couchbase-1.1.0.zip -d /usr/share/elasticsearch/plugins/transport-couchbase 
+RUN cp /src/couchbase_template.json /usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
+RUN service elasticsearch stop
+
+EXPOSE 8000 8080 9200 8091
 
 CMD ["/bin/bash", "/src/startup.sh"]
