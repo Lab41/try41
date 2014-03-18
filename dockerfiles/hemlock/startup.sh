@@ -38,6 +38,15 @@ echo "CREATE DATABASE hemlock;" | mysql -ppassword
 # untar the data
 chown -R docker /Hemlock
 
+# update the elasticsearch config
+ELASTICSEARCH_CLUSTER=`pwgen -0AB -1 12`
+echo cluster.name: $ELASTICSEARCH_CLUSTER >> /etc/elasticsearch/elasticsearch.yml
+echo couchbase.password: password >> /etc/elasticsearch/elasticsearch.yml
+echo discovery.zen.ping.multicast.enabled: false >> /etc/elasticsearch/elasticsearch.yml
+echo node.local: true >> /etc/elasticsearch/elasticsearch.yml
+echo index.number_of_shards: 1 >> /etc/elasticsearch/elasticsearch.yml
+echo index.number_of_replicas: 0 >> /etc/elasticsearch/elasticsearch.yml
+
 # set env for docker user
 ln -s /bin/bash /bin/rbash
 ls -la /bin/rbash lrwxrwxrwx
@@ -138,7 +147,7 @@ ln -s /usr/bin/clear /usr/rbin/clear
 sed -i s/bash/rbash/g /etc/passwd
 
 # start elasticsearch
-/usr/share/elasticsearch/bin/elasticsearch
+/usr/share/elasticsearch/bin/elasticsearch -Des.default.path.conf=/etc/elasticsearch
 untilsuccessful curl -XPUT http://localhost:9200/_template/couchbase -d @/usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
 
 # start couchbase
