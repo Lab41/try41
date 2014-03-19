@@ -44,6 +44,11 @@ ENV CB_PACKAGE couchbase-server-community_x86_64_$CB_VERSION.deb
 ENV CB_USERNAME         Administrator
 ENV CB_PASSWORD         password
 
+# install jq for parsing json
+RUN wget http://stedolan.github.io/jq/download/linux64/jq
+RUN chmod +x ./jq
+RUN sudo cp jq /usr/bin
+
 # Limits
 RUN sed -i.bak '/\# End of file/ i\\# Following 4 lines added by docker-couchbase-server' /etc/security/limits.conf
 RUN sed -i.bak '/\# End of file/ i\\*                hard    memlock          unlimited' /etc/security/limits.conf
@@ -84,10 +89,10 @@ ADD . /src
 
 # couchbase plugin with elasticsearch
 RUN mkdir /usr/share/elasticsearch/plugins/transport-couchbase
-RUN unzip -f /src/elasticsearch-transport-couchbase-1.1.0.zip -d /usr/share/elasticsearch/plugins/transport-couchbase 
+RUN unzip /src/elasticsearch-transport-couchbase-1.1.0.zip -d /usr/share/elasticsearch/plugins/transport-couchbase 
 RUN cp /src/couchbase_template.json /usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
 RUN service elasticsearch stop
 
-EXPOSE 8000 8080 9200 8091
+EXPOSE 8000 8080 9200 8091 
 
 CMD ["/bin/bash", "/src/startup.sh"]

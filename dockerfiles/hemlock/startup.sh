@@ -150,11 +150,11 @@ sed -i s/bash/rbash/g /etc/passwd
 /usr/share/elasticsearch/bin/elasticsearch -Des.default.path.conf=/etc/elasticsearch
 untilsuccessful curl -XPUT http://localhost:9200/_template/couchbase -d @/usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
 
-# start couchbase
-couchbase-start
-
 # add index for elasticsearch
 untilsuccessful curl -XPUT 'http://localhost:9200/hemlock/'
+
+# start couchbase
+couchbase-start
 
 # serve up directory for images, TODO
 cd /; python -m SimpleHTTPServer 8080

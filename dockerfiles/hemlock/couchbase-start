@@ -28,4 +28,20 @@ else
 		--cluster-init-username=$CB_USERNAME \
 		--cluster-init-password=$CB_PASSWORD
 	untilsuccessful couchbase-cli bucket-create -c 127.0.0.1:8091 --bucket=hemlock --bucket-password=password --bucket-type=couchbase --bucket-port=11211 --bucket-ramsize=128 --bucket-replica=0 -u Administrator -p password
+        
+        untilsuccessful curl -v -u Administrator:password 127.0.0.1:8091/pools/default/remoteClusters \
+		-d uuid=9eee38236f3bf28406920213d93981a5  \
+		-d name=hemlock \
+		-d hostname=127.0.0.1:9091 \
+		-d username=Administrator -d password=password
+
+	curl -v -u Administrator:password http://127.0.0.1:8091/pools > /tmp/pools.txt
+	UUID=$(cat /tmp/pools.txt | jq '.uuid')
+
+	curl -v -X POST -u Administrator:password http://127.0.0.1:8091/controller/createReplication \
+		-d uuid=$UUID \
+		-d fromBucket=hemlock \
+		-d toCluster=hemlock \
+		-d toBucket=hemlock \
+		-d replicationType=continuous
 fi
