@@ -18,6 +18,7 @@ RUN apt-get install -y g++-4.7 c++-4.7
 RUN apt-get install -y node
 RUN apt-get install -y npm
 RUN apt-get install -y python-setuptools
+RUN apt-get install -y tshark
 RUN easy_install pip
 RUN pip install texttable
 RUN pip install requests
