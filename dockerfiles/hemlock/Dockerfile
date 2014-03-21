@@ -24,6 +24,10 @@ RUN pip install texttable
 RUN pip install requests
 RUN pip install six==1.5.2
 RUN pip install pyes
+RUN pip install pdfminer==20110515
+RUN pip install xlrd==0.9.2
+RUN pip install xmltodict==0.5.0
+RUN pip install python-magic==0.4.3
 RUN apt-get install -y python-mysqldb
 RUN apt-get install -y git
 RUN npm config set registry http://registry.npmjs.org/
@@ -68,7 +72,7 @@ RUN echo 'mysql-server-5.5 mysql-server/root_password_again password password' |
 RUN apt-get install -y mysql-server --fix-missing --fix-broken && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
-ENV HEMLOCK_PULLED_AT 2014-02-27
+ENV HEMLOCK_PULLED_AT 2014-03-21 16:49
 RUN git clone https://github.com/Lab41/Hemlock.git
 RUN cd /Hemlock; python setup.py install
 
@@ -87,6 +91,10 @@ RUN ln -s /opt/couchbase/bin/couchbase-cli /usr/local/bin/
 ADD couchbase-start /usr/local/bin/
 
 ADD . /src
+
+# data
+RUN mkdir /Hemlock/data
+RUN unzip /src/data.zip -d /Hemlock/data
 
 # couchbase plugin with elasticsearch
 RUN mkdir /usr/share/elasticsearch/plugins/transport-couchbase
