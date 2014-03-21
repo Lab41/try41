@@ -148,10 +148,10 @@ sed -i s/bash/rbash/g /etc/passwd
 
 # start elasticsearch
 /usr/share/elasticsearch/bin/elasticsearch -Des.default.path.conf=/etc/elasticsearch
-untilsuccessful curl -XPUT http://localhost:9200/_template/couchbase -d @/usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
+untilsuccessful curl -XPUT http://localhost:9200/_template/couchbase -d @/src/couchbase_template.json
 
 # add index for elasticsearch
-untilsuccessful curl -XPUT 'http://localhost:9200/hemlock/'
+untilsuccessful curl -XPUT http://localhost:9200/hemlock -d @/src/couchbase_template.json
 
 # start couchbase
 couchbase-start

@@ -7,18 +7,7 @@
                 "includes" : ["doc.*", "meta.*"]
             },
             "data_detection": false,
-            "dynamic_templates": [
-                {
-                    "store_no_index": {
-                        "match": "*",
-                        "mapping": {
-                            "store" : "no",
-                            "index" : "no",
-                            "include_in_all" : false
-                        }
-                    }
-                }
-            ],
+            "numeric_detection" : true,
             "doc.hemlock-system": {
                 "type": "string",
                 "index": "not_analyzed"

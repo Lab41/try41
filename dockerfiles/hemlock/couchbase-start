@@ -38,6 +38,7 @@ else
 	curl -v -u Administrator:password http://127.0.0.1:8091/pools > /tmp/pools.txt
 	UUID=$(cat /tmp/pools.txt | jq '.uuid')
 
+	sleep 100
 	curl -v -X POST -u Administrator:password http://127.0.0.1:8091/controller/createReplication \
 		-d uuid=$UUID \
 		-d fromBucket=hemlock \
