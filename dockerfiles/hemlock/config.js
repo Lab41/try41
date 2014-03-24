@@ -5,7 +5,7 @@
 define(['settings'],
 function (Settings) {
   "use strict";
-  var port = parseInt(location.port)+2;
+  var port = parseInt(location.port)+1;
   return new Settings({
 
     /**

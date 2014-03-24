@@ -102,6 +102,6 @@ RUN unzip /src/elasticsearch-transport-couchbase-1.1.0.zip -d /usr/share/elastic
 RUN cp /src/couchbase_template.json /usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
 RUN service elasticsearch stop
 
-EXPOSE 8000 8080 9200 8091 
+EXPOSE 8000 8080 9200
 
 CMD ["/bin/bash", "/src/startup.sh"]
