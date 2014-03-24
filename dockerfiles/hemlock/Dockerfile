@@ -37,7 +37,6 @@ RUN npm install tty.js
 RUN apt-get install -y openjdk-6-jdk
 RUN apt-get install -y wget
 RUN apt-get install -y dpkg
-RUN apt-get install -y unzip
 RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.2.deb
 RUN dpkg -i elasticsearch-0.90.2.deb
 RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
@@ -72,7 +71,7 @@ RUN echo 'mysql-server-5.5 mysql-server/root_password_again password password' |
 RUN apt-get install -y mysql-server --fix-missing --fix-broken && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
-ENV HEMLOCK_PULLED_AT 2014-03-21 16:49
+ENV HEMLOCK_PULLED_AT 2014-03-24 09:35
 RUN git clone https://github.com/Lab41/Hemlock.git
 RUN cd /Hemlock; python setup.py install
 
@@ -81,6 +80,7 @@ RUN apt-get install -y zip
 RUN git clone https://github.com/elasticsearch/kibana.git
 RUN cd /kibana; git checkout 322fa427ab 
 ADD config.js /kibana/src/
+ADD default.json /kibana/src/app/dashboards/default.json
 
 # Download Couchbase Server package to /tmp & install
 ADD $CB_DOWNLOAD_URL/$CB_VERSION/$CB_PACKAGE /tmp/$CB_PACKAGE
@@ -94,7 +94,7 @@ ADD . /src
 
 # data
 RUN mkdir /Hemlock/data
-RUN unzip /src/data.zip -d /Hemlock/data
+RUN tar xfz /src/data.tar.gz -C /Hemlock/data/
 
 # couchbase plugin with elasticsearch
 RUN mkdir /usr/share/elasticsearch/plugins/transport-couchbase
