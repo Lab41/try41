@@ -291,7 +291,7 @@
           "type": "histogram",
           "loadingEditor": false,
           "mode": "count",
-          "time_field": "doc.Datetime",
+          "time_field": "doc.hemlock-date",
           "queries": {
             "mode": "all",
             "ids": [
@@ -311,7 +311,7 @@
           "value_field": null,
           "auto_int": false,
           "resolution": 100,
-          "interval": "1h",
+          "interval": "1s",
           "intervals": [
             "auto",
             "1s",
