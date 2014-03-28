@@ -90,7 +90,7 @@ ADD elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
 
 RUN chmod -R 777 /var/lib
 
-EXPOSE 8080 8088 9200 19888 50070 60010
+EXPOSE 8080 
 
 # run supervisord daemon
 CMD ["/usr/bin/supervisord", "-n"]
