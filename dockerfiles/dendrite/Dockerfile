@@ -72,6 +72,7 @@ RUN apt-get install -y hbase-master
 ADD hbase.conf /etc/supervisor/conf.d/hbase.conf
 RUN echo 'export JAVA_HOME=/usr/lib/jvm/jdk1.7.0_51' >> /etc/hbase/conf/hbase-env.sh
 
+# format hdfs
 RUN su -c "hadoop namenode -format" - hdfs
 
 # elasticsearch
@@ -89,6 +90,29 @@ RUN echo 'index.number_of_replicas: 0' >> /etc/elasticsearch/elasticsearch.yml
 ADD elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
 
 RUN chmod -R 777 /var/lib
+RUN mkdir -p /usr/share/tomcat7/dendrite
+RUN chmod -R 777 /usr/share/tomcat7/dendrite
+
+# graphlab
+RUN apt-get install -y gcc g++ build-essential libopenmpi-dev openmpi-bin default-jdk cmake zlib1g-dev git make
+RUN git clone https://github.com/graphlab-code/graphlab.git
+RUN cd graphlab; ./configure
+RUN cd graphlab/release/toolkits/graph_analytics; make -j2
+RUN echo '127.0.0.1' >> /usr/share/tomcat7/graphlab_machine.txt
+RUN mv /graphlab /usr/share/tomcat7/graphlab
+ENV HADOOP_CONF_DIR /etc/hadoop/conf
+RUN echo 'HADOOP_CONF_DIR=/etc/hadoop/conf' >> /etc/profile
+
+# ssh for graphlab
+ADD sshd.conf /etc/supervisor/conf.d/sshd.conf
+RUN apt-get install openssh-server -y
+RUN mkdir /var/run/sshd
+RUN mkdir /var/log/ssh
+RUN ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa
+RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+ADD config /root/.ssh/config
+RUN chown -R root:root /root/.ssh
+RUN chmod 600 /root/.ssh/config
 
 EXPOSE 8080 
 
