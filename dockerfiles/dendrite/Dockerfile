@@ -5,6 +5,9 @@ ENV REFRESHED_AT 2014-03-27
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN apt-get update
 
+# supervisor
+RUN apt-get install supervisor -y -q
+
 # java
 RUN apt-get install -y wget
 RUN wget --quiet --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" -O jdk-7u51-linux-x64.tar.gz http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz
@@ -31,16 +34,63 @@ RUN git clone https://github.com/Lab41/faunus.git
 RUN cd /faunus; git checkout dendrite
 RUN mvn install -f /faunus/pom.xml -DskipTests
 RUN apt-get install -y tomcat7
-RUN chmod -R 777 /var/lib/tomcat7
+RUN chmod -R 777 /var/lib
 RUN git clone https://github.com/Lab41/Dendrite.git
-RUN mvn package -f /Dendrite/pom.xml
+RUN mvn package -f /Dendrite/pom.xml -P prod
 RUN cp /Dendrite/target/dendrite-0.1.0.war /var/lib/tomcat7/webapps/dendrite.war
-RUN sed 's/JAVA_OPTS="-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC"/JAVA_OPTS="-Djava.awt.headless=true -Xmx1536m -XX:+UseConcMarkSweepGC"/' -i /etc/default/tomcat7
+RUN sed 's/JAVA_OPTS="-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC"/JAVA_OPTS="-Djava.awt.headless=true -Xmx1536m -XX:+UseConcMarkSweepGC -Dspring.profiles.active=prod"/' -i /etc/default/tomcat7
+ADD tomcat.conf /etc/supervisor/conf.d/tomcat.conf
+RUN mv faunus /var/lib/faunus
+RUN mkdir /var/lib/tomcat7/dendrite
+RUN cp /Dendrite/src/main/groovy/org/lab41/dendrite/dendrite-import.groovy /var/lib/tomcat7/dendrite/dendrite-import.groovy
 
 # fix java due to tomcat installing java6
 RUN unlink /usr/lib/jvm/default-java
 RUN ln -s /usr/lib/jvm/jdk1.7.0_51 /usr/lib/jvm/default-java
 
-EXPOSE 8080
+# cdh4 package, key, and repo
+ADD cdh4-repository_1.0_all.deb cdh4-repository_1.0_all.deb
+RUN dpkg -i cdh4-repository_1.0_all.deb
+RUN apt-get install -y curl
+RUN curl -s http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh/archive.key | apt-key add -
+RUN echo "deb [arch=amd64] http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh precise-cdh4 contrib\ndeb-src http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh precise-cdh4 contrib" > /etc/apt/sources.list.d/cloudera.list
 
-CMD service tomcat7 start && tail -F /var/log/tomcat7/catalina.out
+RUN apt-get update
+
+# zookeeper
+RUN apt-get install -y zookeeper zookeeper-server
+RUN service zookeeper-server init
+#ADD zookeeper.conf /etc/supervisor/conf.d/zookeeper.conf
+
+# yarn
+RUN apt-get install -y hadoop-mapreduce-historyserver hadoop-yarn-proxyserver hadoop-yarn-nodemanager hadoop-hdfs-datanode hadoop-mapreduce hadoop-yarn-resourcemanager hadoop-hdfs-namenode
+ADD hadoop-mapreduce.conf /etc/supervisor/conf.d/hadoop-mapreduce.conf
+ADD hadoop-yarn.conf /etc/supervisor/conf.d/hadoop-yarn.conf
+
+# hbase
+RUN apt-get install -y hbase-master
+ADD hbase.conf /etc/supervisor/conf.d/hbase.conf
+RUN echo 'export JAVA_HOME=/usr/lib/jvm/jdk1.7.0_51' >> /etc/hbase/conf/hbase-env.sh
+
+RUN su -c "hadoop namenode -format" - hdfs
+
+# elasticsearch
+RUN apt-get install -y wget
+RUN apt-get install -y dpkg
+RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.5.deb
+RUN dpkg -i elasticsearch-0.90.5.deb
+RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
+#RUN apt-get install -y pwgen
+#RUN ELASTICSEARCH_CLUSTER=`pwgen -0AB -1 12`; echo 'cluster.name: $ELASTICSEARCH_CLUSTER' >> /etc/elasticsearch/elasticsearch.yml
+RUN echo 'discovery.zen.ping.multicast.enabled: false' >> /etc/elasticsearch/elasticsearch.yml
+RUN echo 'node.local: false' >> /etc/elasticsearch/elasticsearch.yml
+RUN echo 'index.number_of_shards: 1' >> /etc/elasticsearch/elasticsearch.yml
+RUN echo 'index.number_of_replicas: 0' >> /etc/elasticsearch/elasticsearch.yml
+ADD elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
+
+RUN chmod -R 777 /var/lib
+
+EXPOSE 8080 8088 9200 19888 50070 60010
+
+# run supervisord daemon
+CMD ["/usr/bin/supervisord", "-n"]
