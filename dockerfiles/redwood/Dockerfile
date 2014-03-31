@@ -13,7 +13,6 @@ RUN ln -s /bin/true /sbin/initctl
 
 RUN apt-get install -y pwgen
 RUN apt-get install -y g++-4.7 c++-4.7
-RUN apt-get install -y node
 RUN apt-get install -y npm
 RUN apt-get install -y python-setuptools
 RUN easy_install pip
