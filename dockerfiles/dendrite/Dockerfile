@@ -94,11 +94,11 @@ RUN mkdir -p /usr/share/tomcat7/dendrite
 RUN chmod -R 777 /usr/share/tomcat7/dendrite
 
 # graphlab
+RUN echo '127.0.0.1' >> /usr/share/tomcat7/graphlab_machine.txt
 RUN apt-get install -y gcc g++ build-essential libopenmpi-dev openmpi-bin default-jdk cmake zlib1g-dev git make
 RUN git clone https://github.com/graphlab-code/graphlab.git
 RUN cd graphlab; ./configure
 RUN cd graphlab/release/toolkits/graph_analytics; make -j2
-RUN echo '127.0.0.1' >> /usr/share/tomcat7/graphlab_machine.txt
 RUN mv /graphlab /usr/share/tomcat7/graphlab
 ENV HADOOP_CONF_DIR /etc/hadoop/conf
 RUN echo 'HADOOP_CONF_DIR=/etc/hadoop/conf' >> /etc/profile
