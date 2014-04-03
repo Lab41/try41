@@ -40,7 +40,6 @@ RUN sed 's|<connectionUrl>scm:git:git@github.com:kylef-lab41/ungit.git</connecti
 RUN sed 's|" --graph " + exportDir;|" --graph " + exportDir.toString().substring(5)+"/part*";|' -i /Dendrite/src/main/java/org/lab41/dendrite/services/analysis/GraphLabService.java
 RUN sed 's|cmd += " --output " + importDir;|cmd += " --output " + importDir.toString().substring(5);|' -i /Dendrite/src/main/java/org/lab41/dendrite/services/analysis/GraphLabService.java
 RUN sed 's|cmd += " --saveprefix " + importDir;|cmd += " --saveprefix " + importDir.toString().substring(5);|' -i /Dendrite/src/main/java/org/lab41/dendrite/services/analysis/GraphLabService.java
-RUN sed 's|FSDataOutputStream os = fs.create(exportDir);|FSDataOutputStream os = fs.create(exportDir.toString().substring(5)+"/part*");|' -i /Dendrite/src/main/java/org/lab41/dendrite/services/analysis/GraphLabService.java
 RUN cd /Dendrite; mvn scm:checkout -DwithGitHistoryServer=true
 RUN sed 's/user: <FIXME.*>/user: "lab41"/' -i /Dendrite/src/main/nodejs/ungit/public/source/app.js
 RUN sed 's|local: <FIXME.*>|local: "/tmp/dendrite/history"|' -i /Dendrite/src/main/nodejs/ungit/public/source/app.js
