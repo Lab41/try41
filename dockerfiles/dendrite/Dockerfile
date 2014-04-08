@@ -131,8 +131,8 @@ RUN npm install -g grunt-cli
 RUN sed "s|allowedDomains: 'http://localhost:8000',|allowedDomains: '*',|" -i /Dendrite/src/main/nodejs/ungit/source/config.js
 RUN cd /Dendrite/src/main/nodejs/ungit; grunt
 ADD npm.conf /etc/supervisor/conf.d/npm.conf
-RUN sed 's|<Connector port="8080" protocol="HTTP/1.1"|<Connector port="8000" protocol="HTTP/1.1"|' -i /var/lib/tomcat7/conf/server.xml
 RUN sed 's|port="8080" protocol="HTTP/1.1"|port="8000" protocol="HTTP/1.1"|' -i /var/lib/tomcat7/conf/server.xml
+RUN sed 's|<Connector port="8080" protocol="HTTP/1.1"|<Connector port="8000" protocol="HTTP/1.1"|' -i /var/lib/tomcat7/conf/server.xml
 
 EXPOSE 8000 
 
