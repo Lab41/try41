@@ -1,7 +1,7 @@
 from ubuntu:precise
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-03-27
+ENV REFRESHED_AT 2014-04-08
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN apt-get update
 
@@ -25,13 +25,13 @@ RUN echo 'export PATH' >> /etc/profile
 ENV JAVA_HOME /usr/lib/jvm/jdk1.7.0_51
 ENV PATH $PATH:$JAVA_HOME/bin
 
-RUN apt-get install -y git
-RUN apt-get install -y maven
+RUN apt-get install -y git maven
 RUN git clone https://github.com/Lab41/titan.git
 RUN cd /titan; git checkout dendrite
 RUN mvn install -f /titan/pom.xml -DskipTests
 RUN git clone https://github.com/Lab41/faunus.git
 RUN cd /faunus; git checkout dendrite
+RUN sed -i 's/repo.aduna-software.org/repo.maven.apache.org/g' /faunus/pom.xml
 RUN mvn install -f /faunus/pom.xml -DskipTests
 RUN apt-get install -y tomcat7
 RUN chmod -R 777 /var/lib
@@ -50,6 +50,7 @@ RUN apt-get update
 RUN apt-get install -y nodejs
 RUN npm install less
 RUN cd /Dendrite/src/main/nodejs/ungit; git submodule update --init; npm install
+RUN sed -i 's/0.4.2-dendrite-hadoop2-SNAPSHOT/0.4.1-Lab41-SNAPSHOT/g' /Dendrite/pom.xml
 RUN mvn package -f /Dendrite/pom.xml -DskipTests
 RUN cp /Dendrite/target/dendrite-0.1.0.war /var/lib/tomcat7/webapps/dendrite.war
 RUN sed 's/JAVA_OPTS="-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC"/JAVA_OPTS="-Djava.awt.headless=true -Xmx1536m -XX:+UseConcMarkSweepGC -Dspring.profiles.active=prod -DwithGitHistoryServer=true"/' -i /etc/default/tomcat7
