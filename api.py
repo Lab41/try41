@@ -7,7 +7,6 @@ from flask import send_from_directory
 from docker import client
 
 import redis
-import socket
 
 app = Flask(__name__)
 app.debug = True
@@ -18,7 +17,7 @@ IMAGE_NAME2 = "redwood"
 IMAGE_NAME3 = "hemlock"
 
 DOCKER_HOST = "172.17.42.1"
-DOMAIN = socket.gethostbyname(socket.gethostname())
+DOMAIN = "127.0.0.1"
 REDIS_HOST="localhost"
 REDIS_PORT=6379
 # dendrite
