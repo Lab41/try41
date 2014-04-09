@@ -20,4 +20,4 @@ ADD patch/client.py /usr/local/lib/python2.7/dist-packages/docker/client.py
 EXPOSE 5000
 
 WORKDIR /try-challenges
-CMD ["python", "api.py"]
+CMD sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try-challenges/api.py; python api.py
