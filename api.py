@@ -17,7 +17,7 @@ IMAGE_NAME1 = "dendrite"
 IMAGE_NAME2 = "redwood"
 IMAGE_NAME3 = "hemlock"
 
-DOCKER_HOST = socket.gethostbyname(socket.gethostname())
+DOCKER_HOST = "172.17.42.1"
 DOMAIN = socket.gethostbyname(socket.gethostname())
 REDIS_HOST="localhost"
 REDIS_PORT=6379
