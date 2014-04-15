@@ -1,17 +1,15 @@
-from boxcar/raring
+from ubuntu:raring
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-03-24
+ENV REFRESHED_AT 2014-04-14
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i /etc/apt/sources.list
+RUN apt-get install -y software-properties-common python-software-properties
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
 RUN add-apt-repository ppa:fkrull/deadsnakes
 RUN apt-get update
 
-# Keep upstart from complaining
-RUN dpkg-divert --local --rename --add /sbin/initctl
-RUN ln -s /bin/true /sbin/initctl
-
+RUN apt-get install -y build-essential
 RUN apt-get install -y python2.7
 RUN apt-get install -y pwgen
 RUN apt-get install -y g++-4.7 c++-4.7
@@ -70,7 +68,7 @@ RUN echo 'mysql-server-5.5 mysql-server/root_password_again password password' |
 RUN apt-get install -y mysql-server --fix-missing --fix-broken && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
-ENV HEMLOCK_PULLED_AT 2014-03-24 09:35
+ENV HEMLOCK_PULLED_AT 2014-04-14
 RUN git clone https://github.com/Lab41/Hemlock.git
 RUN cd /Hemlock; python setup.py install
 
