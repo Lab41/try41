@@ -3,7 +3,7 @@ try-challenges
 
 try-challenges is a demonstration platform tailored to demonstration three projects Lab41 has worked on.  try-challanges leverages Docker through a simple webapp to enable on-demand instances of isolated installations of each project.
 
-In order to run try-challenges, on a host with docker perform the following:
+In order to run [try-challenges](https://github.com/Lab41/try-challenges), on a host with docker perform the following:
 
 ```
 docker run -e SUBDOMAIN=`hostname -f` -d -P lab41/try-challenges
