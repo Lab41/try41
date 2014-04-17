@@ -90,7 +90,7 @@ RUN echo 'export JAVA_HOME=/usr/lib/jvm/jdk1.7.0_51' >> /etc/hbase/conf/hbase-en
 RUN su -c "hadoop namenode -format" - hdfs
 
 # elasticsearch
-RUN apt-get install -y wget dpkg
+RUN apt-get install -y dpkg
 RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.5.deb
 RUN dpkg -i elasticsearch-0.90.5.deb
 RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
@@ -134,6 +134,13 @@ ADD npm.conf /etc/supervisor/conf.d/npm.conf
 RUN sed 's|port="8080" protocol="HTTP/1.1"|port="8000" protocol="HTTP/1.1"|' -i /var/lib/tomcat7/conf/server.xml
 RUN sed 's|<Connector port="8080" protocol="HTTP/1.1"|<Connector port="8000" protocol="HTTP/1.1"|' -i /var/lib/tomcat7/conf/server.xml
 
+# snap
+RUN apt-get install -y gnuplot
+RUN wget --no-check-certificate https://snap.stanford.edu/releases/Snap-2.2.zip
+RUN unzip Snap-2.2.zip
+RUN cd Snap-2.2; make all
+RUN cp -R /Snap-2.2 /var/lib/tomcat7/
+ 
 EXPOSE 8000 
 
 # run supervisord daemon
