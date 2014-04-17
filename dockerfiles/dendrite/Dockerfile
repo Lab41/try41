@@ -26,6 +26,7 @@ ENV JAVA_HOME /usr/lib/jvm/jdk1.7.0_51
 ENV PATH $PATH:$JAVA_HOME/bin
 
 RUN apt-get install -y git maven
+RUN apt-get install -y bzip2
 RUN git clone https://github.com/Lab41/titan.git
 RUN cd /titan; git checkout dendrite
 RUN mvn install -f /titan/pom.xml -DskipTests
