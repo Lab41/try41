@@ -52,6 +52,8 @@ RUN apt-get install -y nodejs
 RUN npm install less
 RUN cd /Dendrite/src/main/nodejs/ungit; git submodule update --init; npm install
 RUN sed -i 's/0.4.2-dendrite-hadoop2-SNAPSHOT/0.4.1-Lab41-SNAPSHOT/g' /Dendrite/pom.xml
+RUN sed -i "s/port:.*/port: parseInt(window.location.port)+1,/g" /Dendrite/src/main/webapp/js/app.js
+RUN sed -i "s/host:.*/host: window.location.hostname,/g" /Dendrite/src/main/webapp/js/app.js
 RUN mvn package -f /Dendrite/pom.xml -DskipTests
 RUN cp /Dendrite/target/dendrite-0.1.0.war /var/lib/tomcat7/webapps/dendrite.war
 RUN sed 's/JAVA_OPTS="-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC"/JAVA_OPTS="-Djava.awt.headless=true -Xmx1536m -XX:+UseConcMarkSweepGC -Dspring.profiles.active=prod -DwithGitHistoryServer=true"/' -i /etc/default/tomcat7
@@ -142,7 +144,7 @@ RUN unzip Snap-2.2.zip
 RUN cd Snap-2.2; make all
 RUN cp -R /Snap-2.2 /var/lib/tomcat7/
  
-EXPOSE 8000 
+EXPOSE 8000 8448 
 
 # run supervisord daemon
 CMD ["/usr/bin/supervisord", "-n"]
