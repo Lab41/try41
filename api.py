@@ -22,11 +22,12 @@ REDIS_HOST="localhost"
 REDIS_PORT=6379
 # dendrite
 EXPOSED_PORT1=8000
+EXPOSED_PORT2=8448
 # redwood
-EXPOSED_PORT2=8000
-EXPOSED_PORT3=8080
+EXPOSED_PORT3=8000
+EXPOSED_PORT4=8080
 # hemlock
-EXPOSED_PORT4=8000
+EXPOSED_PORT5=8000
 
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
 c = client.Client(version="1.6", base_url='http://%s:4243' % DOCKER_HOST)
@@ -62,7 +63,7 @@ def new():
 
 @app.route('/new2', methods=["POST"])
 def new2():
-    exposed_ports = [EXPOSED_PORT2]
+    exposed_ports = [EXPOSED_PORT3]
     container = c.create_container(IMAGE_NAME2)
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
@@ -72,7 +73,7 @@ def new2():
 
 @app.route('/new3', methods=["POST"])
 def new3():
-    exposed_ports = [EXPOSED_PORT4]
+    exposed_ports = [EXPOSED_PORT5]
     container = c.create_container(IMAGE_NAME3)
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
