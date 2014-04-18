@@ -1,9 +1,9 @@
-try-challenges
+try41
 ==============
 
-try-challenges is a demonstration platform tailored to demonstration three projects Lab41 has worked on.  try-challanges leverages Docker through a simple webapp to enable on-demand instances of isolated installations of each project.
+try41 is a demonstration platform tailored to demonstration three projects Lab41 has worked on.  try41 leverages Docker through a simple webapp to enable on-demand instances of isolated installations of each project.
 
-In order to run [try-challenges](https://github.com/Lab41/try-challenges), on a host with docker perform the following:
+In order to run [try41](https://github.com/Lab41/try41), on a host with docker perform the following:
 
 ```
 docker run -e SUBDOMAIN=`hostname -f` -d -P lab41/try-challenges
@@ -22,8 +22,8 @@ docker tag lab41/dendrite dendrite
 Note: The build on index.docker.io has been behind the GitHub repo, so to get the latest and greatest do this instead:
 
 ```
-git clone https://github.com/Lab41/try-challenges.git
-cd try-challenges/dockerfiles/dendrite
+git clone https://github.com/Lab41/try41.git
+cd try41/dockerfiles/dendrite
 docker build .
 docker tag [IMAGE_ID] dendrite
 ```
@@ -37,8 +37,8 @@ docker tag lab41/hemlock hemlock
 Note: The build on index.docker.io has been behind the GitHub repo, so to get the latest and greatest do this instead:
 
 ```
-git clone https://github.com/Lab41/try-challenges.git
-cd try-challenges/dockerfiles/hemlock
+git clone https://github.com/Lab41/try41.git
+cd try41/dockerfiles/hemlock
 docker build .
 docker tag [IMAGE_ID] hemlock
 ```
