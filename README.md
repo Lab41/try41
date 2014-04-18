@@ -6,7 +6,7 @@ try41 is a demonstration platform tailored to demonstration three projects Lab41
 In order to run [try41](https://github.com/Lab41/try41), on a host with docker perform the following:
 
 ```
-docker run -e SUBDOMAIN=`hostname -f` -d -P lab41/try-challenges
+docker run -e SUBDOMAIN=`hostname -f` -d -P lab41/try41
 ```
 
 This will give you a webapp through an exposed port chosen by Docker that will describe each project and provide you the ability to launch each project as a new Docker container.
