@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Try41 : try41 - a demonstration platform" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Try41</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Lab41/try41">View on GitHub</a>
+
+          <h1 id="project_title">Try41</h1>
+          <h2 id="project_tagline">try41 - a demonstration platform</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Lab41/try41/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Lab41/try41/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="try41" class="anchor" href="#try41"><span class="octicon octicon-link"></span></a>try41</h1>
+
+<p>try41 is a demonstration platform tailored to demonstration three projects Lab41 has worked on.  try41 leverages Docker through a simple webapp to enable on-demand instances of isolated installations of each project.</p>
+
+<p>In order to run <a href="https://github.com/Lab41/try41">try41</a>, on a host with docker perform the following:</p>
+
+<pre><code>docker run -e SUBDOMAIN=`hostname -f` -d -P lab41/try41
+</code></pre>
+
+<p>This will give you a webapp through an exposed port chosen by Docker that will describe each project and provide you the ability to launch each project as a new Docker container.</p>
+
+<p>Before launching each project, you will want to pull down their images and tag them with Docker.</p>
+
+<p><strong>To get <a href="https://github.com/Lab41/Dendrite">Dendrite</a>:</strong></p>
+
+<pre><code>docker pull lab41/dendrite
+docker tag lab41/dendrite dendrite
+</code></pre>
+
+<p>Note: The build on index.docker.io has been behind the GitHub repo, so to get the latest and greatest do this instead:</p>
+
+<pre><code>git clone https://github.com/Lab41/try41.git
+cd try41/dockerfiles/dendrite
+docker build .
+docker tag [IMAGE_ID] dendrite
+</code></pre>
+
+<p><strong>To get <a href="https://github.com/Lab41/Hemlock">Hemlock</a>:</strong></p>
+
+<pre><code>docker pull lab41/hemlock
+docker tag lab41/hemlock hemlock
+</code></pre>
+
+<p>Note: The build on index.docker.io has been behind the GitHub repo, so to get the latest and greatest do this instead:</p>
+
+<pre><code>git clone https://github.com/Lab41/try41.git
+cd try41/dockerfiles/hemlock
+docker build .
+docker tag [IMAGE_ID] hemlock
+</code></pre>
+
+<p><strong>To get <a href="https://github.com/Lab41/Redwood">Redwood</a>:</strong></p>
+
+<pre><code>docker pull lab41/redwood
+docker tag lab41/redwood redwood
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Try41 maintained by <a href="https://github.com/Lab41">Lab41</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-40464073-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
