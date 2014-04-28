@@ -1,4 +1,4 @@
-from ubuntu:saucy
+from ubuntu:trusty
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
 ENV REFRESHED_AT 2014-04-14
