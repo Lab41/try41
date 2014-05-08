@@ -79,7 +79,6 @@ ADD hadoop-hdfs-datanode.conf /etc/supervisor/conf.d/hadoop-hdfs-datanode.conf
 RUN apt-get install -y hadoop-mapreduce-historyserver hadoop-yarn-proxyserver hadoop-yarn-nodemanager hadoop-hdfs-datanode hadoop-mapreduce hadoop-yarn-resourcemanager hadoop-hdfs-namenode
 ADD hadoop-mapreduce.conf /etc/supervisor/conf.d/hadoop-mapreduce.conf
 ADD hadoop-yarn-nodemanager.conf /etc/supervisor/conf.d/hadoop-yarn-nodemanager.conf
-ADD hadoop-yarn-proxyserver.conf /etc/supervisor/conf.d/hadoop-yarn-proxyserver.conf
 ADD hadoop-yarn-resourcemanager.conf /etc/supervisor/conf.d/hadoop-yarn-resourcemanager.conf
 
 # hbase
