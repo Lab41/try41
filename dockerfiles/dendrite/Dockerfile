@@ -1,14 +1,33 @@
 from ubuntu:precise
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-04-08
+ENV REFRESHED_AT 2014-05-08
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN apt-get update --fix-missing
 RUN apt-get install -y python-software-properties
 RUN apt-add-repository ppa:chris-lea/node.js
 RUN apt-get update
 
-RUN apt-get install -y -q wget curl git maven bzip2 supervisor nodejs dpkg tomcat7 gnuplot openssh-server
+RUN apt-get install -y -q wget \
+                          curl \
+                          git \
+                          maven \
+                          bzip2 \
+                          supervisor \
+                          nodejs \
+                          dpkg \
+                          tomcat7 \
+                          gnuplot \
+                          openssh-server \
+                          gcc \
+                          g++ \
+                          build-essential \
+                          libopenmpi-dev \
+                          openmpi-bin \
+                          default-jdk \
+                          cmake \
+                          zlib1g-dev \
+                          make
 
 # java
 RUN wget --quiet --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" -O jdk-7u51-linux-x64.tar.gz http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz
@@ -26,7 +45,7 @@ RUN echo 'export PATH' >> /etc/profile
 ENV JAVA_HOME /usr/lib/jvm/jdk1.7.0_51
 ENV PATH $PATH:$JAVA_HOME/bin
 
-ENV REPOS_UPDATED_AT 2014-05-01 
+ENV REPOS_UPDATED_AT 2014-05-08
 RUN git clone https://github.com/Lab41/titan.git
 RUN cd /titan; git checkout dendrite-hadoop2
 RUN mvn install -f /titan/pom.xml -DskipTests
@@ -48,12 +67,12 @@ RUN cd /Dendrite/src/main/nodejs/ungit; git submodule update --init; npm install
 RUN sed -i "s/port:.*/port: parseInt(window.location.port)+1,/g" /Dendrite/src/main/webapp/js/app.js
 RUN sed -i "s/host:.*/host: window.location.hostname,/g" /Dendrite/src/main/webapp/js/app.js
 RUN mvn package -f /Dendrite/pom.xml -DskipTests
-RUN cp /Dendrite/target/dendrite-0.1.0.war /var/lib/tomcat7/webapps/dendrite.war
+RUN mv /Dendrite/target/dendrite-0.1.0.war /var/lib/tomcat7/webapps/dendrite.war
 RUN sed 's/JAVA_OPTS="-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC"/JAVA_OPTS="-Djava.awt.headless=true -Xmx1536m -XX:+UseConcMarkSweepGC -Dspring.profiles.active=prod -DwithGitHistoryServer=true"/' -i /etc/default/tomcat7
 ADD tomcat.conf /etc/supervisor/conf.d/tomcat.conf
 RUN mv faunus /var/lib/faunus
 RUN mkdir /var/lib/tomcat7/dendrite
-RUN cp /Dendrite/src/main/groovy/org/lab41/dendrite/dendrite-import.groovy /var/lib/tomcat7/dendrite/dendrite-import.groovy
+RUN mv /Dendrite/src/main/groovy/org/lab41/dendrite/dendrite-import.groovy /var/lib/tomcat7/dendrite/dendrite-import.groovy
 
 # fix java due to tomcat installing java6
 RUN unlink /usr/lib/jvm/default-java
@@ -80,6 +99,7 @@ RUN apt-get install -y hadoop-mapreduce-historyserver hadoop-yarn-proxyserver ha
 ADD hadoop-mapreduce.conf /etc/supervisor/conf.d/hadoop-mapreduce.conf
 ADD hadoop-yarn-nodemanager.conf /etc/supervisor/conf.d/hadoop-yarn-nodemanager.conf
 ADD hadoop-yarn-resourcemanager.conf /etc/supervisor/conf.d/hadoop-yarn-resourcemanager.conf
+RUN sed -i 's|</configuration>|<property><name>yarn.nodemanager.resource.memory-mb</name><value>8192</value></property></configuration>|' /etc/hadoop/conf/yarn-site.xml
 
 # hbase
 RUN apt-get install -y hbase-master hbase-regionserver
@@ -93,7 +113,7 @@ RUN sed -i 's|<configuration>|<configuration><property><name>fs.default.name</na
 
 # format hdfs
 RUN su -c "hadoop namenode -format" - hdfs
-RUN service hadoop-hdfs-namenode start; service hadoop-hdfs-datanode start; su -c "hadoop fs -mkdir /user" - hdfs; su -c "hadoop fs -mkdir /user/root" - hdfs; su -c "hadoop fs -mkdir /user/root/dendrite" - hdfs; su -c "hadoop fs -chown -R root:root /user/root" - hdfs; su -c "hadoop fs -mkdir /tmp" - hdfs; su -c "hadoop fs -mkdir /hbase" - hdfs; su -c "hadoop fs -chown hbase /hbase" - hdfs 
+RUN service hadoop-hdfs-namenode start; service hadoop-hdfs-datanode start; su -c "hadoop fs -mkdir /user" - hdfs; su -c "hadoop fs -mkdir /user/root" - hdfs; su -c "hadoop fs -mkdir /user/root/dendrite" - hdfs; su -c "hadoop fs -chown -R root:root /user/root" - hdfs; su -c "hadoop fs -mkdir /tmp" - hdfs; su -c "hadoop fs -mkdir /hbase" - hdfs; su -c "hadoop fs -chown hbase /hbase" - hdfs; su -c "hadoop fs -chmod -R 777 /tmp" - hdfs 
 
 # elasticsearch
 RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.5.deb
@@ -111,12 +131,11 @@ RUN chmod -R 777 /usr/share/tomcat7/dendrite
 
 # graphlab
 RUN echo '127.0.0.1' >> /usr/share/tomcat7/graphlab_machine.txt
-RUN cp /usr/share/tomcat7/graphlab_machine.txt /graphlab_machine.txt
-RUN apt-get install -y gcc g++ build-essential libopenmpi-dev openmpi-bin default-jdk cmake zlib1g-dev git make
+RUN mv /usr/share/tomcat7/graphlab_machine.txt /graphlab_machine.txt
 RUN git clone https://github.com/graphlab-code/graphlab.git
 RUN cd graphlab; ./configure
 RUN cd graphlab/release/toolkits/graph_analytics; make -j1
-RUN cp -R /graphlab /usr/share/tomcat7/graphlab
+RUN mv /graphlab /usr/share/tomcat7/graphlab
 ENV HADOOP_CONF_DIR /etc/hadoop/conf
 RUN echo 'HADOOP_CONF_DIR=/etc/hadoop/conf' >> /etc/profile
 
@@ -142,7 +161,7 @@ RUN sed 's|<Connector port="8080" protocol="HTTP/1.1"|<Connector port="8000" pro
 RUN wget --no-check-certificate https://snap.stanford.edu/releases/Snap-2.2.zip
 RUN unzip Snap-2.2.zip
 RUN cd Snap-2.2; make all
-RUN cp -R /Snap-2.2 /usr/share/tomcat7/
+RUN mv /Snap-2.2 /usr/share/tomcat7/
  
 EXPOSE 8000 8448 
 
