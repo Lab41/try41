@@ -100,6 +100,7 @@ ADD hadoop-mapreduce.conf /etc/supervisor/conf.d/hadoop-mapreduce.conf
 ADD hadoop-yarn-nodemanager.conf /etc/supervisor/conf.d/hadoop-yarn-nodemanager.conf
 ADD hadoop-yarn-resourcemanager.conf /etc/supervisor/conf.d/hadoop-yarn-resourcemanager.conf
 RUN sed -i 's|</configuration>|<property><name>yarn.nodemanager.resource.memory-mb</name><value>8192</value></property></configuration>|' /etc/hadoop/conf/yarn-site.xml
+RUN sed -i 's|JAVA_HEAP_MAX=-Xmx1000m|JAVA_HEAP_MAX=-Xmx8192m|' /etc/hadoop/conf/yarn-env.sh
 
 # hbase
 RUN apt-get install -y hbase-master hbase-regionserver
