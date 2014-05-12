@@ -1364,7 +1364,10 @@ p{
 	color: #7b6d5e;
     text-transform: none;
 }
-.comment-entry{line-height: 19px;}
+.comment-entry{
+    line-height: 16px;
+    font-size: 16px;
+}
 
 /* Comments responsive feature */
 
@@ -1673,7 +1676,16 @@ input[type="password"]:focus{
 .tab-content h3{margin-bottom: 10px;}
 .tab-content h4{font-size: 19px; margin-bottom: 18px;}
 
-.tab-text{margin-bottom: 23px;}
+.tab-text{
+    margin-bottom: 23px;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.tab-text ul{
+    list-style: disc;
+    margin-left: 450px;
+}
 
 .tab_image.pull-left,
 .tab_image.pull-right{
