@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import g
 from flask import jsonify
 from flask import render_template
 from flask import request
@@ -7,6 +8,7 @@ from flask import send_from_directory
 from docker import client
 
 import redis
+import uuid
 
 app = Flask(__name__)
 app.debug = True
@@ -18,14 +20,18 @@ IMAGE_NAME3 = "hemlock"
 
 DOCKER_HOST = "172.17.42.1"
 DOMAIN = "127.0.0.1"
-REDIS_HOST="localhost"
+REDIS_HOST = "localhost"
+
 REDIS_PORT=6379
+
 # dendrite
 EXPOSED_PORT1=8000
 EXPOSED_PORT2=8448
+
 # redwood
 EXPOSED_PORT3=8000
 EXPOSED_PORT4=8080
+
 # hemlock
 EXPOSED_PORT5=8000
 
@@ -46,6 +52,28 @@ def store_metadata(exposed_ports, container_id, container):
     hmap['url'] = url
     #r.hmset(url, hmap)
     return url
+
+def after_this_request(f):
+    if not hasattr(g, 'after_request_callbacks'):
+        g.after_request_callbacks = []
+    g.after_request_callbacks.append(f)
+    return f
+
+@app.after_request
+def call_after_request_callbacks(response):
+    for callback in getattr(g, 'after_request_callbacks', ()):
+        callback(response)
+    return response
+
+@app.before_request
+def check_cookie():
+    uid = request.cookies.get('try41-uid')
+    if uid is None:
+        uid = str(uuid.uuid4())
+        @after_this_request
+        def save_cookie(response):
+            response.set_cookie('try41-uid', uid)
+    g.uid = uid
 
 @app.route('/')
 def index():
