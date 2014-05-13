@@ -12,6 +12,11 @@ import uuid
 
 app = Flask(__name__)
 app.debug = True
+app.config.update(
+    SECRET_KEY = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6',
+    SESSION_COOKIE_SECURE = True,
+    SESSION_COOKIE_HTTPONLY = False
+)
 
 # set defaults
 IMAGE_NAME1 = "dendrite"

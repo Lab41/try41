@@ -841,16 +841,19 @@ p{
 .price_col.price_col_yellow .price_col_body .price_body_inner {background:#edcd6e;}
 .price_col.price_col_green .price_col_body .price_body_inner {background:#65c383;}
 .price_col.price_col_red .price_col_body .price_body_inner {background:#e7643f;}
+.price_col.price_col_gray .price_col_body .price_body_inner {background:#959595;}
 
 .price_col_blue .price_body_top .line {background: #a4cee7;}
 .price_col_yellow .price_body_top .line {background: #fdf0ca;}
 .price_col_green .price_body_top .line {background: #79dd98;}
 .price_col_red .price_body_top .line {background: #ffc19b;}
+.price_col_gray .price_body_top .line {background: #959595;}
 
 .price_col_yellow .price_body_top  span {color:#fef4d8;}
 .price_col_blue .price_body_top span {color:#a4cee7;}
 .price_col_green .price_body_top span {color:#89eca8;}
 .price_col_red .price_body_top span {color:#ffc19b;}
+.price_col_gray .price_body_top span {color:#959595;}
 
 .price_col_body ul li {
     color:#fff;
@@ -871,13 +874,13 @@ p{
     -moz-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
 }
-.col_active .price_col_foot{padding:17px 0;}
-
-.col_active .price_col_body .price_body_inner {
+/*.col_active .price_col_foot{padding:17px 0;}
+*/
+/*.col_active .price_col_body .price_body_inner {
     padding: 37px 0;
     margin: 14px auto;
     width: 180px;
-}
+}*/
 .col_active .price_col_head {
     position: relative;
     background: #776b5e;
@@ -889,9 +892,9 @@ p{
     line-height: 70px;
 }
 .pricing_box li.col_active {
-    width:250px;
+    width:220px;
     z-index:3;
-    top:-9px;
+    top:-18px;
 }
 
 /* price style 2 */
@@ -1287,7 +1290,7 @@ p{
 
 .comment-list {
     position: relative;
-    margin-bottom: 34px;
+    /*margin-bottom: 34px;*/
 }
 .comment-list h2 {
 	font-size: 23px;
@@ -1365,8 +1368,8 @@ p{
     text-transform: none;
 }
 .comment-entry{
-    line-height: 16px;
-    font-size: 16px;
+    line-height: 15px;
+    font-size: 15px;
 }
 
 /* Comments responsive feature */
@@ -1724,9 +1727,10 @@ input[type="password"]:focus{
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    height: 50px;
+    height: 352px;
+    width: 202px;
     line-height: 46px;
-    margin-right: 3px;
+    margin-right: 0px;
     margin-top: 0;
 }
 .tabs_framed.styled .tabs li.active{
@@ -2351,7 +2355,7 @@ input[type="password"]:focus{
 /* Simple Message Field */
 /*-----------------------------------*/
 
-.comment-list.styled{margin-bottom: 30px;}
+/*.comment-list.styled{margin-bottom: 30px;}*/
 
 .comment-list.styled .comment-body {
     border-left: 0 none;

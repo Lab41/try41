@@ -89,44 +89,128 @@
 <!-- content -->
 <div class="content " role="main">
 
-<div class="col-sm-12">
-<!-- Simple Message Field -->
-<div class="comment-list styled clearfix">
-    <ol>
-        <li class="comment">
-            <div class="comment-body boxed">
-                <div class="comment-arrow"></div>
-                <div class="comment-avatar">
-                    <div class="avatar"><img src="/static/images/l41/lab41-square.png" alt="" /></div>
-                </div>
-                <div class="comment-text">
-                    <div class="comment-author clearfix">
-                        <a href="https://www.lab41.org" class="link-author">Lab41</a>
-                    </div>
-                    <div class="comment-entry">
-                        Lab41 is a unique initiative operating under the broader <a href="https://www.iqt.org/">In-Q-Tel</a> umbrella. This unclassified, collaborative environment is home to a rotating cast of data scientists, engineers, and innovative thinkers who are re-imagining ways to manage, understand, and visualize the expanding universe of data. Lab41 challenge teams are committed to working collaboratively to build proof-of-concepts, and to deliver findings within 3 to 12 months.
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-        </li>
-    </ol>
-</div>
-<!--/ Simple Message Field -->
+<div class="col-sm-13">
 
 <!-- Tabs -->
 <div class="tabs_framed styled">
-    <ul class="tabs clearfix">
-        <li class="active"><a href="#dendrite" data-toggle="tab">Dendrite</a></li>
-        <li><a href="#redwood" data-toggle="tab">Redwood</a></li>
-        <li><a href="#hemlock" data-toggle="tab">Hemlock</a></li>
-    </ul>
+<div class="pricing_box">
+    <ul class="clearfix">
+        <a href="#lab41" data-toggle="tab">
+        <li class="price_col price_col_yellow" id="lab41-tab">
+            <!--pricing item-->
+            <div class="price_item boxed" style="height:259px" id="lab41-box">
+                <div class="price_col_head">
+                    <span class="price"><sup>Lab41</sup></span>
+                </div>
+                <div style="margin-top:20px;"><img src="/static/images/l41/logo_160x160_grey.png" alt="" id="l41_logo"/></div>
+            </div>
+            <!--/ pricing-item -->
+        </li>
+        </a>
+        <a href="#dendrite" data-toggle="tab">
+        <li class="price_col price_col_gray" id="dendrite-tab">
+            <!--pricing item-->
+            <div class="price_item boxed">
+                <div class="price_col_head">
+                    <span class="price"><sup>DENDRITE</sup></span>
+                </div>
+                <div class="price_col_body clearfix">
+                    <div class="price_body_inner">
+                        <div class="price_body_top">
+                            <span>Collaborate</span>
+                            <strong>Graphs</strong>
+                            <div class="line"></div>
+                        </div>
+                        <ul>
+                            <li>Titan &amp; GraphLab</li>
+                            <li>AngularJS</li>
+                            <li>Spring Framework</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--/ pricing-item -->
+        </li>
+        </a>
 
-    <div class="tab-content boxed clearfix">
-        <div class="tab-pane fade in active" id="dendrite">
+        <a href="#redwood" data-toggle="tab">
+        <li class="price_col price_col_gray" id="redwood-tab">
+            <div class="price_item boxed">
+                <div class="price_col_head">
+                    <span class="price"><sup>REDWOOD</sup></span>
+                </div>
+                <div class="price_col_body clearfix">
+                    <div class="price_body_inner">
+                        <div class="price_body_top">
+                            <span>Find</span>
+                            <strong>Anomalies</strong>
+                            <div class="line"></div>
+                        </div>
+                        <ul>
+                            <li>Python Library</li>
+                            <li>SciPy</li>
+                            <li>NumPy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </li>
+        </a>
+
+        <a href="#hemlock" data-toggle="tab">
+        <li class="price_col price_col_gray" id="hemlock-tab">
+            <div class="price_item boxed">
+                <div class="price_col_head">
+                    <span class="price"><sup>HEMLOCK</sup></span>
+                </div>
+                <div class="price_col_body clearfix">
+                    <div class="price_body_inner">
+                        <div class="price_body_top">
+                            <span>Explore</span>
+                            <strong>Metadata</strong>
+                            <div class="line"></div>
+                        </div>
+                        <ul>
+                            <li>CLI and RESTful API</li>
+                            <li>ElasticSearch</li>
+                            <li>Kibana</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </li>
+        </a>
+    </ul>
+</div>
+<!--/pricing box-->
+    <div class="tab-content boxed clearfix" style="top: -48px; z-index:200">
+        <div class="tab-pane fade in active" id="start">
+            <div class="inner clearfix">
+                <div class="tab-text">
+                    <div class="comment-entry">
+                        <p>Try41 is a demonstration site, which currently shows off three of our projects which can be selected above.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="lab41">
+            <div class="inner clearfix">
+                <div class="tab-text">
+                    <div class="comment-entry">
+                        <p>Lab41 is a unique initiative operating under the broader <a href="https://www.iqt.org/">In-Q-Tel</a> umbrella. This unclassified, collaborative environment is home to a rotating cast of data scientists, engineers, and innovative thinkers who are re-imagining ways to manage, understand, and visualize the expanding universe of data. Lab41 challenge teams are committed to working collaboratively to build proof-of-concepts, and to deliver findings within 3 to 12 months.</p>
+                        <p>Challenge teams operate within the time-frame and scope outlined by the Technical Advisory Board, which includes representatives from each of Lab41′s participant groups: government, industry, academia and IQT. Selected challenges will not be publicly announced until the conclusion of each project, and any deviations from the initial challenge design are subject to additional approval. Results will vary from challenge to challenge, but outputs may include anything from working demonstrations, to delivery of open source code and technical white papers. It is expected (and desired) that teams will adjust their approach based on ongoing feedback from stakeholders.</p>
+                        <p><a href="https://www.lab41.org">Learn more.</a></p>
+                        <p><img src="/static/images/l41/lifecycle.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="dendrite">
             <div class="inner clearfix">
                 <div class="tab_image pull-left"><img src="/static/images/l41/dendrite-logo.png" alt=""><sub>D3.js <a href="http://bl.ocks.org/mbostock/1062288">example</a> by Mike Bostock</sub></div>
-                <h2><a href="#">Challenge: Dendrite</a></h2>
+                <div class="price_col_foot sign_up pull-left well"><h2 style="margin-left: 10px; margin-right:10px;"><a href="#"> Challenge: Dendrite</a>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<a id="button" class="btn btn-blue"><span>Try Now</span></a></h2>
+                </div>
                 <div class="tab-text">
                     <p>People. Places. Things. Graphs.
                        <br ><br />
@@ -161,8 +245,10 @@ It turns out that much of the world, both physical and virtual, can be represent
         </div>
         <div class="tab-pane fade" id="redwood">
             <div class="inner clearfix">
-                <div class="tab_image pull-left" style="height:420px"><img src="/static/images/l41/redwood/logo/redwood_logo.png" alt=""></div>
-                <h2><a href="#">Challenge: Redwood</a></h2>
+                <div class="tab_image pull-left" style="height:500px"><img src="/static/images/l41/redwood/logo/redwood_logo.png" alt=""></div>
+                <div class="price_col_foot sign_up pull-left well"><h2 style="margin-left: 10px; margin-right:10px;"><a href="#"> Challenge: Redwood</a>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<a id="button2" class="btn btn-red"><span>Try Now</span></a></h2>
+                </div>
                 <div class="tab-text"><p>Redwood is a Python framework intended to identify anomalous files through analyzing the file metadata of a collection of media. Each file analyzed is assigned a score that signals its reputation relative to other files in the system --the lower a reputation score, the more likely that a file is anomalous. The final reputation score of a given file is based on an aggegation of scores assigned to it by modules that we call "Filters".
                 <br /><br />
 A Filter is a plugin whose functionality is only limited by the creativity of the developer. Redwood can support any number of Filters, so long as a Filter extends the RedwoodFilter class and produces a table assigning a reputation score to each unique file in the system. Much of the Redwood framework is aimed at making the process of adding new Filters to the system as frictionless as possible (see the Filter section below for more information).
@@ -191,7 +277,9 @@ In addition to the Filters, Redwood also provides an effective data model for an
         <div class="tab-pane fade" id="hemlock">
             <div class="inner clearfix">
                 <div class="tab_image pull-left"><img src="/static/images/l41/hemlock-square.png" alt=""></div>
-                <h2><a href="#">Experiment: Hemlock</a></h2>
+                <div class="price_col_foot sign_up pull-left well"><h2 style="margin-left: 10px; margin-right:10px;"><a href="#"> Experiment: Hemlock</a>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<a id="button3" class="btn btn-green"><span>Try Now</span></a></h2>
+                </div>
                 <div class="tab-text"><p>Hemlock is a way of providing a common data access layer. <a href="http://lab41.github.io/Hemlock/">Learn more.</a> <br /><br /> Hemlock is an open-source project exploring ways to create a common data access layer that eliminates the need to understand underlying data topologies but still preserving the requirements of each data source such as access control, performance, and formats.<img src="https://raw.github.com/Lab41/Hemlock/master/docs/images/overview_hemlock.png" alt="" width="500px"></p></div>
             </div>
             <div class="bottom clearfix">
@@ -226,90 +314,6 @@ In addition to the Filters, Redwood also provides an effective data model for an
 </div>
 <!--/ Tabs -->
 
-<!--pricing box-->
-<div class="pricing_box">
-    <ul class="clearfix">
-        <li class="price_col price_col_blue ">
-            <!--pricing item-->
-            <div class="price_item boxed">
-                <div class="price_col_head">
-                    <span class="badge"></span>
-                    <span class="price"><sup>DENDRITE</sup></span>
-                </div>
-                <div class="price_col_body clearfix">
-                    <div class="price_body_inner">
-                        <div class="price_body_top">
-                            <span>Collaborate</span>
-                            <strong>Graphs</strong>
-                            <div class="line"></div>
-                        </div>
-                        <ul>
-                            <li>Titan &amp; GraphLab</li>
-                            <li>AngularJS</li>
-                            <li>Spring Framework</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="price_col_foot">
-                    <div class="sign_up"><a id="button" class="btn btn-blue btn-small"><span>Try Now</span></a></div>
-                </div>
-            </div>
-            <!--/ pricing-item -->
-        </li>
-
-        <li class="price_col price_col_red col_active">
-            <div class="price_item boxed">
-                <div class="price_col_head">
-                    <span class="price"><sup>REDWOOD</sup></span>
-                </div>
-                <div class="price_col_body clearfix">
-                    <div class="price_body_inner">
-                        <div class="price_body_top">
-                            <span>Find</span>
-                            <strong>Anomalies</strong>
-                            <div class="line"></div>
-                        </div>
-                        <ul>
-                            <li>Python Library</li>
-                            <li>SciPy</li>
-                            <li>NumPy</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="price_col_foot">
-                    <div class="sign_up"><a id="button2" class="btn btn-red"><span>Try Now</span></a></div>
-                </div>
-            </div>
-        </li>
-
-        <li class="price_col price_col_green ">
-            <div class="price_item boxed">
-                <div class="price_col_head">
-                    <span class="badge"></span>
-                    <span class="price"><sup>HEMLOCK</sup></span>
-                </div>
-                <div class="price_col_body clearfix">
-                    <div class="price_body_inner">
-                        <div class="price_body_top">
-                            <span>Explore</span>
-                            <strong>Metadata</strong>
-                            <div class="line"></div>
-                        </div>
-                        <ul>
-                            <li>CLI and RESTful API</li>
-                            <li>ElasticSearch</li>
-                            <li>Kibana</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="price_col_foot">
-                    <div class="sign_up"><a id="button3" class="btn btn-green btn-small"><span>Try Now</span></a></div>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>
-<!--/pricing box-->
 </div>
 </div>
 <!--/ row -->
@@ -322,6 +326,62 @@ In addition to the Filters, Redwood also provides an effective data model for an
 
 </body>
         <script type="text/javascript">
+            $("#dendrite-tab").click(function() {
+                $("#dendrite-tab").addClass("col_active");
+                $("#redwood-tab").removeClass("col_active");
+                $("#hemlock-tab").removeClass("col_active");
+                $("#lab41-tab").removeClass("col_active");
+                $("#dendrite-tab").addClass("price_col_blue");
+                $("#redwood-tab").removeClass("price_col_red");
+                $("#hemlock-tab").removeClass("price_col_green");
+                $("#dendrite-tab").removeClass("price_col_gray");
+                $("#redwood-tab").addClass("price_col_gray");
+                $("#hemlock-tab").addClass("price_col_gray");
+                $("#l41_logo").attr("src", "/static/images/l41/logo_160x160_grey.png");
+                $("#lab41-box").height("259px");
+            });
+            $("#redwood-tab").click(function() {
+                $("#dendrite-tab").removeClass("col_active");
+                $("#redwood-tab").addClass("col_active");
+                $("#hemlock-tab").removeClass("col_active");
+                $("#lab41-tab").removeClass("col_active");
+                $("#dendrite-tab").removeClass("price_col_blue");
+                $("#redwood-tab").addClass("price_col_red");
+                $("#hemlock-tab").removeClass("price_col_green");
+                $("#dendrite-tab").addClass("price_col_gray");
+                $("#redwood-tab").removeClass("price_col_gray");
+                $("#hemlock-tab").addClass("price_col_gray");
+                $("#l41_logo").attr("src", "/static/images/l41/logo_160x160_grey.png");
+                $("#lab41-box").height("259px");
+            });
+            $("#hemlock-tab").click(function() {
+                $("#dendrite-tab").removeClass("col_active");
+                $("#redwood-tab").removeClass("col_active");
+                $("#hemlock-tab").addClass("col_active");
+                $("#lab41-tab").removeClass("col_active");
+                $("#dendrite-tab").removeClass("price_col_blue");
+                $("#redwood-tab").removeClass("price_col_red");
+                $("#hemlock-tab").addClass("price_col_green");
+                $("#dendrite-tab").addClass("price_col_gray");
+                $("#redwood-tab").addClass("price_col_gray");
+                $("#hemlock-tab").removeClass("price_col_gray");
+                $("#l41_logo").attr("src", "/static/images/l41/logo_160x160_grey.png");
+                $("#lab41-box").height("259px");
+            });
+            $("#lab41-tab").click(function() {
+                $("#dendrite-tab").removeClass("col_active");
+                $("#redwood-tab").removeClass("col_active");
+                $("#hemlock-tab").removeClass("col_active");
+                $("#lab41-tab").addClass("col_active");
+                $("#dendrite-tab").removeClass("price_col_blue");
+                $("#redwood-tab").removeClass("price_col_red");
+                $("#hemlock-tab").removeClass("price_col_green");
+                $("#dendrite-tab").addClass("price_col_gray");
+                $("#redwood-tab").addClass("price_col_gray");
+                $("#hemlock-tab").addClass("price_col_gray");
+                $("#l41_logo").attr("src", "/static/images/l41/logo_160x160_color.png");
+                $("#lab41-box").height("277px");
+            });
             $("#button").click(function() {
                 $.ajax({
                     url: '/new',
