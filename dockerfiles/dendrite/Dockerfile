@@ -1,4 +1,4 @@
-FROM lab41/dendrite-snap 
+FROM lab41/dendrite
 MAINTAINER Charlie Lewis <charliel@lab41.org>
  
 EXPOSE 8000 8448 
