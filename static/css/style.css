@@ -2859,3 +2859,11 @@ input[type="password"]:focus{
     margin-left: 25px;
 }
 .controls .checkbox-large.checkbox-noText .custom-checkbox label.checked {background-position: right -100px;}
+
+    /* Footer */
+    
+    #footer p{ color: #bbb; font-size: 14px;}
+    #footer ul{ float: right; }
+    #footer li { float: left; }
+    #footer li a{ padding:0 10px; font-size: 14px; color: #bbb; }
+    #footer li a:hover{ color: #fff; }

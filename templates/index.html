@@ -84,10 +84,16 @@
 
 <body>
 
+<a href="https://github.com/Lab41/try41"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
+
 <div class="container container-wide">
 
 <!-- content -->
 <div class="content " role="main">
+
+<div><p><img src="/static/images/l41/try41_logo_300px.png" alt="try41" id="try41_logo"/></p>
+     <p style="font-size:15px; color:#444">Try41 is a <a href="https://www.lab41.org" style="outline: none;color: #191f47;font-weight: bold;">Lab41</a> demonstration site. Use the panel below to learn more about Lab41 or to try out three of our projects.</p>
+</div>
 
 <div class="col-sm-13">
 
@@ -102,7 +108,7 @@
                 <div class="price_col_head">
                     <span class="price"><sup>Lab41</sup></span>
                 </div>
-                <div style="margin-top:20px;"><img src="/static/images/l41/logo_160x160_grey.png" alt="" id="l41_logo"/></div>
+                <div style="margin-top:20px;"><img src="/static/images/l41/logo_160x160_grey.png" alt="lab41" id="l41_logo"/></div>
             </div>
             <!--/ pricing-item -->
         </li>
@@ -183,22 +189,13 @@
     </ul>
 </div>
 <!--/pricing box-->
-    <div class="tab-content boxed clearfix" style="top: -48px; z-index:200">
-        <div class="tab-pane fade in active" id="start">
-            <div class="inner clearfix">
-                <div class="tab-text">
-                    <div class="comment-entry">
-                        <p>Try41 is a demonstration site, which currently shows off three of our projects which can be selected above.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="tab-content boxed clearfix" style="top: -48px; z-index:200" id="tab-content">
         <div class="tab-pane fade" id="lab41">
             <div class="inner clearfix">
                 <div class="tab-text">
                     <div class="comment-entry">
                         <p>Lab41 is a unique initiative operating under the broader <a href="https://www.iqt.org/">In-Q-Tel</a> umbrella. This unclassified, collaborative environment is home to a rotating cast of data scientists, engineers, and innovative thinkers who are re-imagining ways to manage, understand, and visualize the expanding universe of data. Lab41 challenge teams are committed to working collaboratively to build proof-of-concepts, and to deliver findings within 3 to 12 months.</p>
-                        <p>Challenge teams operate within the time-frame and scope outlined by the Technical Advisory Board, which includes representatives from each of Lab41′s participant groups: government, industry, academia and IQT. Selected challenges will not be publicly announced until the conclusion of each project, and any deviations from the initial challenge design are subject to additional approval. Results will vary from challenge to challenge, but outputs may include anything from working demonstrations, to delivery of open source code and technical white papers. It is expected (and desired) that teams will adjust their approach based on ongoing feedback from stakeholders.</p>
+                        <p>Challenge teams operate within the time-frame and scope outlined by the Technical Advisory Board, which includes representatives from each of Lab41′s participant groups: government, industry, academia and IQT. Results will vary from challenge to challenge, but outputs may include anything from working demonstrations, to delivery of open source code and technical white papers.</p>
                         <p><a href="https://www.lab41.org">Learn more.</a></p>
                         <p><img src="/static/images/l41/lifecycle.png" alt="">
                     </div>
@@ -249,7 +246,7 @@ It turns out that much of the world, both physical and virtual, can be represent
                 <div class="price_col_foot sign_up pull-left well"><h2 style="margin-left: 10px; margin-right:10px;"><a href="#"> Challenge: Redwood</a>
                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<a id="button2" class="btn btn-red"><span>Try Now</span></a></h2>
                 </div>
-                <div class="tab-text"><p>Redwood is a Python framework intended to identify anomalous files through analyzing the file metadata of a collection of media. Each file analyzed is assigned a score that signals its reputation relative to other files in the system --the lower a reputation score, the more likely that a file is anomalous. The final reputation score of a given file is based on an aggegation of scores assigned to it by modules that we call "Filters".
+                <div class="tab-text"><p>Redwood is a Python framework intended to identify anomalous files through analyzing the file metadata of a collection of media. <a href="http://lab41.github.io/Redwood/">Learn more.</a> <br /><br /> Each file analyzed is assigned a score that signals its reputation relative to other files in the system --the lower a reputation score, the more likely that a file is anomalous. The final reputation score of a given file is based on an aggegation of scores assigned to it by modules that we call "Filters".
                 <br /><br />
 A Filter is a plugin whose functionality is only limited by the creativity of the developer. Redwood can support any number of Filters, so long as a Filter extends the RedwoodFilter class and produces a table assigning a reputation score to each unique file in the system. Much of the Redwood framework is aimed at making the process of adding new Filters to the system as frictionless as possible (see the Filter section below for more information).
                 <br /><br />
@@ -315,6 +312,30 @@ In addition to the Filters, Redwood also provides an effective data model for an
 <!--/ Tabs -->
 
 </div>
+
+
+<footer id="footer" role="contentinfo">
+
+            <div id="footer-container" class="resp-bounds" style="color:#fff">
+
+                <div class="cpad-40">
+
+                    <div class="column-25">
+
+<ul style="color:#fff">
+<li style="align:left">&#169; 2014 In-Q-Tel. All rights reserved.</li>
+<li> <a href="http://www.lab41.org/terms-of-use/">Terms of Use</a></li>
+<li><a href="http://www.lab41.org/privacy-policy/">Privacy Policy</a></li>
+</ul></p></div>                    </div>
+
+                    <div class="clear"></div>
+
+                </div>
+
+            </div>
+
+</footer>
+
 </div>
 <!--/ row -->
 
@@ -326,6 +347,7 @@ In addition to the Filters, Redwood also provides an effective data model for an
 
 </body>
         <script type="text/javascript">
+            $("#tab-content").hide();
             $("#dendrite-tab").click(function() {
                 $("#dendrite-tab").addClass("col_active");
                 $("#redwood-tab").removeClass("col_active");
@@ -339,6 +361,7 @@ In addition to the Filters, Redwood also provides an effective data model for an
                 $("#hemlock-tab").addClass("price_col_gray");
                 $("#l41_logo").attr("src", "/static/images/l41/logo_160x160_grey.png");
                 $("#lab41-box").height("259px");
+                $("#tab-content").show();
             });
             $("#redwood-tab").click(function() {
                 $("#dendrite-tab").removeClass("col_active");
@@ -353,6 +376,7 @@ In addition to the Filters, Redwood also provides an effective data model for an
                 $("#hemlock-tab").addClass("price_col_gray");
                 $("#l41_logo").attr("src", "/static/images/l41/logo_160x160_grey.png");
                 $("#lab41-box").height("259px");
+                $("#tab-content").show();
             });
             $("#hemlock-tab").click(function() {
                 $("#dendrite-tab").removeClass("col_active");
@@ -367,6 +391,7 @@ In addition to the Filters, Redwood also provides an effective data model for an
                 $("#hemlock-tab").removeClass("price_col_gray");
                 $("#l41_logo").attr("src", "/static/images/l41/logo_160x160_grey.png");
                 $("#lab41-box").height("259px");
+                $("#tab-content").show();
             });
             $("#lab41-tab").click(function() {
                 $("#dendrite-tab").removeClass("col_active");
@@ -381,6 +406,7 @@ In addition to the Filters, Redwood also provides an effective data model for an
                 $("#hemlock-tab").addClass("price_col_gray");
                 $("#l41_logo").attr("src", "/static/images/l41/logo_160x160_color.png");
                 $("#lab41-box").height("277px");
+                $("#tab-content").show();
             });
             $("#button").click(function() {
                 $.ajax({
