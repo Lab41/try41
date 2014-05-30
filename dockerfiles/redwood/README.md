@@ -4,6 +4,7 @@ Pull from Docker index:
 =======================
 ```
 sudo docker pull lab41/redwood
+
 sudo docker tag lab41/redwood redwood
 ```
 
@@ -11,7 +12,9 @@ Build from source:
 ==================
 ```
 git clone https://github.com/Lab41/try41.git
+
 cd try41/dockerfiles/redwood
+
 sudo docker build -t redwood .
 ```
 
