@@ -16,6 +16,7 @@ Before launching each project, you will want to pull down their images and tag t
 **To get [Dendrite](https://github.com/Lab41/Dendrite):**
 ```
 docker pull lab41/dendrite
+
 docker tag lab41/dendrite dendrite
 ```
 
@@ -23,14 +24,18 @@ Note: The build on index.docker.io has been behind the GitHub repo, so to get th
 
 ```
 git clone https://github.com/Lab41/try41.git
+
 cd try41/dockerfiles/dendrite
+
 docker build .
+
 docker tag [IMAGE_ID] dendrite
 ```
 
 **To get [Hemlock](https://github.com/Lab41/Hemlock):**
 ```
 docker pull lab41/hemlock
+
 docker tag lab41/hemlock hemlock
 ```
 
@@ -38,13 +43,17 @@ Note: The build on index.docker.io has been behind the GitHub repo, so to get th
 
 ```
 git clone https://github.com/Lab41/try41.git
+
 cd try41/dockerfiles/hemlock
+
 docker build .
+
 docker tag [IMAGE_ID] hemlock
 ```
 
 **To get [Redwood](https://github.com/Lab41/Redwood):**
 ```
 docker pull lab41/redwood
+
 docker tag lab41/redwood redwood
 ```
