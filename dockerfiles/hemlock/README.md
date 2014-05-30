@@ -4,6 +4,7 @@ Pull from Docker index:
 =======================
 ```
 sudo docker pull lab41/hemlock
+
 sudo docker tag lab41/hemlock hemlock
 ```
 
@@ -11,7 +12,9 @@ Build from source:
 ==================
 ```
 git clone https://github.com/Lab41/try41.git
+
 cd try41/dockerfiles/hemlock
+
 sudo docker build -t hemlock .
 ```
 
