@@ -8,7 +8,7 @@ RUN git clone https://github.com/graphlab-code/graphlab.git
 RUN cd graphlab; ./configure
 RUN cd graphlab/release/toolkits/graph_analytics; make -j1
 RUN mkdir -p /usr/share/tomcat7/graphlab/release/toolkits; \
-    cp /graphlab/release/toolkits/graph_analytics /usr/share/tomcat7/graphlab/release/toolkits/
+    cp -R /graphlab/release/toolkits/graph_analytics /usr/share/tomcat7/graphlab/release/toolkits/
 ENV HADOOP_CONF_DIR /etc/hadoop/conf
 RUN echo 'HADOOP_CONF_DIR=/etc/hadoop/conf' >> /etc/profile
 
