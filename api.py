@@ -84,6 +84,10 @@ def check_cookie():
 def index():
     return render_template("index.html")
 
+@app.route('/github-buttons')
+def github_buttons():
+    return render_template("github-btn.html")
+
 @app.route('/new', methods=["POST"])
 def new():
     exposed_ports = [EXPOSED_PORT1]
