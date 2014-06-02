@@ -20,4 +20,4 @@ ADD patch/client.py /usr/local/lib/python2.7/dist-packages/docker/client.py
 EXPOSE 5000
 
 WORKDIR /try41
-CMD sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try41/api.py; python api.py
+CMD sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try41/api.py; sed -i "s/localhost/$REDIS_HOST/g"; python api.py

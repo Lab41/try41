@@ -7,16 +7,14 @@ from flask import send_from_directory
 
 from docker import client
 
+import json
+import os
 import redis
+import sys
+import time
 import uuid
 
 app = Flask(__name__)
-app.debug = True
-app.config.update(
-    SECRET_KEY = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6',
-    SESSION_COOKIE_SECURE = True,
-    SESSION_COOKIE_HTTPONLY = False
-)
 
 # set defaults
 IMAGE_NAME1 = "dendrite"
@@ -43,7 +41,7 @@ EXPOSED_PORT5=8000
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
 c = client.Client(version="1.6", base_url='http://%s:4243' % DOCKER_HOST)
 
-def store_metadata(exposed_ports, container_id, container):
+def store_metadata(exposed_ports, container_id, container, image_name):
     for exposed_port in exposed_ports:
         container_port = c.port(container_id, exposed_port)
         #r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
@@ -55,7 +53,11 @@ def store_metadata(exposed_ports, container_id, container):
     hmap['container_id'] = container_id
     hmap['container'] = container
     hmap['url'] = url
-    #r.hmset(url, hmap)
+    hmap['timestamp'] = int(time.time())
+    hmap['expired'] = 0
+    hmap['image'] = image_name
+    check_cookie()
+    r.lpush(request.cookies.get('try41-uid'), json.dumps(hmap))
     return url
 
 def after_this_request(f):
@@ -78,6 +80,8 @@ def check_cookie():
         @after_this_request
         def save_cookie(response):
             response.set_cookie('try41-uid', uid)
+    
+    r.sadd('sessions', uid)
     g.uid = uid
 
 @app.route('/')
@@ -91,7 +95,7 @@ def new():
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
-    url = store_metadata(exposed_ports, container_id, container)
+    url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
     return jsonify(url=url)
 
 @app.route('/new2', methods=["POST"])
@@ -101,7 +105,7 @@ def new2():
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
-    url = store_metadata(exposed_ports, container_id, container)
+    url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
     return jsonify(url=url)
 
 @app.route('/new3', methods=["POST"])
@@ -111,7 +115,7 @@ def new3():
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
-    url = store_metadata(exposed_ports, container_id, container)
+    url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
     return jsonify(url=url)
 
 @app.route('/details/<url>')
@@ -135,5 +139,16 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 if __name__ == '__main__':
-    import sys, os
-    app.run(host="0.0.0.0")
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['SESSION_REFRESH_EACH_REQUEST'] = False
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SECRET_KEY'] = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6'
+
+    #app.session_interface = SecureCookieSessionInterface()
+    #app.config.update(
+    #    SECRET_KEY = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6',
+    #    SESSION_COOKIE_SECURE = True,
+    #    SESSION_COOKIE_HTTPONLY = True
+    #)
+
+    app.run(host="0.0.0.0", debug=True)
