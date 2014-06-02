@@ -197,33 +197,54 @@ def create_app(test_config=None):                   # For automated tests
 
     @app.route('/new', methods=["POST"])
     def new():
-        exposed_ports = [EXPOSED_PORT1]
-        container = c.create_container(IMAGE_NAME1)
-        container_id = container["Id"]
-        c.start(container, publish_all_ports=True)
-        b = c.inspect_container(container)
-        url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
-        return jsonify(url=url)
+        if current_user.is_authenticated():
+            exposed_ports = [EXPOSED_PORT1]
+            container = c.create_container(IMAGE_NAME1)
+            container_id = container["Id"]
+            c.start(container, publish_all_ports=True)
+            b = c.inspect_container(container)
+            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
+            return jsonify(url=url)
+        else:
+            return jsonify(url="login")
 
     @app.route('/new2', methods=["POST"])
     def new2():
-        exposed_ports = [EXPOSED_PORT3]
-        container = c.create_container(IMAGE_NAME2)
-        container_id = container["Id"]
-        c.start(container, publish_all_ports=True)
-        b = c.inspect_container(container)
-        url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
-        return jsonify(url=url)
+        if current_user.is_authenticated():
+            exposed_ports = [EXPOSED_PORT3]
+            container = c.create_container(IMAGE_NAME2)
+            container_id = container["Id"]
+            c.start(container, publish_all_ports=True)
+            b = c.inspect_container(container)
+            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
+            return jsonify(url=url)
+        else:
+            return jsonify(url="login")
 
     @app.route('/new3', methods=["POST"])
     def new3():
-        exposed_ports = [EXPOSED_PORT5]
-        container = c.create_container(IMAGE_NAME3)
-        container_id = container["Id"]
-        c.start(container, publish_all_ports=True)
-        b = c.inspect_container(container)
-        url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
-        return jsonify(url=url)
+        if current_user.is_authenticated():
+            exposed_ports = [EXPOSED_PORT5]
+            container = c.create_container(IMAGE_NAME3)
+            container_id = container["Id"]
+            c.start(container, publish_all_ports=True)
+            b = c.inspect_container(container)
+            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
+            return jsonify(url=url)
+        else:
+            return jsonify(url="login")
+
+    @app.route('/details/login')
+    def details_login():
+        return redirect("/user/sign-in")
+
+    @app.route('/details2/login')
+    def details2_login():
+        return redirect("/user/sign-in")
+
+    @app.route('/details3/login')
+    def details3_login():
+        return redirect("/user/sign-in")
 
     @app.route('/details/<url>')
     def details(url):
