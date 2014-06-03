@@ -7,7 +7,8 @@ RUN apt-get update
 
 RUN apt-get install -y git
 RUN apt-get install -y python-setuptools
-RUN apt-get install -y postgresql-client
+RUN apt-get install -y libpq-dev
+RUN apt-get install -y python-dev
 RUN easy_install pip
 ADD api.py /try41/api.py
 ADD requirements.txt /try41/requirements.txt
