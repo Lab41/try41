@@ -54,20 +54,18 @@ c = client.Client(version="1.6", base_url='http://%s:4243' % DOCKER_HOST)
 class ConfigClass(object):
     # Configure Flask
     SECRET_KEY = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6'
-    SQLALCHEMY_DATABASE_URI = 'postgresql:///username:password@server/users'
+    SQLALCHEMY_DATABASE_URI = '' # change for production
     CSRF_ENABLED = True
 
     # Configure session cookie
-    SESSION_COOKIE_SECURE = True
+    #SESSION_COOKIE_SECURE = True
     SESSION_REFRESH_EACH_REQUEST = False
     SESSION_COOKIE_HTTPONLY = True
 
     # Configure Flask-Mail
-    MAIL_SERVER   = 'smtp.gmail.com'
-    MAIL_PORT     = 465
-    MAIL_USE_SSL  = True # Some servers use MAIL_USE_TLS=True instead
-    MAIL_USERNAME = 'email@example.com'
-    MAIL_PASSWORD = 'password'
+    MAIL_SERVER   = 'smtp.example.com' # change for production
+    MAIL_PORT     = 25
+    MAIL_USE_SSL  = False
     MAIL_DEFAULT_SENDER = '"Sender" <noreply@example.com>'
 
     # Configure Flask-User
@@ -80,23 +78,15 @@ class ConfigClass(object):
     USER_LOGIN_TEMPLATE = 'flask_user/login_or_register.html'
     USER_REGISTER_TEMPLATE = 'flask_user/login_or_register.html'
 
-def create_app(test_config=None):                   # For automated tests
+def create_app():
     # Setup Flask and read config from ConfigClass defined above
     app = Flask(__name__)
     app.config.from_object(__name__+'.ConfigClass')
 
-    # Load local_settings.py if file exists         # For automated tests
-    try: app.config.from_object('local_settings')
-    except: pass
-
-    # Load optional test_config                     # For automated tests
-    if test_config:
-        app.config.update(test_config)
-
     # Initialize Flask extensions
-    babel = Babel(app)                              # Initialize Flask-Babel
-    db = SQLAlchemy(app)                            # Initialize Flask-SQLAlchemy
-    mail = Mail(app)                                # Initialize Flask-Mail
+    babel = Babel(app)
+    db = SQLAlchemy(app)
+    mail = Mail(app)
 
     @babel.localeselector
     def get_locale():
@@ -117,20 +107,12 @@ def create_app(test_config=None):                   # For automated tests
     db.create_all()
 
     # Setup Flask-User
-    db_adapter = SQLAlchemyAdapter(db,  User)       # Select database adapter
-    user_manager = UserManager(db_adapter, app)     # Init Flask-User and bind to app
-
-    # Display Login page or Profile page
-    @app.route('/')
-    def home_page():
-        if current_user.is_authenticated():
-            return redirect(url_for('profile_page'))
-        else:
-            return redirect(url_for('user.login'))
+    db_adapter = SQLAlchemyAdapter(db,  User)
+    user_manager = UserManager(db_adapter, app)
 
     # The '/profile' page requires a logged-in user
     @app.route('/profile')
-    @login_required                                 # Use of @login_required decorator
+    @login_required
     def profile_page():
         return render_template_string("""
             {% extends "base.html" %}
@@ -197,33 +179,54 @@ def create_app(test_config=None):                   # For automated tests
 
     @app.route('/new', methods=["POST"])
     def new():
-        exposed_ports = [EXPOSED_PORT1]
-        container = c.create_container(IMAGE_NAME1)
-        container_id = container["Id"]
-        c.start(container, publish_all_ports=True)
-        b = c.inspect_container(container)
-        url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
-        return jsonify(url=url)
+        if current_user.is_authenticated():
+            exposed_ports = [EXPOSED_PORT1]
+            container = c.create_container(IMAGE_NAME1)
+            container_id = container["Id"]
+            c.start(container, publish_all_ports=True)
+            b = c.inspect_container(container)
+            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
+            return jsonify(url=url)
+        else:
+            return jsonify(url="login")
 
     @app.route('/new2', methods=["POST"])
     def new2():
-        exposed_ports = [EXPOSED_PORT3]
-        container = c.create_container(IMAGE_NAME2)
-        container_id = container["Id"]
-        c.start(container, publish_all_ports=True)
-        b = c.inspect_container(container)
-        url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
-        return jsonify(url=url)
+        if current_user.is_authenticated():
+            exposed_ports = [EXPOSED_PORT3]
+            container = c.create_container(IMAGE_NAME2)
+            container_id = container["Id"]
+            c.start(container, publish_all_ports=True)
+            b = c.inspect_container(container)
+            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
+            return jsonify(url=url)
+        else:
+            return jsonify(url="login")
 
     @app.route('/new3', methods=["POST"])
     def new3():
-        exposed_ports = [EXPOSED_PORT5]
-        container = c.create_container(IMAGE_NAME3)
-        container_id = container["Id"]
-        c.start(container, publish_all_ports=True)
-        b = c.inspect_container(container)
-        url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
-        return jsonify(url=url)
+        if current_user.is_authenticated():
+            exposed_ports = [EXPOSED_PORT5]
+            container = c.create_container(IMAGE_NAME3)
+            container_id = container["Id"]
+            c.start(container, publish_all_ports=True)
+            b = c.inspect_container(container)
+            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
+            return jsonify(url=url)
+        else:
+            return jsonify(url="login")
+
+    @app.route('/details/login')
+    def details_login():
+        return redirect(url_for('user.login'))
+
+    @app.route('/details2/login')
+    def details2_login():
+        return redirect(url_for('user.login'))
+
+    @app.route('/details3/login')
+    def details3_login():
+        return redirect(url_for('user.login'))
 
     @app.route('/details/<url>')
     def details(url):
