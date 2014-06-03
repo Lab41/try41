@@ -11,6 +11,9 @@ RUN mkdir /forks; cd forks; git clone https://github.com/cglewis/Dendrite.git; c
 # add scripts and binaries
 #RUN mkdir /tmp/dendrite; cp /forks/Dendrite/bin/bigclam /tmp/dendrite/bigclam; cp /forks/Dendrite/bin/graphgen /tmp/dendrite/graphgen; cp /forks/Dendrite/bin/create_graph.sh /tmp/dendrite/create_graph.sh; cp /forks/Dendrite/bin/snap.sh /tmp/dendrite/snap.sh
 
+# add rsyslog
+RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
+RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
 
 # run supervisord daemon
-CMD /usr/bin/supervisord && tail -F /var/log/tomcat7/catalina.out
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started try41 container; /usr/bin/supervisord && tail -F /var/log/tomcat7/catalina.out

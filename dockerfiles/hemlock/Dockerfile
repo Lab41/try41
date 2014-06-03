@@ -99,6 +99,10 @@ RUN unzip /src/elasticsearch-transport-couchbase-1.1.0.zip -d /usr/share/elastic
 RUN cp /src/couchbase_template.json /usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
 RUN service elasticsearch stop
 
+# add rsyslog
+RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
+RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
+
 EXPOSE 8000 8080 9200
 
-CMD ["/bin/bash", "/src/startup.sh"]
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started try41 container; /bin/bash /src/startup.sh

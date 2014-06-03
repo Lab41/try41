@@ -41,6 +41,10 @@ RUN cd /Redwood; python setup.py install
 
 ADD . /src
 
+# add rsyslog
+RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
+RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
+
 EXPOSE 8000 8080
 
-CMD ["/bin/bash", "/src/startup.sh"]
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started redwood container; /bin/bash /src/startup.sh
