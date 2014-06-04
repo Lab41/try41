@@ -10,4 +10,4 @@ RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
 EXPOSE 8000 8448 
 
 # run supervisord daemon
-CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started try41 container; /usr/bin/supervisord && tail -F /var/log/tomcat7/catalina.out
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started dendrite container $PARENT_HOST; /usr/bin/supervisord && tail -F /var/log/tomcat7/catalina.out
