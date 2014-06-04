@@ -28,6 +28,7 @@ RSYSLOG_HOST = "rsyslog"
 PARENT_HOST = "parent"
 
 REDIS_PORT=6379
+DOCKER_PORT=4243
 
 # dendrite
 EXPOSED_PORT1=8000
@@ -41,7 +42,7 @@ EXPOSED_PORT4=8080
 EXPOSED_PORT5=8000
 
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
-c = client.Client(version="1.6", base_url='http://%s:4243' % DOCKER_HOST)
+c = client.Client(version="1.6", base_url='http://%s:%s' % (DOCKER_HOST, DOCKER_PORT))
 
 def store_metadata(exposed_ports, container_id, container, image_name):
     for exposed_port in exposed_ports:
