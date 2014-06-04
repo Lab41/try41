@@ -24,6 +24,7 @@ IMAGE_NAME3 = "hemlock"
 DOCKER_HOST = "172.17.42.1"
 DOMAIN = "127.0.0.1"
 REDIS_HOST = "localhost"
+RSYSLOG_HOST = "rsyslog"
 
 REDIS_PORT=6379
 
@@ -95,7 +96,7 @@ def github_buttons():
 @app.route('/new', methods=["POST"])
 def new():
     exposed_ports = [EXPOSED_PORT1]
-    container = c.create_container(IMAGE_NAME1)
+    container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST})
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
@@ -105,7 +106,7 @@ def new():
 @app.route('/new2', methods=["POST"])
 def new2():
     exposed_ports = [EXPOSED_PORT3]
-    container = c.create_container(IMAGE_NAME2)
+    container = c.create_container(IMAGE_NAME2, environment={'REMOTE_HOST': RSYSLOG_HOST})
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
@@ -115,7 +116,7 @@ def new2():
 @app.route('/new3', methods=["POST"])
 def new3():
     exposed_ports = [EXPOSED_PORT5]
-    container = c.create_container(IMAGE_NAME3)
+    container = c.create_container(IMAGE_NAME3, environment={'REMOTE_HOST': RSYSLOG_HOST})
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
@@ -148,11 +149,4 @@ if __name__ == '__main__':
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SECRET_KEY'] = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6'
 
-    #app.session_interface = SecureCookieSessionInterface()
-    #app.config.update(
-    #    SECRET_KEY = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6',
-    #    SESSION_COOKIE_SECURE = True,
-    #    SESSION_COOKIE_HTTPONLY = True
-    #)
-
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0")
