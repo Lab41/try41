@@ -19,6 +19,7 @@ RUN pip install -r /try41/requirements.txt
 ADD patch/auth.py /usr/local/lib/python2.7/dist-packages/docker/auth/auth.py
 ADD patch/client.py /usr/local/lib/python2.7/dist-packages/docker/client.py
 ADD patch/base.html /usr/local/lib/python2.7/dist-packages/flask_user/templates/base.html
+ADD patch/emails /usr/local/lib/python2.7/dist-packages/flask_user/emails
 
 # add rsyslog
 RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
