@@ -25,4 +25,5 @@ RUN apt-get update --fix-missing; \
                           default-jdk \
                           cmake \
                           zlib1g-dev \
+                          rsyslog \
                           make
