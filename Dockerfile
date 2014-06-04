@@ -35,7 +35,8 @@ CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
     sed -i "s/localhost/$REDIS_HOST/g" /try41/api.py; \
     sed -i "s/parent/$PARENT_HOST/g" /try41/api.py; \
     sed -i "s/secret/$SECRET_KEY/g" /try41/api.py; \
-    sed -i "s/postgresql/$POSTGRESQL_URI/g" /try41/api.py; \
+    sed -i "s|postgresql|$POSTGRESQL_URI|g" /try41/api.py; \
     sed -i "s/smtp/$MAIL_HOST/g" /try41/api.py; \
     sed -i "s/sender/$SENDER/g" /try41/api.py; \
+    sed -i "s/USERS=False/$USERS/g" /try41/api.py; \
     python api.py

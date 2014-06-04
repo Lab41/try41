@@ -39,6 +39,9 @@ PARENT_HOST = "parent"
 REDIS_PORT=6379
 DOCKER_PORT=4243
 
+# use user accounts
+USERS=False
+
 # dendrite
 EXPOSED_PORT1=8000
 EXPOSED_PORT2=8448
@@ -57,29 +60,33 @@ c = client.Client(version="1.6", base_url='http://%s:%s' % (DOCKER_HOST, DOCKER_
 class ConfigClass(object):
     # Configure Flask
     SECRET_KEY = 'secret' # change for production
-    SQLALCHEMY_DATABASE_URI = 'postgresql' # change for production
     CSRF_ENABLED = True
+    if USERS:
+        SQLALCHEMY_DATABASE_URI = 'postgresql' # change for production
 
     # Configure session cookie
-    #SESSION_COOKIE_SECURE = True
+    if not USERS:
+        SESSION_COOKIE_SECURE = True
     SESSION_REFRESH_EACH_REQUEST = False
     SESSION_COOKIE_HTTPONLY = True
 
     # Configure Flask-Mail
-    MAIL_SERVER   = 'smtp' # change for production
-    MAIL_PORT     = 25
-    MAIL_USE_SSL  = False
-    MAIL_DEFAULT_SENDER = 'sender' # change for production
+    if USERS:
+        MAIL_SERVER   = 'smtp' # change for production
+        MAIL_PORT     = 25
+        MAIL_USE_SSL  = False
+        MAIL_DEFAULT_SENDER = 'sender' # change for production
 
     # Configure Flask-User
-    USER_ENABLE_USERNAME         = True
-    USER_ENABLE_CONFIRM_EMAIL    = True
-    USER_ENABLE_CHANGE_USERNAME  = True
-    USER_ENABLE_CHANGE_PASSWORD  = True
-    USER_ENABLE_FORGOT_PASSWORD  = True
-    USER_ENABLE_RETYPE_PASSWORD  = True
-    USER_LOGIN_TEMPLATE = 'flask_user/login_or_register.html'
-    USER_REGISTER_TEMPLATE = 'flask_user/login_or_register.html'
+    if USERS:
+        USER_ENABLE_USERNAME         = True
+        USER_ENABLE_CONFIRM_EMAIL    = True
+        USER_ENABLE_CHANGE_USERNAME  = True
+        USER_ENABLE_CHANGE_PASSWORD  = True
+        USER_ENABLE_FORGOT_PASSWORD  = True
+        USER_ENABLE_RETYPE_PASSWORD  = True
+        USER_LOGIN_TEMPLATE = 'flask_user/login_or_register.html'
+        USER_REGISTER_TEMPLATE = 'flask_user/login_or_register.html'
 
 def create_app():
     # Setup Flask and read config from ConfigClass defined above
@@ -87,50 +94,51 @@ def create_app():
     app.config.from_object(__name__+'.ConfigClass')
 
     # Initialize Flask extensions
-    babel = Babel(app)
-    db = SQLAlchemy(app)
-    mail = Mail(app)
+    if USERS:
+        babel = Babel(app)
+        db = SQLAlchemy(app)
+        mail = Mail(app)
 
-    @babel.localeselector
-    def get_locale():
-        translations = [str(translation) for translation in babel.list_translations()]
-        return request.accept_languages.best_match(translations)
+        @babel.localeselector
+        def get_locale():
+            translations = [str(translation) for translation in babel.list_translations()]
+            return request.accept_languages.best_match(translations)
 
-    # Define User model. Make sure to add flask.ext.user UserMixin!!
-    class User(db.Model, UserMixin):
-        id = db.Column(db.Integer, primary_key=True)
-        active = db.Column(db.Boolean(), nullable=False, default=False)
-        username = db.Column(db.String(50), nullable=False, unique=True)
-        password = db.Column(db.String(255), nullable=False, default='')
-        email = db.Column(db.String(255), nullable=False, unique=True)
-        confirmed_at = db.Column(db.DateTime())
-        reset_password_token = db.Column(db.String(100), nullable=False, default='')
+        # Define User model. Make sure to add flask.ext.user UserMixin!!
+        class User(db.Model, UserMixin):
+            id = db.Column(db.Integer, primary_key=True)
+            active = db.Column(db.Boolean(), nullable=False, default=False)
+            username = db.Column(db.String(50), nullable=False, unique=True)
+            password = db.Column(db.String(255), nullable=False, default='')
+            email = db.Column(db.String(255), nullable=False, unique=True)
+            confirmed_at = db.Column(db.DateTime())
+            reset_password_token = db.Column(db.String(100), nullable=False, default='')
 
-    # Create all database tables
-    db.create_all()
+        # Create all database tables
+        db.create_all()
 
-    # Setup Flask-User
-    db_adapter = SQLAlchemyAdapter(db,  User)
-    user_manager = UserManager(db_adapter, app)
+        # Setup Flask-User
+        db_adapter = SQLAlchemyAdapter(db,  User)
+        user_manager = UserManager(db_adapter, app)
 
-    # The '/profile' page requires a logged-in user
-    @app.route('/profile')
-    @login_required
-    def profile_page():
-        return render_template_string("""
-            {% extends "base.html" %}
-            {% block content %}
-                <h2>{%trans%}Profile Page{%endtrans%}</h2>
-                <p> {%trans%}Hello{%endtrans%}
-                    {{ current_user.username or current_user.email }},</p>
-                <p> <a href="{{ url_for('user.change_username') }}">
-                    {%trans%}Change username{%endtrans%}</a></p>
-                <p> <a href="{{ url_for('user.change_password') }}">
-                    {%trans%}Change password{%endtrans%}</a></p>
-                <p> <a href="{{ url_for('user.logout') }}?next={{ url_for('user.login') }}">
-                    {%trans%}Sign out{%endtrans%}</a></p>
-            {% endblock %}
-            """)
+        # The '/profile' page requires a logged-in user
+        @app.route('/profile')
+        @login_required
+        def profile_page():
+            return render_template_string("""
+                {% extends "base.html" %}
+                {% block content %}
+                    <h2>{%trans%}Profile Page{%endtrans%}</h2>
+                    <p> {%trans%}Hello{%endtrans%}
+                        {{ current_user.username or current_user.email }},</p>
+                    <p> <a href="{{ url_for('user.change_username') }}">
+                        {%trans%}Change username{%endtrans%}</a></p>
+                    <p> <a href="{{ url_for('user.change_password') }}">
+                        {%trans%}Change password{%endtrans%}</a></p>
+                    <p> <a href="{{ url_for('user.logout') }}?next={{ url_for('user.login') }}">
+                        {%trans%}Sign out{%endtrans%}</a></p>
+                {% endblock %}
+                """)
 
     def store_metadata(exposed_ports, container_id, container, image_name):
         for exposed_port in exposed_ports:
@@ -182,7 +190,7 @@ def create_app():
 
     @app.route('/new', methods=["POST"])
     def new():
-        if current_user.is_authenticated():
+        if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT1]
             container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
             container_id = container["Id"]
@@ -195,7 +203,7 @@ def create_app():
 
     @app.route('/new2', methods=["POST"])
     def new2():
-        if current_user.is_authenticated():
+        if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT3]
             container = c.create_container(IMAGE_NAME2, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
             container_id = container["Id"]
@@ -208,7 +216,7 @@ def create_app():
 
     @app.route('/new3', methods=["POST"])
     def new3():
-        if current_user.is_authenticated():
+        if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT5]
             container = c.create_container(IMAGE_NAME3, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
             container_id = container["Id"]
@@ -255,4 +263,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)
