@@ -33,6 +33,7 @@ IMAGE_NAME3 = "hemlock"
 DOCKER_HOST = "172.17.42.1"
 DOMAIN = "127.0.0.1"
 REDIS_HOST = "localhost"
+RSYSLOG_HOST = "rsyslog"
 
 REDIS_PORT=6379
 
@@ -181,7 +182,7 @@ def create_app():
     def new():
         if current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT1]
-            container = c.create_container(IMAGE_NAME1)
+            container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST})
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
@@ -194,7 +195,7 @@ def create_app():
     def new2():
         if current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT3]
-            container = c.create_container(IMAGE_NAME2)
+            container = c.create_container(IMAGE_NAME2, environment={'REMOTE_HOST': RSYSLOG_HOST})
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
@@ -207,7 +208,7 @@ def create_app():
     def new3():
         if current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT5]
-            container = c.create_container(IMAGE_NAME3)
+            container = c.create_container(IMAGE_NAME3, environment={'REMOTE_HOST': RSYSLOG_HOST})
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
@@ -252,4 +253,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0")
