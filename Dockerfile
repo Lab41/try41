@@ -28,4 +28,4 @@ RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
 EXPOSE 5000
 
 WORKDIR /try41
-CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started try41 container $PARENT_HOST; sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try41/api.py; sed -i "s/localhost/$REDIS_HOST/g"; python api.py
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started try41 container $PARENT_HOST; sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try41/api.py; sed -i "s/localhost/$REDIS_HOST/g"; sed -i "s/parent/$PARENT_HOST/g"; python api.py
