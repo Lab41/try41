@@ -47,9 +47,6 @@ c = client.Client(version="1.6", base_url='http://%s:%s' % (DOCKER_HOST, DOCKER_
 def store_metadata(exposed_ports, container_id, container, image_name):
     for exposed_port in exposed_ports:
         container_port = c.port(container_id, exposed_port)
-        #r.rpush("frontend:%s.%s" % (container_id, DOMAIN), container_id)
-        #r.rpush("frontend:%s.%s" % (container_id, DOMAIN), "http://%s:%s" %(DOMAIN, container_port))
-        # !! TODO more than one url when there is more than one exposed_port
         url = "%s:%s" % (DOMAIN, container_port)
 
     hmap = {}
@@ -149,6 +146,6 @@ if __name__ == '__main__':
     app.config['SESSION_COOKIE_SECURE'] = True
     app.config['SESSION_REFRESH_EACH_REQUEST'] = False
     app.config['SESSION_COOKIE_HTTPONLY'] = True
-    app.config['SECRET_KEY'] = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6'
+    app.config['SECRET_KEY'] = 'secret'
 
     app.run(host="0.0.0.0")
