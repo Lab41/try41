@@ -25,6 +25,7 @@ DOCKER_HOST = "172.17.42.1"
 DOMAIN = "127.0.0.1"
 REDIS_HOST = "localhost"
 RSYSLOG_HOST = "rsyslog"
+PARENT_HOST = "parent"
 
 REDIS_PORT=6379
 
@@ -96,7 +97,7 @@ def github_buttons():
 @app.route('/new', methods=["POST"])
 def new():
     exposed_ports = [EXPOSED_PORT1]
-    container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST})
+    container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
@@ -106,7 +107,7 @@ def new():
 @app.route('/new2', methods=["POST"])
 def new2():
     exposed_ports = [EXPOSED_PORT3]
-    container = c.create_container(IMAGE_NAME2, environment={'REMOTE_HOST': RSYSLOG_HOST})
+    container = c.create_container(IMAGE_NAME2, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
@@ -116,7 +117,7 @@ def new2():
 @app.route('/new3', methods=["POST"])
 def new3():
     exposed_ports = [EXPOSED_PORT5]
-    container = c.create_container(IMAGE_NAME3, environment={'REMOTE_HOST': RSYSLOG_HOST})
+    container = c.create_container(IMAGE_NAME3, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
     container_id = container["Id"]
     c.start(container, publish_all_ports=True)
     b = c.inspect_container(container)
