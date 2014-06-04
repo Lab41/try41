@@ -56,8 +56,8 @@ c = client.Client(version="1.6", base_url='http://%s:%s' % (DOCKER_HOST, DOCKER_
 # Use a Class-based config to avoid needing a 2nd file
 class ConfigClass(object):
     # Configure Flask
-    SECRET_KEY = 'frifjawyeyshuwaHadrofluHujNar)gruRapEutthyThifjevyuphlevcumEurv6'
-    SQLALCHEMY_DATABASE_URI = '' # change for production
+    SECRET_KEY = 'secret' # change for production
+    SQLALCHEMY_DATABASE_URI = 'postgresql' # change for production
     CSRF_ENABLED = True
 
     # Configure session cookie
@@ -66,10 +66,10 @@ class ConfigClass(object):
     SESSION_COOKIE_HTTPONLY = True
 
     # Configure Flask-Mail
-    MAIL_SERVER   = 'smtp.example.com' # change for production
+    MAIL_SERVER   = 'smtp' # change for production
     MAIL_PORT     = 25
     MAIL_USE_SSL  = False
-    MAIL_DEFAULT_SENDER = '"Sender" <noreply@example.com>'
+    MAIL_DEFAULT_SENDER = 'sender' # change for production
 
     # Configure Flask-User
     USER_ENABLE_USERNAME         = True
