@@ -8,10 +8,10 @@
   <p>
     <script>
       var host = location.hostname;
-      var port = parseInt(location.port)+1;
-      document.write("Redwood sample synthetic dataset: <a href=\"http://"+host+":"+port+"/data\" target=\"_blank\">Data</a><br />");
-      document.write("Redwood reports: <a href=\"http://"+host+":"+port+"/reports\" target=\"_blank\">Reports</a><br />");
-      document.write("Redwood filter results: <a href=\"http://"+host+":"+port+"/\" target=\"_blank\">Results</a>");
+      var port = parseInt(location.port);
+      document.write("Redwood sample synthetic dataset: <a href=\"http://"+host+":"+port+"/output/data\" target=\"_blank\">Data</a><br />");
+      document.write("Redwood reports: <a href=\"http://"+host+":"+port+"/output/reports\" target=\"_blank\">Reports</a><br />");
+      document.write("Redwood filter results: <a href=\"http://"+host+":"+port+"/output\" target=\"_blank\">Results</a>");
     </script>
   </p>
   <p>Redwood quick start:</p>

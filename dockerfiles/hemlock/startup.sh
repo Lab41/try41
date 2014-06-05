@@ -156,5 +156,3 @@ untilsuccessful curl -XPUT http://localhost:9200/hemlock -d @/src/couchbase_temp
 # start couchbase
 couchbase-start
 
-# serve up directory for images, TODO
-cd /; python -m SimpleHTTPServer 8080

@@ -2,6 +2,7 @@
 
 process.title = 'tty.js';
 
+var express = require('express');
 var tty = require('../');
 
 var app = tty.createServer({
@@ -10,5 +11,8 @@ var app = tty.createServer({
   port: 8000,
   cwd: "/Redwood/reports/output"
 });
+
+app.use("/output", express.directory("/Redwood/reports/output"));
+app.use("/output", express.static("/Redwood/reports/output"));
 
 app.listen();

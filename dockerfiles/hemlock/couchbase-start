@@ -13,7 +13,7 @@ IP=`hostname --ip-address`
 SEED=$1
 
 # Start Couchbase in background
-su - couchbase -c "/opt/couchbase/bin/couchbase-server -- -noinput" &
+su - couchbase -c "/opt/couchbase/bin/couchbase-server -- -noinput"
 PID=$!
 
 # Init Couchbase

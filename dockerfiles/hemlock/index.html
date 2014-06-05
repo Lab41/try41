@@ -41,9 +41,9 @@
   <p>
     <script>
       var host = location.hostname;
-      var port = parseInt(location.port)+1;
-      document.write("Hemlock sample synthetic dataset: <a href=\"http://"+host+":"+port+"/Hemlock/data\" target=\"_blank\">Data</a><br />");
-      document.write("Hemlock connected to Kibana for interactive visual data exploration: <a href=\"http://"+host+":"+port+"/kibana/src\" target=\"_blank\">Kibana</a>");
+      var port = parseInt(location.port);
+      document.write("Hemlock sample synthetic dataset: <a href=\"http://"+host+":"+port+"/data\" target=\"_blank\">Data</a><br />");
+      document.write("Hemlock connected to Kibana for interactive visual data exploration: <a href=\"http://"+host+":"+port+"/kibana/index.html\" target=\"_blank\">Kibana</a>");
     </script>
   </p>
 </div>

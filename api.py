@@ -48,10 +48,10 @@ EXPOSED_PORT2=8448
 
 # redwood
 EXPOSED_PORT3=8000
-EXPOSED_PORT4=8080
 
 # hemlock
-EXPOSED_PORT5=8000
+EXPOSED_PORT4=8000
+EXPOSED_PORT5=9200
 
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
 c = client.Client(version="1.6", base_url='http://%s:%s' % (DOCKER_HOST, DOCKER_PORT))
@@ -191,7 +191,7 @@ def create_app():
     @app.route('/new', methods=["POST"])
     def new():
         if not USERS or current_user.is_authenticated():
-            exposed_ports = [EXPOSED_PORT1]
+            exposed_ports = [EXPOSED_PORT2, EXPOSED_PORT1]
             container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
@@ -205,7 +205,7 @@ def create_app():
     def new2():
         if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT3]
-            container = c.create_container(IMAGE_NAME2, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
+            container = c.create_container(IMAGE_NAME2, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
@@ -217,8 +217,8 @@ def create_app():
     @app.route('/new3', methods=["POST"])
     def new3():
         if not USERS or current_user.is_authenticated():
-            exposed_ports = [EXPOSED_PORT5]
-            container = c.create_container(IMAGE_NAME3, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
+            exposed_ports = [EXPOSED_PORT5, EXPOSED_PORT4]
+            container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
