@@ -7,6 +7,8 @@ RUN apt-get update
 
 RUN apt-get install -y git
 RUN apt-get install -y python-setuptools
+RUN apt-get install -y libpq-dev
+RUN apt-get install -y python-dev
 RUN easy_install pip
 ADD api.py /try41/api.py
 ADD requirements.txt /try41/requirements.txt
@@ -16,6 +18,8 @@ ADD templates /try41/templates
 RUN pip install -r /try41/requirements.txt
 ADD patch/auth.py /usr/local/lib/python2.7/dist-packages/docker/auth/auth.py
 ADD patch/client.py /usr/local/lib/python2.7/dist-packages/docker/client.py
+ADD patch/base.html /usr/local/lib/python2.7/dist-packages/flask_user/templates/base.html
+ADD patch/emails /usr/local/lib/python2.7/dist-packages/flask_user/emails
 
 # add rsyslog
 RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
@@ -30,6 +34,12 @@ CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
     sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try41/api.py; \
     sed -i "s/localhost/$REDIS_HOST/g" /try41/api.py; \
     sed -i "s/rsyslog/$REMOTE_HOST/g" /try41/api.py; \
+    sed -i "s/parent/$PARENT_HOST/g" /try41/api.py; \
+    sed -i "s/secret/$SECRET_KEY/g" /try41/api.py; \
+    sed -i "s|postgresql|$POSTGRESQL_URI|g" /try41/api.py; \
+    sed -i "s/smtp/$MAIL_HOST/g" /try41/api.py; \
+    sed -i "s/sender/$SENDER/g" /try41/api.py; \
+    sed -i "s/USERS=False/$USERS/g" /try41/api.py; \
     sed -i "s/parent/$PARENT_HOST/g" /try41/api.py; \
     sed -i "s/secret/$SECRET_KEY/g" /try41/api.py; \
     python api.py
