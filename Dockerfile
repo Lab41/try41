@@ -33,10 +33,13 @@ CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
     logger started try41 container $PARENT_HOST; \
     sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try41/api.py; \
     sed -i "s/localhost/$REDIS_HOST/g" /try41/api.py; \
+    sed -i "s/rsyslog/$REMOTE_HOST/g" /try41/api.py; \
     sed -i "s/parent/$PARENT_HOST/g" /try41/api.py; \
     sed -i "s/secret/$SECRET_KEY/g" /try41/api.py; \
     sed -i "s|postgresql|$POSTGRESQL_URI|g" /try41/api.py; \
     sed -i "s/smtp/$MAIL_HOST/g" /try41/api.py; \
     sed -i "s/sender/$SENDER/g" /try41/api.py; \
     sed -i "s/USERS=False/$USERS/g" /try41/api.py; \
+    sed -i "s/parent/$PARENT_HOST/g" /try41/api.py; \
+    sed -i "s/secret/$SECRET_KEY/g" /try41/api.py; \
     python api.py
