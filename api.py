@@ -175,7 +175,7 @@ def create_app():
             uid = str(uuid.uuid4())
             @after_this_request
             def save_cookie(response):
-                response.set_cookie('try41-uid', uid)
+                response.set_cookie('try41-uid', uid, httponly=True)
 
         r.sadd('sessions', uid)
         g.uid = uid
