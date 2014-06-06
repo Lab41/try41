@@ -124,7 +124,7 @@ def create_app():
         # The '/profile' page requires a logged-in user
         @app.route('/profile')
         @login_required
-        def profile_page():
+        def profile():
             return render_template_string("""
                 {% extends "base.html" %}
                 {% block content %}
@@ -241,15 +241,15 @@ def create_app():
 
     @app.route('/details/<url>')
     def details(url):
-        return render_template("details.html",url=url)
+        return render_template("details.html",url=url, USERS=USERS)
 
     @app.route('/details2/<url>')
     def details2(url):
-        return render_template("details2.html",url=url)
+        return render_template("details2.html",url=url, USERS=USERS)
 
     @app.route('/details3/<url>')
     def details3(url):
-        return render_template("details3.html",url=url)
+        return render_template("details3.html",url=url, USERS=USERS)
 
     @app.route('/robot.txt')
     def robot():

@@ -37,7 +37,16 @@
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="https://lab41.github.io/Hemlock/">Hemlock</a></li>
                     <li><a href="https://docker.io">Docker</a></li>
+                    {% if USERS and current_user.is_authenticated() %}
+                      <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                      <li><a href="{{ url_for('user.logout') }}">Logout</a></li>
+                    {% elif USERS %}
+                      <li><a href="{{ url_for('user.login') }}">Login</a></li>
+                    {% endif %}
                 </ul>
+                {% if USERS and current_user.is_authenticated() %}
+                    <h4 class="muted">Logged in as {{ current_user.username }}</h4>
+                {% endif %}
                 <h3 class="muted">Try Hemlock</h3>
             </div>
 
