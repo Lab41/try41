@@ -10,10 +10,40 @@ docker run -d -p 6379:6379 lab41/redis
 ```
 
 ```
-docker run -e SUBDOMAIN=`hostname -f` -e REDIS_HOST=`hostname -f` -d -P lab41/try41
+SECRET_KEY="this is my secret key"
+
+docker run -e SUBDOMAIN=`hostname -f` \
+           -e REDIS_HOST=`hostname -f` \
+           -e SECRET_KEY=$SECRET_KEY \
+           -e USERS=USERS=False \
+           -d -P lab41/try41
 ```
 
 This will give you a webapp through an exposed port chosen by Docker that will describe each project and provide you the ability to launch each project as a new Docker container.
+
+The try41 webapp can also be launched to use user accounts.  In that case, you'll first need to also spin up an additional container for PostgreSQL:
+
+```
+docker run -d -p 5432:5432 lab41/postgresql
+```
+
+You will also need an SMTP server to send mail from for registration.
+
+Then modify the runtime environment variables to enable users:
+
+```
+SECRET_KEY="this is my secret key"
+HOSTNAME=hostname -f
+
+docker run -e SUBDOMAIN=`hostname -f` \
+           -e REDIS_HOST=`hostname -f` \
+           -e SECRET_KEY=$SECRET_KEY \
+           -e USERS=USERS=True \
+           -e POSTGRESQL_URI=postgresql://docker:docker@$HOSTNAME/users \
+           -e MAIL_HOST=smtp.example.com \
+           -e SENDER='"Try41" <noreply@example.com>' \
+           -d -P lab41/try41
+```
 
 Before launching each project, you will want to pull down their images and tag them with Docker.
 
