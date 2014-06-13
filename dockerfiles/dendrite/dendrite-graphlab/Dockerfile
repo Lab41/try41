@@ -2,8 +2,8 @@ FROM lab41/dendrite-elasticsearch
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
 # graphlab
-RUN echo '127.0.0.1' >> /usr/share/tomcat7/graphlab_machine.txt;
-    mv /usr/share/tomcat7/graphlab_machine.txt /graphlab_machine.txt
+RUN echo '127.0.0.1' >> /usr/share/tomcat7/graphlab_machine.txt; \
+    cp /usr/share/tomcat7/graphlab_machine.txt /graphlab_machine.txt
 RUN git clone https://github.com/graphlab-code/graphlab.git
 RUN cd graphlab; ./configure
 RUN cd graphlab/release/toolkits/graph_analytics; make -j1
