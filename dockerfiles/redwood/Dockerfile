@@ -4,6 +4,7 @@ MAINTAINER Charlie Lewis <charliel@lab41.org>
 ENV REFRESHED_AT 2014-04-14
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i /etc/apt/sources.list
+RUN apt-get update
 RUN apt-get install -y software-properties-common python-software-properties
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
 RUN apt-get update
