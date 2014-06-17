@@ -10,8 +10,9 @@ RUN sed 's/\$PrivDropToUser syslog/#\$PrivDropToUser syslog/' -i /etc/rsyslog.co
 RUN sed 's/\$PrivDropToGroup syslog/#\$PrivDropToGroup syslog/' -i /etc/rsyslog.conf
 
 ADD rsyslog.conf /etc/supervisor/conf.d/rsyslog.conf
+RUN rm /etc/supervisor/conf.d/tomcat.conf
 
 EXPOSE 8000 8448 
 
 # run supervisord daemon
-CMD pwd; printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; logger started dendrite container $PARENT_HOST; /usr/bin/supervisord && tail -F /var/log/tomcat7/catalina.out
+CMD pwd; printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /usr/bin/supervisord; logger started dendrite container $PARENT_HOST; service tomcat7 start; tail -F /var/log/tomcat7/catalina.out
