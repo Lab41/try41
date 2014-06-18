@@ -26,9 +26,9 @@ import time
 import uuid
 
 # set defaults
-IMAGE_NAME1 = "dendrite"
-IMAGE_NAME2 = "redwood"
-IMAGE_NAME3 = "hemlock"
+IMAGE_NAME1 = "lab41/dendrite"
+IMAGE_NAME2 = "lab41/redwood"
+IMAGE_NAME3 = "lab41/hemlock"
 
 DOCKER_HOST = "172.17.42.1"
 DOMAIN = "127.0.0.1"
