@@ -27,11 +27,21 @@ RUN cp -R /usr/local/lib/python2.7/dist-packages/flask_user/emails /try41/templa
 RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
 RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
 
+# use non root user
+RUN groupadd docker
+RUN useradd -g docker docker 
+RUN touch /etc/rsyslog.d/50-default.conf
+RUN chown docker:docker /etc/rsyslog.d/50-default.conf
+RUN echo "docker ALL=NOPASSWD: /etc/init.d/rsyslog start" >> /etc/sudoers
+RUN chown -R docker:docker /try41
+ 
+USER docker
+
 EXPOSE 5000
 
 WORKDIR /try41
 CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
-    /etc/init.d/rsyslog start; \
+    sudo /etc/init.d/rsyslog start; \
     logger started try41 container $PARENT_HOST; \
     sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try41/api.py; \
     sed -i "s/localhost/$REDIS_HOST/g" /try41/api.py; \
