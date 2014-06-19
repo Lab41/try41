@@ -33,4 +33,4 @@ chown -R docker /Redwood
 ln -s /Redwood/reports/output /node_modules/tty.js/static/output
 
 # start the tty webapp
-su -c '/node_modules/tty.js/bin/tty.js --port 8000' - root
+su -c '/node_modules/tty.js/bin/tty.js --port 8000' - docker
