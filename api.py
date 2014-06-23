@@ -37,7 +37,7 @@ RSYSLOG_HOST = "rsyslog"
 PARENT_HOST = "parent"
 
 REDIS_PORT=6379
-DOCKER_PORT=4243
+DOCKER_PORT=2375
 
 # use user accounts
 USERS=False
