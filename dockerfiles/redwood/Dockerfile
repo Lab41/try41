@@ -1,7 +1,7 @@
 from ubuntu:trusty
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-04-14
+ENV REFRESHED_AT 2014-06-23
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i /etc/apt/sources.list
 RUN apt-get update
@@ -23,18 +23,18 @@ RUN apt-get install -y git
 RUN npm config set registry http://registry.npmjs.org/
 RUN npm install tty.js
 
-# sets root password to root, but isn't accessible from the outside
+# sets root password to password, but isn't accessible from the outside
 RUN echo 'mysql-server-5.5 mysql-server/root_password password password' | debconf-set-selections
 RUN echo 'mysql-server-5.5 mysql-server/root_password_again password password' | debconf-set-selections
 
 RUN apt-get update && apt-get install -y mysql-server && apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
 ENV REDWOOD_PULLED_AT 2014-04-14
 RUN git clone https://github.com/Lab41/Redwood.git
 ADD visual.py /Redwood/redwood/helpers/visual.py
 ADD redwood /Redwood/bin/redwood
 RUN rm -rf /Redwood/Filters/file_types.py
+RUN mkdir /Redwood/mysql
 RUN mkdir /Redwood/reports/output
 RUN mkdir /Redwood/reports/output/reports
 RUN mv /Redwood/reports/resources /Redwood/reports/output/reports/resources
@@ -46,6 +46,16 @@ ADD . /src
 RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
 RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
 
+# use non root user
+RUN touch /etc/rsyslog.d/50-default.conf
+RUN chown mysql:mysql /etc/rsyslog.d/50-default.conf
+RUN echo "mysql ALL=NOPASSWD: /etc/init.d/rsyslog start" >> /etc/sudoers
+RUN chown -R mysql:mysql /Redwood
+RUN chown -R mysql:mysql /src
+RUN chown -R mysql:mysql /node_modules/tty.js
+
+USER mysql
+
 EXPOSE 8000
 
-CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started redwood container $PARENT_HOST; /bin/bash /src/startup.sh
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; sudo /etc/init.d/rsyslog start; logger started redwood container $PARENT_HOST; /src/startup.sh
