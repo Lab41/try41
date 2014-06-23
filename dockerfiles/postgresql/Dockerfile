@@ -9,6 +9,13 @@ RUN apt-get update
 RUN apt-get -y -q install python-software-properties software-properties-common
 RUN apt-get -y -q install postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3
 
+RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
+RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
+
+RUN touch /etc/rsyslog.d/50-default.conf
+RUN chown postgres:postgres /etc/rsyslog.d/50-default.conf
+RUN echo "postgres ALL=NOPASSWD: /etc/init.d/rsyslog start" >> /etc/sudoers
+
 USER postgres
 
 RUN /etc/init.d/postgresql start &&\
@@ -22,10 +29,5 @@ VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 
 EXPOSE 5432
 
-USER root
-
-RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
-RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
-
-CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started postgresql container $PARENT_HOST; su -c "/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf" - postgres
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; sudo /etc/init.d/rsyslog start; logger started postgresql container $PARENT_HOST; /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf
 
