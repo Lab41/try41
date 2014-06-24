@@ -25,7 +25,7 @@ RUN sed 's/user: <FIXME.*>/user: "lab41"/' -i /Dendrite/src/main/nodejs/ungit/pu
 RUN npm install less
 RUN cd /Dendrite/src/main/nodejs/ungit; git submodule update --init; npm install
 RUN mvn package -f /Dendrite/pom.xml -DskipTests
-RUN mv /Dendrite/target/dendrite-0.1.0.war /var/lib/tomcat7/webapps/dendrite.war
+RUN mv /Dendrite/target/dendrite-0.1.1.war /var/lib/tomcat7/webapps/dendrite.war
 ADD tomcat.conf /etc/supervisor/conf.d/tomcat.conf
 RUN mv faunus /var/lib/faunus
 RUN mkdir /var/lib/tomcat7/dendrite
