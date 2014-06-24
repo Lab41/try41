@@ -45,49 +45,64 @@ docker run -e SUBDOMAIN=`hostname -f` \
            -d -P lab41/try41
 ```
 
-Before launching each project, you will want to pull down their images and tag them with Docker.
+Before launching each project, you will want to pull down their images with Docker.
 
 **To get [Dendrite](https://github.com/Lab41/Dendrite):**
 ```
 docker pull lab41/dendrite
-
-docker tag lab41/dendrite dendrite
 ```
 
-Note: The build on index.docker.io has been behind the GitHub repo, so to get the latest and greatest do this instead:
+Or build from source:
 
 ```
 git clone https://github.com/Lab41/try41.git
 
-cd try41/dockerfiles/dendrite
-
-docker build .
-
-docker tag [IMAGE_ID] dendrite
+cd try41/dockerfiles/dendrite/dendrite-build
+docker build -t lab41/dendrite-build .
+cd ../dendrite-java
+docker build -t lab41/dendrite-java .
+cd ../dendrite-repos
+docker build -t lab41/dendrite-repos .
+cd ../dendrite-cdh5
+docker build -t lab41/dendrite-cdh5 .
+cd ../dendrite-elasticsearch
+docker build -t lab41/dendrite-elasticsearch .
+cd ../dendrite-graphlab
+docker build -t lab41/dendrite-graphlab .
+cd ../dendrite-ungit
+docker build -t lab41/dendrite-ungit .
+cd ../dendrite-snap
+docker build -t lab41/dendrite-snap .
+cd ..
+docker build -t lab41/dendrite .
 ```
 
 **To get [Hemlock](https://github.com/Lab41/Hemlock):**
 ```
 docker pull lab41/hemlock
-
-docker tag lab41/hemlock hemlock
 ```
 
-Note: The build on index.docker.io has been behind the GitHub repo, so to get the latest and greatest do this instead:
+Or build from source:
 
 ```
 git clone https://github.com/Lab41/try41.git
 
 cd try41/dockerfiles/hemlock
 
-docker build .
-
-docker tag [IMAGE_ID] hemlock
+docker build -t lab41/hemlock .
 ```
 
 **To get [Redwood](https://github.com/Lab41/Redwood):**
 ```
 docker pull lab41/redwood
+```
 
-docker tag lab41/redwood redwood
+Or build from source:
+
+```
+git clone https://github.com/Lab41/try41.git
+
+cd try41/dockerfiles/redwood
+
+docker build -t lab41/redwood .
 ```
