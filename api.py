@@ -141,14 +141,16 @@ def create_app():
                 """)
 
     def store_metadata(exposed_ports, container_id, container, image_name):
+        urlport = ""
         for exposed_port in exposed_ports:
             container_port = c.port(container_id, exposed_port)
             url = "%s:%s" % (DOMAIN, container_port)
+            urlport += url+","
 
         hmap = {}
         hmap['container_id'] = container_id
         hmap['container'] = container
-        hmap['url'] = url
+        hmap['url'] = urlport[:-1]
         hmap['timestamp'] = int(time.time())
         hmap['expired'] = 0
         hmap['image'] = image_name

@@ -15,12 +15,14 @@ ADD requirements.txt /try41/requirements.txt
 ADD patch /try41/patch
 ADD static /try41/static
 ADD templates /try41/templates
+
+RUN pip install -r /try41/requirements.txt
+
 ADD patch/auth.py /usr/local/lib/python2.7/dist-packages/docker/auth/auth.py
 ADD patch/client.py /usr/local/lib/python2.7/dist-packages/docker/client.py
 ADD patch/base.html /usr/local/lib/python2.7/dist-packages/flask_user/templates/base.html
 ADD patch/emails /usr/local/lib/python2.7/dist-packages/flask_user/emails
 
-RUN pip install -r /try41/requirements.txt
 RUN mkdir /try41/templates/flask_user
 RUN cp -R /usr/local/lib/python2.7/dist-packages/flask_user/emails /try41/templates/flask_user/
 
