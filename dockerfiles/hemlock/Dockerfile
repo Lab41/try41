@@ -95,10 +95,9 @@ RUN mkdir /Hemlock/data
 RUN tar xfz /src/data.tar.gz -C /Hemlock/data/
 
 # tty.js
-RUN cp /src/favicon.ico /node_modules/tty.js/static/favicon.ico
-RUN cp /src/index.html /node_modules/tty.js/static/index.html
-RUN cp /src/tty.js /node_modules/tty.js/bin/tty.js
-RUN chmod +x /node_modules/tty.js/bin/tty.js
+ADD favicon.ico /node_modules/tty.js/static/favicon.ico
+ADD index.html /node_modules/tty.js/static/index.html
+ADD tty.js /node_modules/tty.js/bin/tty.js
 
 # couchbase plugin with elasticsearch
 RUN mkdir /usr/share/elasticsearch/plugins/transport-couchbase
@@ -112,11 +111,13 @@ RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
 RUN groupadd docker
 RUN useradd -m -d /home/docker -g docker docker
 RUN touch /etc/rsyslog.d/50-default.conf
-RUN chown docker:docker /etc/rsyslog.d/50-default.conf
 RUN chsh -s /bin/bash docker
-RUN chown -R docker:docker /home/docker
-RUN chown -R docker /Hemlock
+RUN chown -R docker /home/docker /Hemlock /etc/rsyslog.d/50-default.conf
 
 EXPOSE 8000 9200
 
-CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started hemlock container $PARENT_HOST; su -c '/node_modules/tty.js/bin/tty.js --port 8000 --daemonize' - docker; /src/startup.sh
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
+    /etc/init.d/rsyslog start; \
+    logger started hemlock container $PARENT_HOST; \
+    su -c '/node_modules/tty.js/bin/tty.js --port 8000 --daemonize' - docker && \
+    /src/startup.sh

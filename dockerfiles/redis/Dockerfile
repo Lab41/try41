@@ -18,4 +18,7 @@ USER docker
 
 EXPOSE 6379
 
-CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; sudo /etc/init.d/rsyslog start; logger started redis container $PARENT_HOST; /usr/bin/redis-server
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
+    sudo /etc/init.d/rsyslog start; \
+    logger started redis container $PARENT_HOST; \
+    /usr/bin/redis-server

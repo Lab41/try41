@@ -15,4 +15,10 @@ RUN rm /etc/supervisor/conf.d/tomcat.conf
 EXPOSE 8000 8448 
 
 # run supervisord daemon
-CMD pwd; printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /usr/bin/supervisord; sleep 2; logger started dendrite container $PARENT_HOST; service tomcat7 start; tail -F /var/log/tomcat7/catalina.out
+CMD pwd; \
+    printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
+    /usr/bin/supervisord; \
+    sleep 2; \
+    logger started dendrite container $PARENT_HOST; \
+    service tomcat7 start; \
+    tail -F /var/log/tomcat7/catalina.out

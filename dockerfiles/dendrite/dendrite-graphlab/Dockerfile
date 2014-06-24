@@ -18,4 +18,5 @@ RUN mkdir /var/run/sshd; mkdir /var/log/ssh; \
     ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa; \
     cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 ADD config /root/.ssh/config
-RUN chown -R root:root /root/.ssh; chmod 600 /root/.ssh/config
+RUN chown -R root:root /root/.ssh; \
+    chmod 600 /root/.ssh/config
