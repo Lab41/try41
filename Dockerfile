@@ -29,12 +29,12 @@ RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
 
 # use non root user
 RUN groupadd docker
-RUN useradd -g docker docker 
+RUN useradd -g docker docker
 RUN touch /etc/rsyslog.d/50-default.conf
 RUN chown docker:docker /etc/rsyslog.d/50-default.conf
 RUN echo "docker ALL=NOPASSWD: /etc/init.d/rsyslog start" >> /etc/sudoers
 RUN chown -R docker:docker /try41
- 
+
 USER docker
 
 EXPOSE 5000

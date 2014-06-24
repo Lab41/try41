@@ -1,7 +1,7 @@
 from ubuntu:trusty
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-04-14
+ENV REFRESHED_AT 2014-06-23
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i /etc/apt/sources.list
 RUN apt-get update
@@ -10,31 +10,36 @@ RUN add-apt-repository ppa:ubuntu-toolchain-r/test
 RUN add-apt-repository ppa:fkrull/deadsnakes
 RUN apt-get update
 
-RUN apt-get install -y build-essential
-RUN apt-get install -y python2.7
-RUN apt-get install -y pwgen
-RUN apt-get install -y g++-4.7 c++-4.7
-RUN apt-get install -y npm
-RUN apt-get install -y python-setuptools
-RUN apt-get install -y tshark
+RUN apt-get install -y build-essential \
+                       curl \
+                       c++-4.7 \
+                       dpkg \
+                       git \
+                       g++-4.7 \
+                       librtmp0 \
+                       libssl0.9.8 \
+                       lsb-release \
+                       npm \
+                       openjdk-6-jdk \
+                       pwgen \
+                       python2.7 \
+                       python-mysqldb \
+                       python-setuptools \
+                       wget \
+                       zip
 RUN easy_install pip
-RUN pip install texttable
-RUN pip install requests
-RUN pip install six==1.5.2
-RUN pip install pyes
-RUN pip install pdfminer==20110515
-RUN pip install xlrd==0.9.2
-RUN pip install xmltodict==0.5.0
-RUN pip install python-magic==0.4.3
-RUN apt-get install -y python-mysqldb
-RUN apt-get install -y git
+RUN pip install texttable \
+                requests \
+                six==1.5.2 \
+                pyes \
+                pdfminer==20110515 \
+                xlrd==0.9.2 \
+                xmltodict==0.5.0 \
+                python-magic==0.4.3
 RUN npm config set registry http://registry.npmjs.org/
 RUN npm install tty.js
 
 # elasticsearch
-RUN apt-get install -y openjdk-6-jdk
-RUN apt-get install -y wget
-RUN apt-get install -y dpkg
 RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.2.deb
 RUN dpkg -i elasticsearch-0.90.2.deb
 RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
@@ -60,21 +65,16 @@ RUN sed -i.bak '/\# End of file/ i\\*                soft    nofile          655
 RUN sed -i.bak '/\# end of pam-auth-update config/ i\\# Following line was added by docker-couchbase-server' /etc/pam.d/common-session
 RUN sed -i.bak '/\# end of pam-auth-update config/ i\session    required        pam_limits.so\n' /etc/pam.d/common-session
 
-RUN apt-get -y install librtmp0 libssl0.9.8 lsb-release
-
 # sets root password to password, but isn't accessible from the outside
 RUN echo 'mysql-server-5.5 mysql-server/root_password password password' | debconf-set-selections
 RUN echo 'mysql-server-5.5 mysql-server/root_password_again password password' | debconf-set-selections
-
 RUN apt-get install -y mysql-server --fix-missing --fix-broken && apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
-ENV HEMLOCK_PULLED_AT 2014-04-14
+ENV HEMLOCK_PULLED_AT 2014-06-23
 RUN git clone https://github.com/Lab41/Hemlock.git
 RUN cd /Hemlock; python setup.py install
 
 # kibana
-RUN apt-get install -y zip
 RUN git clone https://github.com/elasticsearch/kibana.git
 RUN cd /kibana; git checkout 322fa427ab 
 ADD config.js /kibana/src/
@@ -94,16 +94,29 @@ ADD . /src
 RUN mkdir /Hemlock/data
 RUN tar xfz /src/data.tar.gz -C /Hemlock/data/
 
+# tty.js
+RUN cp /src/favicon.ico /node_modules/tty.js/static/favicon.ico
+RUN cp /src/index.html /node_modules/tty.js/static/index.html
+RUN cp /src/tty.js /node_modules/tty.js/bin/tty.js
+RUN chmod +x /node_modules/tty.js/bin/tty.js
+
 # couchbase plugin with elasticsearch
 RUN mkdir /usr/share/elasticsearch/plugins/transport-couchbase
 RUN unzip /src/elasticsearch-transport-couchbase-1.1.0.zip -d /usr/share/elasticsearch/plugins/transport-couchbase 
 RUN cp /src/couchbase_template.json /usr/share/elasticsearch/plugins/transport-couchbase/couchbase_template.json
-RUN service elasticsearch stop
 
 # add rsyslog
 RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
 RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
 
+RUN groupadd docker
+RUN useradd -m -d /home/docker -g docker docker
+RUN touch /etc/rsyslog.d/50-default.conf
+RUN chown docker:docker /etc/rsyslog.d/50-default.conf
+RUN chsh -s /bin/bash docker
+RUN chown -R docker:docker /home/docker
+RUN chown -R docker /Hemlock
+
 EXPOSE 8000 9200
 
-CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started hemlock container $PARENT_HOST; /bin/bash /src/startup.sh
+CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; /etc/init.d/rsyslog start; logger started hemlock container $PARENT_HOST; su -c '/node_modules/tty.js/bin/tty.js --port 8000 --daemonize' - docker; /src/startup.sh

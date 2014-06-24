@@ -9,34 +9,8 @@ untilsuccessful () {
         done
 }
 
-# Add docker user and generate a random password with 12 characters that includes at least one capital letter and number.
-DOCKER_PASSWORD=`pwgen -c -n -1 12`
-echo User: docker Password: $DOCKER_PASSWORD
-DOCKER_ENCRYPYTED_PASSWORD=`perl -e 'print crypt('"$DOCKER_PASSWORD"', "aa"),"\n"'`
-useradd -m -d /home/docker -p $DOCKER_ENCRYPYTED_PASSWORD docker
-sed -Ei 's/adm:x:4:/docker:x:4:docker/' /etc/group
-
-# Set the default shell as bash for docker user.
-chsh -s /bin/bash docker
-
-#Set all the files and subdirectories from /home/docker with docker permissions.
-chown -R docker:docker /home/docker/*
-
-# start the tty webapp
-cp /src/favicon.ico /node_modules/tty.js/static/favicon.ico
-cp /src/index.html /node_modules/tty.js/static/index.html
-cp /src/tty.js /node_modules/tty.js/bin/tty.js
-chmod +x /node_modules/tty.js/bin/tty.js
-su -c '/node_modules/tty.js/bin/tty.js --port 8000 --daemonize' - docker
-
 /usr/sbin/mysqld &
 sleep 5
-
-# sets the admin password to 'mysql-server' which is accessible from the outside
-echo "CREATE DATABASE hemlock;" | mysql -ppassword
-
-# untar the data
-chown -R docker /Hemlock
 
 # update the elasticsearch config
 ELASTICSEARCH_CLUSTER=`pwgen -0AB -1 12`
@@ -47,9 +21,6 @@ echo node.local: true >> /etc/elasticsearch/elasticsearch.yml
 echo index.number_of_shards: 1 >> /etc/elasticsearch/elasticsearch.yml
 echo index.number_of_replicas: 0 >> /etc/elasticsearch/elasticsearch.yml
 
-# set env for docker user
-ln -s /bin/bash /bin/rbash
-ls -la /bin/rbash lrwxrwxrwx
 mkdir /usr/rbin
 
 echo "if [ -f ~/.bashrc ]; then" >> /etc/rbash_profile
@@ -59,11 +30,10 @@ echo PATH=/usr/rbin >> /etc/rbash_profile
 echo export PATH >> /etc/rbash_profile
 echo unset USERNAME >> /etc/rbash_profile
 
-rm /home/docker/.bash_profile
 rm /home/docker/.bashrc
 rm /home/docker/.profile
 ln -s /etc/rbash_profile /home/docker/.bash_profile
-chown root: /home/docker/.bash_logout /home/docker/.bashrc /home/docker/.bash_profile
+chown root: /home/docker/.bash_logout /home/docker/.bash_profile
 
 echo PATH=/usr/rbin >> /home/docker/.bashrc
 echo export PATH >> /home/docker/.bashrc
@@ -139,12 +109,10 @@ echo "function function() { clear; }" >> /home/docker/.bashrc
 echo alias function='' >> /home/docker/.bashrc
 echo alias alias='' >> /home/docker/.bashrc
 
-/home/docker/.bash_logout clear
-
 ln -s /usr/local/bin/hemlock /usr/rbin/hemlock
 ln -s /usr/bin/clear /usr/rbin/clear
 
-sed -i s/bash/rbash/g /etc/passwd
+echo "CREATE DATABASE hemlock;" | mysql -ppassword
 
 # start elasticsearch
 /usr/share/elasticsearch/bin/elasticsearch -Des.default.path.conf=/etc/elasticsearch
@@ -155,4 +123,3 @@ untilsuccessful curl -XPUT http://localhost:9200/hemlock -d @/src/couchbase_temp
 
 # start couchbase
 couchbase-start
-
