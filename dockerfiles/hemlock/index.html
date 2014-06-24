@@ -11,25 +11,25 @@
       <li>Once the data is loaded, the link for Kibana below will automatically be populated with the results.</li>
       <li> At any time you can type <code>hemlock</code> or <code>hemlock COMMAND</code> to get additional information</li>
       <br />
-      <li>Step 1: Create a tenant (project) for a system with data to live in.</li>
+      <li>Step 1: Store hemlock credentials.</li>
+      <ul>
+        <li><pre>hemlock hemlock-server-store --credential_file /src/hemlock_creds<pre></li>
+      </ul>
+      <li>Step 2: Create a tenant (project) for a system with data to live in.</li>
       <ul>
         <li><pre>hemlock tenant-create --name fileserver_tenant<pre></li>
       </ul>
-      <li>Step 2: Register a system that belongs to that tenant.</li>
+      <li>Step 3: Register a system that belongs to that tenant.</li>
       <ul>
         <li>Copy the UUID that was output from creating the tenant and use it for the <code>--tenant_id</code> field. For example:</li>
         <li><pre>hemlock register-local-system --name System1 --data_type files --description "description" \
                               --endpoint http://hemlock.server/ --poc_name user1 --poc_email user1@email.com \
                               --hostname system1.fqdn --tenant_id 7d0f6b0d-334a-4d89-bd1a-70e8e1c04aa6<pre></li>
       </ul>
-      <li>Step 3: Store client credentials.</li>
+      <li>Step 4: Store client credentials.</li>
       <ul>
         <li>Copy the UUID that was output from registering the system and use it for the <code>--system_id</code> field. For example:</li>
         <li><pre>hemlock client-store --name fs_client_1 --type fs --credential_file /src/fs_creds --system_id 7d0f6b0d-334a-4d89-bd1a-70e8e1c04aa6<pre></li>
-      </ul>
-      <li>Step 4: Store hemlock credentials.</li>
-      <ul>
-        <li><pre>hemlock hemlock-server-store --credential_file /src/hemlock_creds<pre></li>
       </ul>
       <li>Step 5: Run the client and load the data.</li>
       <ul>

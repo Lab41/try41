@@ -20,7 +20,7 @@ RUN apt-get install -y build-essential \
                        libssl0.9.8 \
                        lsb-release \
                        npm \
-                       openjdk-6-jdk \
+                       openjdk-7-jdk \
                        pwgen \
                        python2.7 \
                        python-mysqldb \
