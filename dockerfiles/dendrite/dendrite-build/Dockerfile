@@ -6,24 +6,24 @@ RUN apt-get update --fix-missing; \
     apt-get install -y python-software-properties; \
     apt-add-repository ppa:chris-lea/node.js; \
     apt-get update; \
-    apt-get install -y -q wget \
-                          curl \
-                          git \
-                          maven \
+    apt-get install -y -q build-essential \
                           bzip2 \
-                          supervisor \
-                          nodejs \
-                          dpkg \
-                          tomcat7 \
-                          gnuplot \
-                          openssh-server \
-                          gcc \
-                          g++ \
-                          build-essential \
-                          libopenmpi-dev \
-                          openmpi-bin \
-                          default-jdk \
                           cmake \
-                          zlib1g-dev \
+                          curl \
+                          default-jdk \
+                          dpkg \
+                          gcc \
+                          git \
+                          g++ \
+                          gnuplot \
+                          libopenmpi-dev \
+                          make \
+                          maven \
+                          nodejs \
+                          openmpi-bin \
+                          openssh-server \
                           rsyslog \
-                          make
+                          supervisor \
+                          tomcat7 \
+                          wget \
+                          zlib1g-dev

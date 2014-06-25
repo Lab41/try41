@@ -54,7 +54,7 @@ ENV CB_PASSWORD         password
 # install jq for parsing json
 RUN wget http://stedolan.github.io/jq/download/linux64/jq
 RUN chmod +x ./jq
-RUN sudo cp jq /usr/bin
+RUN cp jq /usr/bin
 
 # Limits
 RUN sed -i.bak '/\# End of file/ i\\# Following 4 lines added by docker-couchbase-server' /etc/security/limits.conf

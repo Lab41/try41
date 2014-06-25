@@ -3,6 +3,11 @@ MAINTAINER Charlie Lewis <charliel@lab41.org>
  
 RUN touch /var/log/tomcat7/catalina.out
 
+# install jq for parsing json
+RUN wget http://stedolan.github.io/jq/download/linux64/jq
+RUN chmod +x ./jq
+RUN cp jq /usr/bin
+
 # add rsyslog
 RUN sed 's/#\$ModLoad imudp/\$ModLoad imudp/' -i /etc/rsyslog.conf
 RUN sed 's/#\$UDPServerRun 514/\$UDPServerRun 514/' -i /etc/rsyslog.conf
@@ -20,5 +25,7 @@ CMD pwd; \
     /usr/bin/supervisord; \
     sleep 2; \
     logger started dendrite container $PARENT_HOST; \
+    PORT=$(curl --silent http://172.17.42.1:2375/containers/$HOSTNAME/json | jq '.HostConfig.PortBindings."8448/tcp"[].HostPort'); \
+    sed "s/config.port/$PORT/g" -i /Dendrite/src/main/nodejs/ungit/bin/ungit; \
     service tomcat7 start; \
     tail -F /var/log/tomcat7/catalina.out
