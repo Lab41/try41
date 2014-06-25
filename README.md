@@ -57,24 +57,8 @@ Or build from source:
 ```
 git clone https://github.com/Lab41/try41.git
 
-cd try41/dockerfiles/dendrite/dendrite-build
-docker build -t lab41/dendrite-build .
-cd ../dendrite-java
-docker build -t lab41/dendrite-java .
-cd ../dendrite-repos
-docker build -t lab41/dendrite-repos .
-cd ../dendrite-cdh5
-docker build -t lab41/dendrite-cdh5 .
-cd ../dendrite-elasticsearch
-docker build -t lab41/dendrite-elasticsearch .
-cd ../dendrite-graphlab
-docker build -t lab41/dendrite-graphlab .
-cd ../dendrite-ungit
-docker build -t lab41/dendrite-ungit .
-cd ../dendrite-snap
-docker build -t lab41/dendrite-snap .
-cd ..
-docker build -t lab41/dendrite .
+cd try41/dockerfiles/dendrite
+./build.sh
 ```
 
 **To get [Hemlock](https://github.com/Lab41/Hemlock):**
