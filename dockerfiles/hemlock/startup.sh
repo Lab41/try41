@@ -9,6 +9,9 @@ untilsuccessful () {
         done
 }
 
+PORT=$(curl --silent http://172.17.42.1:2375/containers/$HOSTNAME/json | jq '.HostConfig.PortBindings."9200/tcp"[].HostPort' | sed "s/\"//g") 
+sed "s/location.port/$PORT/" -i /kibana/src/config.js
+
 /usr/sbin/mysqld &
 sleep 5
 

@@ -5,7 +5,7 @@
 define(['settings'],
 function (Settings) {
   "use strict";
-  var port = parseInt(location.port)+1;
+  var elastic_port = parseInt(location.port);
   return new Settings({
 
     /**
@@ -18,7 +18,7 @@ function (Settings) {
      * elasticsearch host
      * @type {String}
      */
-    elasticsearch: "http://"+window.location.hostname+":"+port,
+    elasticsearch: "http://"+window.location.hostname+":"+elastic_port,
 
     /**
      * The default ES index to use for storing Kibana specific object
