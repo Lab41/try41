@@ -42,6 +42,9 @@ DOCKER_PORT=2375
 # use user accounts
 USERS=False
 
+# use ssl
+SSL=False
+
 # dendrite
 EXPOSED_PORT1=8000
 EXPOSED_PORT2=8448
@@ -156,6 +159,17 @@ def create_app():
         hmap['image'] = image_name
         check_cookie()
         r.lpush(request.cookies.get('try41-uid'), json.dumps(hmap))
+        return
+
+    def get_url(request):
+        # this is validated with check_cookie before_request
+        uid = request.cookies.get('try41-uid')
+        container = r.lindex(uid, 0)
+        container = json.loads(container)
+        url = container['url']
+        if "," in url:
+            url_list = url.split(',')
+            url = url_list[-1]
         return url
 
     def after_this_request(f):
@@ -199,7 +213,7 @@ def create_app():
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
             url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
-            return jsonify(url=url)
+            return jsonify(url="launch")
         else:
             return jsonify(url="login")
 
@@ -212,7 +226,7 @@ def create_app():
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
             url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
-            return jsonify(url=url)
+            return jsonify(url="launch")
         else:
             return jsonify(url="login")
 
@@ -224,8 +238,8 @@ def create_app():
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
-            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
-            return jsonify(url=url)
+            store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
+            return jsonify(url="launch")
         else:
             return jsonify(url="login")
 
@@ -241,17 +255,29 @@ def create_app():
     def details3_login():
         return redirect(url_for('user.login'))
 
-    @app.route('/details/<url>')
-    def details(url):
-        return render_template("details.html",url=url, USERS=USERS)
+    @app.route('/details/launch')
+    def details():
+        if not USERS or current_user.is_authenticated():
+            url = get_url(request)
+            return render_template("details.html",url=url, USERS=USERS, SSL=SSL, DOMAIN=DOMAIN)
+        else:
+            return jsonify(url="login")
 
-    @app.route('/details2/<url>')
-    def details2(url):
-        return render_template("details2.html",url=url, USERS=USERS)
+    @app.route('/details2/launch')
+    def details2():
+        if not USERS or current_user.is_authenticated():
+            url = get_url(request)
+            return render_template("details2.html",url=url, USERS=USERS, SSL=SSL, DOMAIN=DOMAIN)
+        else:
+            return jsonify(url="login")
 
-    @app.route('/details3/<url>')
-    def details3(url):
-        return render_template("details3.html",url=url, USERS=USERS)
+    @app.route('/details3/launch')
+    def details3():
+        if not USERS or current_user.is_authenticated():
+            url = get_url(request)
+            return render_template("details3.html",url=url, USERS=USERS, SSL=SSL, DOMAIN=DOMAIN)
+        else:
+            return jsonify(url="login")
 
     @app.route('/robot.txt')
     def robot():
@@ -265,4 +291,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)

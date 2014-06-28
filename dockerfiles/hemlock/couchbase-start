@@ -13,6 +13,7 @@ IP=`hostname --ip-address`
 SEED=$1
 
 # Start Couchbase in background
+touch nohup.out
 nohup su - couchbase -c "/opt/couchbase/bin/couchbase-server -- -noinput" &
 PID=$!
 
