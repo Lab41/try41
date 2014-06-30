@@ -244,7 +244,10 @@ def create_app():
     def new():
         if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT2, EXPOSED_PORT1]
-            container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
+            if SSL:
+                container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
+            else:
+                container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
@@ -276,7 +279,10 @@ def create_app():
     def new3():
         if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT5, EXPOSED_PORT4]
-            container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
+            if SSL:
+                container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
+            else:
+                container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)

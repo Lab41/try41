@@ -9,8 +9,14 @@ untilsuccessful () {
         done
 }
 
-PORT=$(curl --silent http://172.17.42.1:2375/containers/$HOSTNAME/json | jq '.HostConfig.PortBindings."9200/tcp"[].HostPort' | sed "s/\"//g") 
-sed "s/location.port/$PORT/" -i /kibana/src/config.js
+if [ -z "$SSL" ]; then
+	PORT=$(curl --silent http://172.17.42.1:2375/containers/$HOSTNAME/json | jq '.HostConfig.PortBindings."9200/tcp"[].HostPort' | sed "s/\"//g") 
+	sed "s/location.port/$PORT/" -i /kibana/src/config.js
+else
+	sed "s/location.port/443/" -i /kibana/src/config.js
+	sed "s|\"/\"|\"/hemlock2\"|" -i /kibana/src/config.js
+	sed "s/http/https/" -i /kibana/src/config.js
+fi  
 
 /usr/sbin/mysqld &
 sleep 5

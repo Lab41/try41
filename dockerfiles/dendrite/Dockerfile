@@ -15,6 +15,7 @@ RUN sed 's/\$PrivDropToUser syslog/#\$PrivDropToUser syslog/' -i /etc/rsyslog.co
 RUN sed 's/\$PrivDropToGroup syslog/#\$PrivDropToGroup syslog/' -i /etc/rsyslog.conf
 
 ADD rsyslog.conf /etc/supervisor/conf.d/rsyslog.conf
+ADD startup.sh /startup.sh
 RUN rm /etc/supervisor/conf.d/tomcat.conf
 
 EXPOSE 8000 8448 
@@ -25,7 +26,6 @@ CMD pwd; \
     /usr/bin/supervisord; \
     sleep 2; \
     logger started dendrite container $PARENT_HOST; \
-    PORT=$(curl --silent http://172.17.42.1:2375/containers/$HOSTNAME/json | jq '.HostConfig.PortBindings."8448/tcp"[].HostPort'); \
-    sed "s/config.port/$PORT/g" -i /Dendrite/src/main/nodejs/ungit/bin/ungit; \
+    /startup.sh; \
     service tomcat7 start; \
     tail -F /var/log/tomcat7/catalina.out
