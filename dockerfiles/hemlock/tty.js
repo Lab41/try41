@@ -11,8 +11,8 @@ var app = tty.createServer({
   cwd: "/Hemlock"
 });
 
-app.use("/data", express.directory("/Hemlock/data"));
-app.use("/data", express.static("/Hemlock/data"));
+//app.use("/data", express.directory("/Hemlock/data"));
+//app.use("/data", express.static("/Hemlock/data"));
 app.use("/kibana", express.directory("/kibana/src"));
 app.use("/kibana", express.static("/kibana/src"));
 

@@ -20,6 +20,7 @@ from docker import client
 
 import json
 import os
+import re
 import redis
 import sys
 import time
@@ -58,6 +59,9 @@ EXPOSED_PORT5=9200
 
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
 c = client.Client(version="1.6", base_url='http://%s:%s' % (DOCKER_HOST, DOCKER_PORT))
+
+BAD = False
+UUID4 = re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
 
 # Use a Class-based config to avoid needing a 2nd file
 class ConfigClass(object):
@@ -144,6 +148,7 @@ def create_app():
                 """)
 
     def store_metadata(exposed_ports, container_id, container, image_name):
+        global BAD
         urlport = ""
         for exposed_port in exposed_ports:
             container_port = c.port(container_id, exposed_port)
@@ -157,20 +162,40 @@ def create_app():
         hmap['timestamp'] = int(time.time())
         hmap['expired'] = 0
         hmap['image'] = image_name
+        data = json.dumps(hmap)
         check_cookie()
-        r.lpush(request.cookies.get('try41-uid'), json.dumps(hmap))
-        return
+        # check cookie formatting, ensure that it exists in sessions
+        # also check that it doesn't already exist
+        if not BAD:
+            cookie = request.cookies.get('try41-uid')
+            if re.match(UUID4, cookie):
+                if r.exists(cookie):
+                    print "uuid already exists"
+                    BAD = True
+                else:
+                    if r.sismember('sessions', cookie):
+                        r.lpush(cookie, data)
+                    else:
+                        print "invalid session"
+                        BAD = True
+            else:
+                print "invalid uuid"
+                BAD = True
 
     def get_url(request):
+        global BAD
         # this is validated with check_cookie before_request
-        uid = request.cookies.get('try41-uid')
-        container = r.lindex(uid, 0)
-        container = json.loads(container)
-        url = container['url']
-        if "," in url:
-            url_list = url.split(',')
-            url = url_list[-1]
-        return url
+        if not BAD:
+            uid = request.cookies.get('try41-uid')
+            container = r.lindex(uid, 0)
+            container = json.loads(container)
+            url = container['url']
+            if "," in url:
+                url_list = url.split(',')
+                url = url_list[-1]
+            return url
+        else:
+            return ""
 
     def after_this_request(f):
         if not hasattr(g, 'after_request_callbacks'):
@@ -186,15 +211,26 @@ def create_app():
 
     @app.before_request
     def check_cookie():
+        global BAD
         uid = request.cookies.get('try41-uid')
         if uid is None:
             uid = str(uuid.uuid4())
             @after_this_request
             def save_cookie(response):
-                response.set_cookie('try41-uid', uid, httponly=True)
-
-        r.sadd('sessions', uid)
-        g.uid = uid
+                # validate uid formatting, and that it doesn't conflict
+                if re.match(UUID4, uid):
+                    if r.sismember('sessions', uid):
+                        print "uuid already exists"
+                        BAD = True
+                    else:
+                        r.sadd('sessions', uid)
+                        g.uid = uid
+                        BAD = False
+                        response.set_cookie('try41-uid', uid, httponly=True)
+                else:
+                    print "invalid uuid"
+                    BAD = True
+                BAD = False
 
     @app.route('/')
     def index():
@@ -212,8 +248,11 @@ def create_app():
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
-            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
-            return jsonify(url="launch")
+            bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
+            if bad:
+                return render_template("index.html")
+            else:
+                return jsonify(url="launch")
         else:
             return jsonify(url="login")
 
@@ -225,8 +264,11 @@ def create_app():
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
-            url = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
-            return jsonify(url="launch")
+            bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
+            if bad:
+                return render_template("index.html")
+            else:
+                return jsonify(url="launch")
         else:
             return jsonify(url="login")
 
@@ -238,8 +280,11 @@ def create_app():
             container_id = container["Id"]
             c.start(container, publish_all_ports=True)
             b = c.inspect_container(container)
-            store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
-            return jsonify(url="launch")
+            bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
+            if bad:
+                return render_template("index.html")
+            else:
+                return jsonify(url="launch")
         else:
             return jsonify(url="login")
 

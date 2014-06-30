@@ -359,54 +359,6 @@
         }
       ],
       "notice": true
-    },
-    {
-      "title": "Events",
-      "height": "650px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "group": [
-            "default"
-          ],
-          "type": "table",
-          "size": 100,
-          "pages": 5,
-          "offset": 0,
-          "sort": [
-            "doc.hemlock-date",
-            "asc"
-          ],
-          "style": {
-            "font-size": "9pt"
-          },
-          "overflow": "min-height",
-          "fields": [],
-          "highlight": [],
-          "sortable": true,
-          "header": true,
-          "paging": true,
-          "spyable": true,
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0
-            ]
-          },
-          "field_list": true,
-          "status": "Stable",
-          "trimFactor": 300,
-          "normTimes": true,
-          "all_fields": false,
-          "title": "Raw Call Records"
-        }
-      ],
-      "notice": false
     }
   ],
   "editable": true,
