@@ -15,7 +15,7 @@ SECRET_KEY="this is my secret key"
 docker run -e SUBDOMAIN=`hostname -f` \
            -e REDIS_HOST=`hostname -f` \
            -e SECRET_KEY=$SECRET_KEY \
-           -e USERS=USERS=False \
+           -e USERS=False \
            -d -P lab41/try41
 ```
 
@@ -38,7 +38,7 @@ HOSTNAME=hostname -f
 docker run -e SUBDOMAIN=`hostname -f` \
            -e REDIS_HOST=`hostname -f` \
            -e SECRET_KEY=$SECRET_KEY \
-           -e USERS=USERS=True \
+           -e USERS=True \
            -e POSTGRESQL_URI=postgresql://docker:docker@$HOSTNAME/users \
            -e MAIL_HOST=smtp.example.com \
            -e SENDER='"Try41" <noreply@example.com>' \
