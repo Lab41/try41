@@ -38,54 +38,80 @@
 <pre><code>docker run -d -p 6379:6379 lab41/redis
 </code></pre>
 
-<pre><code>docker run -e SUBDOMAIN=`hostname -f` -e REDIS_HOST=`hostname -f` -d -P lab41/try41
+<pre><code>SECRET_KEY="this is my secret key"
+
+docker run -e SUBDOMAIN=`hostname -f` \
+           -e REDIS_HOST=`hostname -f` \
+           -e SECRET_KEY=$SECRET_KEY \
+           -e USERS=False \
+           -d -P lab41/try41
 </code></pre>
 
 <p>This will give you a webapp through an exposed port chosen by Docker that will describe each project and provide you the ability to launch each project as a new Docker container.</p>
 
-<p>Before launching each project, you will want to pull down their images and tag them with Docker.</p>
+<p>The try41 webapp can also be launched to use user accounts.  In that case, you'll first need to also spin up an additional container for PostgreSQL:</p>
+
+<pre><code>docker run -d -p 5432:5432 lab41/postgresql
+</code></pre>
+
+<p>You will also need an SMTP server to send mail from for registration.</p>
+
+<p>Then modify the runtime environment variables to enable users:</p>
+
+<pre><code>SECRET_KEY="this is my secret key"
+HOSTNAME=hostname -f
+
+docker run -e SUBDOMAIN=`hostname -f` \
+           -e REDIS_HOST=`hostname -f` \
+           -e SECRET_KEY=$SECRET_KEY \
+           -e USERS=True \
+           -e POSTGRESQL_URI=postgresql://docker:docker@$HOSTNAME/users \
+           -e MAIL_HOST=smtp.example.com \
+           -e SENDER='"Try41" &lt;noreply@example.com&gt;' \
+           -d -P lab41/try41
+</code></pre>
+
+<p>Before launching each project, you will want to pull down their images with Docker.</p>
 
 <p><strong>To get <a href="https://github.com/Lab41/Dendrite">Dendrite</a>:</strong></p>
 
 <pre><code>docker pull lab41/dendrite
-
-docker tag lab41/dendrite dendrite
 </code></pre>
 
-<p>Note: The build on index.docker.io has been behind the GitHub repo, so to get the latest and greatest do this instead:</p>
+<p>Or build from source:</p>
 
 <pre><code>git clone https://github.com/Lab41/try41.git
 
 cd try41/dockerfiles/dendrite
-
-docker build .
-
-docker tag [IMAGE_ID] dendrite
+./build.sh
 </code></pre>
 
 <p><strong>To get <a href="https://github.com/Lab41/Hemlock">Hemlock</a>:</strong></p>
 
 <pre><code>docker pull lab41/hemlock
-
-docker tag lab41/hemlock hemlock
 </code></pre>
 
-<p>Note: The build on index.docker.io has been behind the GitHub repo, so to get the latest and greatest do this instead:</p>
+<p>Or build from source:</p>
 
 <pre><code>git clone https://github.com/Lab41/try41.git
 
 cd try41/dockerfiles/hemlock
 
-docker build .
-
-docker tag [IMAGE_ID] hemlock
+docker build -t lab41/hemlock .
 </code></pre>
 
 <p><strong>To get <a href="https://github.com/Lab41/Redwood">Redwood</a>:</strong></p>
 
 <pre><code>docker pull lab41/redwood
+</code></pre>
 
-docker tag lab41/redwood redwood
+<p>Or build from source:</p>
+
+<pre><code>git clone https://github.com/Lab41/try41.git
+
+cd try41/dockerfiles/redwood
+
+docker build -t lab41/redwood .
 </code></pre>
         </section>
 
