@@ -16,6 +16,8 @@ docker run -e SUBDOMAIN=`hostname -f` \
            -e REDIS_HOST=`hostname -f` \
            -e SECRET_KEY=$SECRET_KEY \
            -e USERS=False \
+           -e SSL=False \
+           -e COOKIE=try41-uid \
            -d -P lab41/try41
 ```
 
@@ -42,6 +44,8 @@ docker run -e SUBDOMAIN=`hostname -f` \
            -e POSTGRESQL_URI=postgresql://docker:docker@$HOSTNAME/users \
            -e MAIL_HOST=smtp.example.com \
            -e SENDER='"Try41" <noreply@example.com>' \
+           -e SSL=False \
+           -e COOKIE=try41-uid \
            -d -P lab41/try41
 ```
 
