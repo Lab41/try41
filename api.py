@@ -238,6 +238,18 @@ def create_app():
     def github_buttons():
         return render_template("github-btn.html")
 
+    @app.route('/details/wait')
+    def wait():
+        return render_template("wait.html")
+
+    @app.route('/details2/wait2')
+    def wait2():
+        return render_template("wait.html")
+
+    @app.route('/details3/wait3')
+    def wait3():
+        return render_template("wait.html")
+
     @app.route('/new', methods=["POST"])
     def new():
         if not USERS or current_user.is_authenticated():
@@ -255,6 +267,7 @@ def create_app():
                             if jrec['expired'] == 0:
                                 app.logger.debug('a dendrite container is already running for this session') 
                                 spinup = 0
+                                return jsonify(url="wait")
                 if spinup == 1:
                     if SSL:
                         container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
@@ -269,8 +282,7 @@ def create_app():
                     else:
                         return jsonify(url="launch")
                 else:
-                    # !! TODO return to template telling them they already have one spunup
-                    return render_template("index.html")
+                    return jsonify(url="wait")
         else:
             return jsonify(url="login")
 
@@ -291,6 +303,7 @@ def create_app():
                             if jrec['expired'] == 0:
                                 app.logger.debug('a redwood container is already running for this session') 
                                 spinup = 0
+                                return jsonify(url="wait2")
                 if spinup == 1:
                     container = c.create_container(IMAGE_NAME2, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
                     container_id = container["Id"]
@@ -302,8 +315,7 @@ def create_app():
                     else:
                         return jsonify(url="launch")
                 else:
-                    # !! TODO return to template telling them they already have one spunup
-                    return render_template("index.html")
+                    return jsonify(url="wait2")
         else:
             return jsonify(url="login")
 
@@ -324,6 +336,7 @@ def create_app():
                             if jrec['expired'] == 0:
                                 app.logger.debug('a hemlock container is already running for this session') 
                                 spinup = 0
+                                return jsonify(url="wait3")
                 if spinup == 1:
                     if SSL:
                         container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
@@ -338,8 +351,7 @@ def create_app():
                     else:
                         return jsonify(url="launch")
                 else:
-                    # !! TODO return to template telling them they already have one spunup
-                    return render_template("index.html")
+                    return jsonify(url="wait3")
         else:
             return jsonify(url="login")
 

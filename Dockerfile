@@ -10,7 +10,6 @@ RUN apt-get install -y git \
                        python-setuptools
 RUN easy_install pip
 
-ADD api.py /try41/api.py
 ADD requirements.txt /try41/requirements.txt
 ADD patch /try41/patch
 ADD static /try41/static
@@ -35,6 +34,8 @@ RUN groupadd docker
 RUN useradd -g docker docker
 RUN touch /etc/rsyslog.d/50-default.conf
 RUN echo "docker ALL=NOPASSWD: /etc/init.d/rsyslog start" >> /etc/sudoers
+
+ADD api.py /try41/api.py
 RUN chown -R docker /try41 /etc/rsyslog.d/50-default.conf
 
 USER docker
