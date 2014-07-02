@@ -37,6 +37,8 @@ REDIS_HOST = "localhost"
 RSYSLOG_HOST = "rsyslog"
 PARENT_HOST = "parent"
 
+COOKIE="try41-uid"
+
 REDIS_PORT=6379
 DOCKER_PORT=2375
 
@@ -167,26 +169,22 @@ def create_app():
         # check cookie formatting, ensure that it exists in sessions
         # also check that it doesn't already exist
         if not BAD:
-            cookie = request.cookies.get('try41-uid')
+            cookie = request.cookies.get(COOKIE)
             if re.match(UUID4, cookie):
-                if r.exists(cookie):
-                    print "uuid already exists"
-                    BAD = True
+                if r.sismember('sessions', cookie):
+                    r.lpush(cookie, data)
                 else:
-                    if r.sismember('sessions', cookie):
-                        r.lpush(cookie, data)
-                    else:
-                        print "invalid session"
-                        BAD = True
+                    app.logger.debug('invalid session')
+                    BAD = True
             else:
-                print "invalid uuid"
+                app.logger.debug('invalid uuid')
                 BAD = True
 
     def get_url(request):
         global BAD
         # this is validated with check_cookie before_request
         if not BAD:
-            uid = request.cookies.get('try41-uid')
+            uid = request.cookies.get(COOKIE)
             container = r.lindex(uid, 0)
             container = json.loads(container)
             url = container['url']
@@ -212,7 +210,7 @@ def create_app():
     @app.before_request
     def check_cookie():
         global BAD
-        uid = request.cookies.get('try41-uid')
+        uid = request.cookies.get(COOKIE)
         if uid is None:
             uid = str(uuid.uuid4())
             @after_this_request
@@ -220,15 +218,15 @@ def create_app():
                 # validate uid formatting, and that it doesn't conflict
                 if re.match(UUID4, uid):
                     if r.sismember('sessions', uid):
-                        print "uuid already exists"
+                        app.logger.debug('uuid already exists')
                         BAD = True
                     else:
                         r.sadd('sessions', uid)
                         g.uid = uid
                         BAD = False
-                        response.set_cookie('try41-uid', uid, httponly=True)
+                        response.set_cookie(COOKIE, uid, httponly=True)
                 else:
-                    print "invalid uuid"
+                    app.logger.debug('invalid uuid')
                     BAD = True
                 BAD = False
 
@@ -244,18 +242,35 @@ def create_app():
     def new():
         if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT2, EXPOSED_PORT1]
-            if SSL:
-                container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
-            else:
-                container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
-            container_id = container["Id"]
-            c.start(container, publish_all_ports=True)
-            b = c.inspect_container(container)
-            bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
-            if bad:
-                return render_template("index.html")
-            else:
-                return jsonify(url="launch")
+            cookie = request.cookies.get(COOKIE)
+            if re.match(UUID4, cookie):
+                spinup = 1
+                # check if this image has already been spun up for this session
+                if r.exists(cookie):
+                    # !! TODO error check
+                    data = r.lrange(cookie, 0, -1)
+                    for record in data:
+                        jrec = json.loads(record)
+                        if jrec['image'] == "lab41/dendrite":
+                            if jrec['expired'] == 0:
+                                app.logger.debug('a dendrite container is already running for this session') 
+                                spinup = 0
+                if spinup == 1:
+                    if SSL:
+                        container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
+                    else:
+                        container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
+                    container_id = container["Id"]
+                    c.start(container, publish_all_ports=True)
+                    b = c.inspect_container(container)
+                    bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
+                    if bad:
+                        return render_template("index.html")
+                    else:
+                        return jsonify(url="launch")
+                else:
+                    # !! TODO return to template telling them they already have one spunup
+                    return render_template("index.html")
         else:
             return jsonify(url="login")
 
@@ -263,15 +278,32 @@ def create_app():
     def new2():
         if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT3]
-            container = c.create_container(IMAGE_NAME2, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
-            container_id = container["Id"]
-            c.start(container, publish_all_ports=True)
-            b = c.inspect_container(container)
-            bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
-            if bad:
-                return render_template("index.html")
-            else:
-                return jsonify(url="launch")
+            cookie = request.cookies.get(COOKIE)
+            if re.match(UUID4, cookie):
+                spinup = 1
+                # check if this image has already been spun up for this session
+                if r.exists(cookie):
+                    # !! TODO error check
+                    data = r.lrange(cookie, 0, -1)
+                    for record in data:
+                        jrec = json.loads(record)
+                        if jrec['image'] == "lab41/redwood":
+                            if jrec['expired'] == 0:
+                                app.logger.debug('a redwood container is already running for this session') 
+                                spinup = 0
+                if spinup == 1:
+                    container = c.create_container(IMAGE_NAME2, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
+                    container_id = container["Id"]
+                    c.start(container, publish_all_ports=True)
+                    b = c.inspect_container(container)
+                    bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
+                    if bad:
+                        return render_template("index.html")
+                    else:
+                        return jsonify(url="launch")
+                else:
+                    # !! TODO return to template telling them they already have one spunup
+                    return render_template("index.html")
         else:
             return jsonify(url="login")
 
@@ -279,18 +311,35 @@ def create_app():
     def new3():
         if not USERS or current_user.is_authenticated():
             exposed_ports = [EXPOSED_PORT5, EXPOSED_PORT4]
-            if SSL:
-                container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
-            else:
-                container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
-            container_id = container["Id"]
-            c.start(container, publish_all_ports=True)
-            b = c.inspect_container(container)
-            bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
-            if bad:
-                return render_template("index.html")
-            else:
-                return jsonify(url="launch")
+            cookie = request.cookies.get(COOKIE)
+            if re.match(UUID4, cookie):
+                spinup = 1
+                # check if this image has already been spun up for this session
+                if r.exists(cookie):
+                    # !! TODO error check
+                    data = r.lrange(cookie, 0, -1)
+                    for record in data:
+                        jrec = json.loads(record)
+                        if jrec['image'] == "lab41/hemlock":
+                            if jrec['expired'] == 0:
+                                app.logger.debug('a hemlock container is already running for this session') 
+                                spinup = 0
+                if spinup == 1:
+                    if SSL:
+                        container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
+                    else:
+                        container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
+                    container_id = container["Id"]
+                    c.start(container, publish_all_ports=True)
+                    b = c.inspect_container(container)
+                    bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
+                    if bad:
+                        return render_template("index.html")
+                    else:
+                        return jsonify(url="launch")
+                else:
+                    # !! TODO return to template telling them they already have one spunup
+                    return render_template("index.html")
         else:
             return jsonify(url="login")
 
@@ -342,4 +391,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)

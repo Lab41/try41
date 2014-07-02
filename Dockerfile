@@ -55,6 +55,7 @@ CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
     sed -i "s/sender/$SENDER/g" /try41/api.py; \
     sed -i "s/USERS=False/USERS=$USERS/g" /try41/api.py; \
     sed -i "s/SSL=False/SSL=$SSL/g" /try41/api.py; \
+    sed -i "s/try41-uid/$COOKIE/g" /try41/api.py; \
     sed -i "s/parent/$PARENT_HOST/g" /try41/api.py; \
     sed -i "s/secret/$SECRET_KEY/g" /try41/api.py; \
     python api.py
