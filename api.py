@@ -174,10 +174,10 @@ def create_app():
                 if r.sismember('sessions', cookie):
                     r.lpush(cookie, data)
                 else:
-                    app.logger.debug('invalid session')
+                    app.logger.info('invalid session')
                     BAD = True
             else:
-                app.logger.debug('invalid uuid')
+                app.logger.info('invalid uuid')
                 BAD = True
 
     def get_url(request):
@@ -218,7 +218,7 @@ def create_app():
                 # validate uid formatting, and that it doesn't conflict
                 if re.match(UUID4, uid):
                     if r.sismember('sessions', uid):
-                        app.logger.debug('uuid already exists')
+                        app.logger.info('uuid already exists')
                         BAD = True
                     else:
                         r.sadd('sessions', uid)
@@ -226,7 +226,7 @@ def create_app():
                         BAD = False
                         response.set_cookie(COOKIE, uid, httponly=True)
                 else:
-                    app.logger.debug('invalid uuid')
+                    app.logger.info('invalid uuid')
                     BAD = True
                 BAD = False
 
@@ -265,7 +265,7 @@ def create_app():
                         jrec = json.loads(record)
                         if jrec['image'] == "lab41/dendrite":
                             if jrec['expired'] == 0:
-                                app.logger.debug('a dendrite container is already running for this session') 
+                                app.logger.info('a dendrite container is already running for this session') 
                                 spinup = 0
                                 return jsonify(url="wait")
                 if spinup == 1:
@@ -301,7 +301,7 @@ def create_app():
                         jrec = json.loads(record)
                         if jrec['image'] == "lab41/redwood":
                             if jrec['expired'] == 0:
-                                app.logger.debug('a redwood container is already running for this session') 
+                                app.logger.info('a redwood container is already running for this session') 
                                 spinup = 0
                                 return jsonify(url="wait2")
                 if spinup == 1:
@@ -334,7 +334,7 @@ def create_app():
                         jrec = json.loads(record)
                         if jrec['image'] == "lab41/hemlock":
                             if jrec['expired'] == 0:
-                                app.logger.debug('a hemlock container is already running for this session') 
+                                app.logger.info('a hemlock container is already running for this session') 
                                 spinup = 0
                                 return jsonify(url="wait3")
                 if spinup == 1:
@@ -403,4 +403,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0")
