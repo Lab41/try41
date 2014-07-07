@@ -12,6 +12,17 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script src="/static/js/jquery.countdown.min.js"></script>
 
+        <script type="text/javascript">
+          $(function(){
+            $('#instance').hide();
+            $('#counter').countdown({
+              until: '9',
+              onExpiry: function(){ $("#instance").show(); $("#jcountdown").hide();},
+              format: 'mm:ss'
+            });
+          });
+        </script>
+
         <title>Your Redwood Instance Details</title>
 
     </head>
@@ -44,6 +55,8 @@
             <div class="row-fluid marketing">
                 <div class="span12 well">
                     <h4>Instance Details..</h4>
+                    <p id="jcountdown">Your instance will be available in:</p>
+                    <div id="counter"></div>
                     <p id="instance">Go now, your instance is waiting:
                         {% if SSL %}
                           <a href="https://{{ DOMAIN }}/redwood" target="_blank">https://{{ DOMAIN }}/redwood</a>
