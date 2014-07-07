@@ -1,7 +1,7 @@
 from ubuntu:trusty
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-06-23
+ENV REFRESHED_AT 2014-07-07
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN sed 's/us-east-1.ec2.archive.ubuntu.com/nova.clouds.archive.ubuntu.com/' -i /etc/apt/sources.list
 RUN apt-get update

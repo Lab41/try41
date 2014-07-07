@@ -44,6 +44,7 @@ rm /home/docker/.profile
 ln -s /etc/rbash_profile /home/docker/.bash_profile
 chown root: /home/docker/.bash_logout /home/docker/.bash_profile
 
+echo export PS1=\$ >> /home/docker/.bashrc
 echo PATH=/usr/rbin >> /home/docker/.bashrc
 echo export PATH >> /home/docker/.bashrc
 echo export HEMLOCK_MYSQL_SERVER=localhost >> /home/docker/.bashrc
