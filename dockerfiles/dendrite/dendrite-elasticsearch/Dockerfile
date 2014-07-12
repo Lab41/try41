@@ -5,13 +5,8 @@ MAINTAINER Charlie Lewis <charliel@lab41.org>
 RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.5.deb
 RUN dpkg -i elasticsearch-0.90.5.deb; \
     rm -rf elasticsearch-0.90.5.deb
-RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
 RUN echo 'discovery.zen.ping.multicast.enabled: false' >> /etc/elasticsearch/elasticsearch.yml; \
     echo 'node.local: false' >> /etc/elasticsearch/elasticsearch.yml; \
     echo 'index.number_of_shards: 1' >> /etc/elasticsearch/elasticsearch.yml; \
     echo 'index.number_of_replicas: 0' >> /etc/elasticsearch/elasticsearch.yml
 ADD elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
-
-RUN chmod -R 777 /var/lib; \
-    mkdir -p /usr/share/tomcat7/dendrite; \
-    chmod -R 777 /usr/share/tomcat7/dendrite

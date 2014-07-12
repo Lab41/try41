@@ -16,5 +16,9 @@ RUN echo 'JAVA_HOME=/usr/lib/jvm/jdk1.7.0_51' >> /etc/profile; \
     echo 'export JAVA_HOME' >> /etc/profile; \
     echo 'export PATH' >> /etc/profile
 ENV JAVA_HOME /usr/lib/jvm/jdk1.7.0_51
+ENV JRE_HOME /usr/lib/jvm/jdk1.7.0_51
 ENV PATH $PATH:$JAVA_HOME/bin
 
+# fix java due to tomcat installing java6
+RUN unlink /usr/lib/jvm/default-java; \
+    ln -s /usr/lib/jvm/jdk1.7.0_51 /usr/lib/jvm/default-java

@@ -1,4 +1,4 @@
-FROM lab41/dendrite-repos
+FROM lab41/dendrite-java
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
 # cdh5 package, key, and repo
@@ -54,4 +54,7 @@ RUN service hadoop-hdfs-namenode start; \
     su -c "hadoop fs -mkdir /tmp" - hdfs; \
     su -c "hadoop fs -mkdir /hbase" - hdfs; \
     su -c "hadoop fs -chown hbase /hbase" - hdfs; \
-    su -c "hadoop fs -chmod -R 777 /tmp" - hdfs
+    su -c "hadoop fs -chmod -R 777 /tmp" - hdfs; \
+    su -c "hadoop fs -mkdir /user/tomcat7" - hdfs; \
+    su -c "hadoop fs -chown -R tomcat7 /user/tomcat7" - hdfs; \
+    su -c "hadoop fs -chmod -R 777 /user/tomcat7" - hdfs

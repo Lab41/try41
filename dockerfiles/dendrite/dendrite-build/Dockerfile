@@ -16,14 +16,12 @@ RUN apt-get update --fix-missing; \
                           git \
                           g++ \
                           gnuplot \
-                          libopenmpi-dev \
                           make \
                           maven \
                           nodejs \
-                          openmpi-bin \
-                          openssh-server \
                           rsyslog \
                           supervisor \
                           tomcat7 \
                           wget \
-                          zlib1g-dev
+                          zlib1g-dev; \
+    apt-get clean
