@@ -17,9 +17,7 @@ RUN git clone https://github.com/Lab41/graphlab-twill.git
 RUN cd /graphlab-twill; git checkout master
 RUN mvn -Dmaven.repo.local=/root/lib install -f /graphlab-twill/pom.xml -DskipTests
 
-#RUN git clone https://github.com/Lab41/Dendrite.git
-RUN git clone https://github.com/cglewis/Dendrite.git
-RUN cd /Dendrite; git fetch; git checkout test
+RUN git clone https://github.com/Lab41/Dendrite.git
 
 RUN sed 's|<connectionUrl>scm:git:git@github.com:kylef-lab41/ungit.git</connectionUrl>|<connectionUrl>scm:git:https://github.com/kylef-lab41/ungit.git</connectionUrl>|' -i /Dendrite/pom.xml; \
     sed 's|cluster-size=2|cluster-size=1|' -i /Dendrite/src/main/webapp/WEB-INF/prod/graphlab.properties; \
