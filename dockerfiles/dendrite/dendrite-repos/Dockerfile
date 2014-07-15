@@ -1,7 +1,7 @@
 FROM lab41/dendrite-snap
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REPOS_PULLED 07-11-2014
+ENV REPOS_PULLED 07-15-2014
 RUN git clone https://github.com/Lab41/titan.git
 RUN cd /titan; git checkout dendrite-hadoop2
 RUN mvn -Dmaven.repo.local=/root/lib install -f /titan/pom.xml -DskipTests; \

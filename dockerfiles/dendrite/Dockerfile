@@ -17,7 +17,6 @@ ADD startup.sh /startup.sh
 RUN ln -s /usr/bin/hadoop /bin/hadoop
 
 ENV MAVEN_OPTS -Xmx2048m -XX:MaxPermSize=128m
-EXPOSE 8000 8448 
 WORKDIR /Dendrite
 
 RUN mvn -Dmaven.repo.local=/root/lib dependency:go-offline -DskipTests=true -DwithGitHistoryServer=true
@@ -26,6 +25,7 @@ RUN mvn -Dmaven.repo.local=/root/lib -o install -DskipTests=true -DwithGitHistor
 ADD prebuild.sh /prebuild.sh
 RUN /prebuild.sh
 
+EXPOSE 8000 8448 
 # run supervisord daemon
 CMD pwd; \
     printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \

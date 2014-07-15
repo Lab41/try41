@@ -42,7 +42,6 @@ RUN npm install tty.js
 # elasticsearch
 RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.2.deb
 RUN dpkg -i elasticsearch-0.90.2.deb
-RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
 
 # couchbase
 ENV CB_VERSION 2.0.1
