@@ -42,6 +42,12 @@ RUN npm install tty.js
 # elasticsearch
 RUN wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.2.deb
 RUN dpkg -i elasticsearch-0.90.2.deb
+RUN /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
+RUN echo 'discovery.zen.ping.multicast.enabled: false' >> /etc/elasticsearch/elasticsearch.yml; \
+    echo 'node.local: false' >> /etc/elasticsearch/elasticsearch.yml; \
+    echo 'index.number_of_shards: 1' >> /etc/elasticsearch/elasticsearch.yml; \
+    echo 'index.number_of_replicas: 0' >> /etc/elasticsearch/elasticsearch.yml; \
+    echo 'script.disable_dynamic: true' >> /etc/elasticsearch/elasticsearch.yml
 
 # couchbase
 ENV CB_VERSION 2.0.1
