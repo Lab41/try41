@@ -33,4 +33,5 @@ RUN sed 's/user: <FIXME.*>/user: "lab41"/' -i /Dendrite/src/main/nodejs/ungit/pu
 RUN npm install less
 RUN service hadoop-hdfs-namenode start; \
     service hadoop-hdfs-datanode start; \
+    sleep 30; \
     hadoop fs -put /Dendrite/src/main/groovy/org/lab41/dendrite/dendrite-import.groovy /user/root/dendrite/dendrite-import.groovy
