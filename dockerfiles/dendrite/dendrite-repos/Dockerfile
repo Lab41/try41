@@ -31,7 +31,6 @@ RUN sed 's/user: <FIXME.*>/user: "lab41"/' -i /Dendrite/src/main/nodejs/ungit/pu
     sed -i "s/port:.*/port: parseInt(window.location.port)+1,/g" /Dendrite/src/main/webapp/js/app.js; \
     sed -i "s/host:.*/host: window.location.hostname,/g" /Dendrite/src/main/webapp/js/app.js
 RUN npm install less
-RUN cd /Dendrite/src/main/nodejs/ungit; git submodule update --init; npm install
 RUN service hadoop-hdfs-namenode start; \
     service hadoop-hdfs-datanode start; \
     hadoop fs -put /Dendrite/src/main/groovy/org/lab41/dendrite/dendrite-import.groovy /user/root/dendrite/dendrite-import.groovy
