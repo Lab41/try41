@@ -8,11 +8,23 @@
   <p>
     <script>
       var host = location.hostname;
-      var port = parseInt(location.port);
-      var protocol = window.location.protocol;
-      document.write("Redwood sample synthetic dataset: <a href=\""+protocol+"://"+host+":"+port+"/output/data\" target=\"_blank\">Data</a><br />");
-      document.write("Redwood reports: <a href=\""+protocol+"://"+host+":"+port+"/output/reports\" target=\"_blank\">Reports</a><br />");
-      document.write("Redwood filter results: <a href=\""+protocol+"://"+host+":"+port+"/output\" target=\"_blank\">Results</a>");
+      var port;
+      var ssl = 1;
+      if (location.port) {
+          var port = parseInt(location.port);
+          ssl = 0;
+      }
+      if (ssl == 1) {
+          document.write("Redwood sample synthetic dataset: <a href=\"/redwood/output/data\" target=\"_blank\">Data</a><br />");
+          document.write("Redwood reports: <a href=\"/redwood/output/reports\" target=\"_blank\">Reports</a><br />");
+          document.write("Redwood filter results: <a href=\"/redwood/output\" target=\"_blank\">Results</a>");
+      }
+      else {
+          var protocol = window.location.protocol;
+          document.write("Redwood sample synthetic dataset: <a href=\""+protocol+"://"+host+":"+port+"/output/data\" target=\"_blank\">Data</a><br />");
+          document.write("Redwood reports: <a href=\""+protocol+"://"+host+":"+port+"/output/reports\" target=\"_blank\">Reports</a><br />");
+          document.write("Redwood filter results: <a href=\""+protocol+"://"+host+":"+port+"/output\" target=\"_blank\">Results</a>");
+      }
     </script>
   </p>
   <p>Redwood quick start (Click 'Start Redwood' in the top right):</p>

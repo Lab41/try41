@@ -5,9 +5,22 @@
 define(['settings'],
 function (Settings) {
   "use strict";
-  var elastic_port = parseInt(location.port);
-  var protocol = "http";
-  var path = "/";
+  var ssl = 0;
+  var url;
+  if (location.port) {
+    if (location.port == "443") {
+        ssl = 1;
+    }
+  }
+  if (ssl == 0) {
+    var elastic_port = parseInt(location.port);
+    var protocol = "http";
+    var path = "/";
+    url = protocol+"://"+window.location.hostname+":"+elastic_port+path;
+  }
+  else {
+    url = "/hemlock2";
+  }
   return new Settings({
 
     /**
@@ -20,7 +33,7 @@ function (Settings) {
      * elasticsearch host
      * @type {String}
      */
-    elasticsearch: protocol+"://"+window.location.hostname+":"+elastic_port+path,
+    elasticsearch: url,
 
     /**
      * The default ES index to use for storing Kibana specific object

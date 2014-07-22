@@ -37,16 +37,24 @@
         <li><pre>hemlock client-run --uuid 7d0f6b0d-334a-4d89-bd1a-70e8e1c04aa6<pre></li>
       </ul>
     </ul>
-    <div id="kibana"></div>
     <p>The data provided for this demo is synthetic in combination with datasets from IEEE Visual Analytics Science and Technology (VAST) Challenges.</p>
   </p>
   <p>
     <script>
       var host = location.hostname;
-      var port = parseInt(location.port);
-      var protocol = window.location.protocol;
-      var link = 'Hemlock connected to Kibana for interactive visual data exploration: <a href="'+protocol+'//'+host+':'+port+'/kibana/index.html" target="_blank">Kibana</a>';
-      document.getElementById('kibana').innerHTML=link;
+      var port;
+      var ssl = 1;
+      if (location.port) {
+          var port = parseInt(location.port);
+          ssl = 0;
+      }
+      if (ssl == 1) {
+          var protocol = window.location.protocol;
+          document.write("Hemlock connected to Kibana for interactive visual data exploration: <a href=\"/hemlock/kibana/index.html\"" target=\"_blank\">Kibana</a>";
+      }
+      else {
+          document.write("Hemlock connected to Kibana for interactive visual data exploration: <a href=\""+protocol+"//"+"host"+":"+"port"+"/kibana/index.html\"" target=\"_blank\">Kibana</a>";
+      }
     </script>
   </p>
 </div>
