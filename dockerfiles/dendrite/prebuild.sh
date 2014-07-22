@@ -4,7 +4,7 @@
 touch /tmp/output
 sleep 5
 
-mvn -Dmaven.repo.local=/root/lib tomcat7:run -Dmaven.tomcat.port=8000 -Dspring.profiles.active=prod -DwithGitHistoryServer=true -Djava.security.egd=file:/dev/./urandom -DskipTests > /tmp/output 2>&1 &
+mvn -f /Dendrite/pom.xml -Dmaven.repo.local=/root/lib tomcat7:run -Dmaven.tomcat.port=8000 -Dspring.profiles.active=prod -DwithGitHistoryServer=true -Djava.security.egd=file:/dev/./urandom -DskipTests > /tmp/output 2>&1 &
 
 __started=false
 while [ "$__started" == "false" ]
