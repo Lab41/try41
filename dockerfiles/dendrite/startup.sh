@@ -6,4 +6,5 @@ if [ -z "$SSL" ]; then
 else
         sed "s/config.port/443/g" -i /Dendrite/src/main/nodejs/ungit/bin/ungit
         sed "s|\"\"|\"/dendrite2\"|" -i /Dendrite/src/main/nodejs/ungit/bin/ungit
+        sed -i "s/port:.*/port: 443,/g" /Dendrite/src/main/webapp/js/app.js;
 fi
