@@ -240,15 +240,24 @@ def create_app():
 
     @app.route('/details/wait')
     def wait():
-        return render_template("wait.html")
+        if SSL:
+            return redirect("/dendrite", code=302)
+        else:
+            return render_template("wait.html")
 
     @app.route('/details2/wait2')
     def wait2():
-        return render_template("wait.html")
+        if SSL:
+            return redirect("/redwood", code=302)
+        else:
+            return render_template("wait.html")
 
     @app.route('/details3/wait3')
     def wait3():
-        return render_template("wait.html")
+        if SSL:
+            return redirect("/hemlock", code=302)
+        else:
+            return render_template("wait.html")
 
     @app.route('/new', methods=["POST"])
     def new():
