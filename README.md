@@ -6,6 +6,13 @@ try41 is a demonstration platform tailored to demonstrate projects Lab41 has wor
 In order to run [try41](https://github.com/Lab41/try41), on a host with docker perform the following:
 
 ```
+docker pull lab41/redis
+docker pull lab41/postgresql
+docker pull lab41/try41
+docker pull lab41/gestalt
+```
+
+```
 docker run -d -p 6379:6379 lab41/redis
 ```
 
@@ -18,6 +25,7 @@ docker run -e SUBDOMAIN=`hostname -f` \
            -e USERS=False \
            -e SSL=False \
            -e COOKIE=try41-uid \
+           -v /var/run/docker.sock:/var/run/docker.sock \
            -d -P lab41/try41
 ```
 

@@ -153,16 +153,13 @@ def create_app():
         hmap['expired'] = 0
         hmap['image'] = image_name
         data = json.dumps(hmap)
-        print data
         check_cookie()
         # check cookie formatting, ensure that it exists in sessions
         # also check that it doesn't already exist
         if not BAD:
             cookie = request.cookies.get(COOKIE)
-            print cookie
             if re.match(UUID4, cookie):
                 if r.sismember('sessions', cookie):
-                    print "here"
                     r.lpush(cookie, data)
                 else:
                     app.logger.info('invalid session')
@@ -296,4 +293,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0")
