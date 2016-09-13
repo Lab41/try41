@@ -1,13 +1,18 @@
-from ubuntu:trusty
+from ubuntu:latest
 MAINTAINER Charlie Lewis <charliel@lab41.org>
 
-ENV REFRESHED_AT 2014-04-14
+ENV REFRESHED_AT 2016-09-13
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN apt-get update
-RUN apt-get install -y git \
+RUN apt-get install -y build-essential \
+                       git \
+                       libffi-dev \
                        libpq-dev \
+                       libssl-dev \
                        python-dev \
-                       python-setuptools
+                       python-setuptools \
+                       rsyslog
+
 RUN easy_install pip
 
 ADD requirements.txt /try41/requirements.txt
@@ -17,8 +22,6 @@ ADD templates /try41/templates
 
 RUN pip install -r /try41/requirements.txt
 
-ADD patch/auth.py /usr/local/lib/python2.7/dist-packages/docker/auth/auth.py
-ADD patch/client.py /usr/local/lib/python2.7/dist-packages/docker/client.py
 ADD patch/base.html /usr/local/lib/python2.7/dist-packages/flask_user/templates/base.html
 ADD patch/emails /usr/local/lib/python2.7/dist-packages/flask_user/emails
 
@@ -38,13 +41,11 @@ RUN echo "docker ALL=NOPASSWD: /etc/init.d/rsyslog start" >> /etc/sudoers
 ADD api.py /try41/api.py
 RUN chown -R docker /try41 /etc/rsyslog.d/50-default.conf
 
-USER docker
-
 EXPOSE 5000
 
 WORKDIR /try41
 CMD printf "*.*\t@$REMOTE_HOST" >> /etc/rsyslog.d/50-default.conf; \
-    sudo /etc/init.d/rsyslog start; \
+    /etc/init.d/rsyslog start; \
     logger started try41 container $PARENT_HOST; \
     sed -i "s/127.0.0.1/$SUBDOMAIN/g" /try41/api.py; \
     sed -i "s/localhost/$REDIS_HOST/g" /try41/api.py; \

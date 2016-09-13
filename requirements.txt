@@ -1,7 +1,7 @@
-Flask==0.10.1
-docker-py==0.3.2
-redis==2.7.6
-requests==1.2.3
+Flask
+docker-py
+redis
+requests
 flask-babel
 flask-mail
 flask-sqlalchemy

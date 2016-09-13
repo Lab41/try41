@@ -1,7 +1,7 @@
 try41
 ==============
 
-try41 is a demonstration platform tailored to demonstration three projects Lab41 has worked on.  try41 leverages Docker through a simple webapp to enable on-demand instances of isolated installations of each project.
+try41 is a demonstration platform tailored to demonstrate projects Lab41 has worked on.  try41 leverages Docker through a simple webapp to enable on-demand instances of isolated installations of each project.
 
 In order to run [try41](https://github.com/Lab41/try41), on a host with docker perform the following:
 
@@ -51,46 +51,15 @@ docker run -e SUBDOMAIN=`hostname -f` \
 
 Before launching each project, you will want to pull down their images with Docker.
 
-**To get [Dendrite](https://github.com/Lab41/Dendrite):**
+**To get [Gestalt](https://github.com/Lab41/gestalt):**
 ```
-docker pull lab41/dendrite
-```
-
-Or build from source:
-
-```
-git clone https://github.com/Lab41/try41.git
-
-cd try41/dockerfiles/dendrite
-./build.sh
-```
-
-**To get [Hemlock](https://github.com/Lab41/Hemlock):**
-```
-docker pull lab41/hemlock
+docker pull lab41/gestalt
 ```
 
 Or build from source:
 
 ```
 git clone https://github.com/Lab41/try41.git
-
-cd try41/dockerfiles/hemlock
-
-docker build -t lab41/hemlock .
-```
-
-**To get [Redwood](https://github.com/Lab41/Redwood):**
-```
-docker pull lab41/redwood
-```
-
-Or build from source:
-
-```
-git clone https://github.com/Lab41/try41.git
-
-cd try41/dockerfiles/redwood
-
-docker build -t lab41/redwood .
+cd try41/dockerfiles/gestalt
+docker build -t lab41/gestalt .
 ```

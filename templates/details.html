@@ -16,14 +16,14 @@
           $(function(){
             $('#instance').hide();
             $('#counter').countdown({
-              until: '120',
+              until: '10',
               onExpiry: function(){ $("#instance").show(); $("#jcountdown").hide();},
               format: 'mm:ss'
             });
           });
         </script>
 
-        <title>Your Dendrite Instance Details</title>
+        <title>Your Gestalt Instance Details</title>
 
     </head>
 
@@ -35,8 +35,7 @@
             <div class="masthead">
                 <ul class="nav nav-pills pull-right">
                     <li class="active"><a href="/">Home</a></li>
-                    <li><a href="https://lab41.github.io/Dendrite/">Dendrite</a></li>
-                    <li><a href="https://thinkaurelius.github.io/titan/">Titan</a></li>
+                    <li><a href="https://github.com/Lab41/gestalt">Gestalt</a></li>
                     <li><a href="https://docker.io">Docker</a></li>
                     {% if USERS and current_user.is_authenticated() %}
                       <li><a href="{{ url_for('profile') }}">Profile</a></li>
@@ -48,7 +47,7 @@
                 {% if USERS and current_user.is_authenticated() %}
                     <h4 class="muted">Logged in as {{ current_user.username }}</h4>
                 {% endif %}
-                <h3 class="muted">Try Dendrite</h3>
+                <h3 class="muted">Try Gestalt</h3>
             </div>
 
             <hr>
@@ -60,12 +59,12 @@
                     <div id="counter"></div>
                     <p id="instance">Go now, your instance is waiting: 
                         {% if SSL %}
-                          <a href="https://{{ DOMAIN }}/dendrite" target="_blank">https://{{ DOMAIN }}/dendrite</a>
+                          <a href="https://{{ DOMAIN }}/gestalt" target="_blank">https://{{ DOMAIN }}/gestalt</a>
                         {% else %}
-                          <a href="http://{{ url }}/dendrite" target="_blank">{{ url }}/dendrite</a>
+                          <a href="http://{{ url }}/" target="_blank">{{ url }}</a>
                         {% endif %}
                     </p>
-                    <p><br /><br /><br />Please note: this is a fully functional trial of Dendrite. The instance is constrained to 50mb of space, and limited cpu/memory so as to prevent abuse. Due to such a high demand, your instance will not be guaranteed to exist for longer than 30 minutes.</p>
+                    <p><br /><br /><br />Please note: this is a fully functional trial of Gestalt. The instance is constrained to 50mb of space, and limited cpu/memory so as to prevent abuse. Due to such a high demand, your instance will not be guaranteed to exist for longer than 30 minutes.</p>
                     <p>If you'd like more information, please open an <a href="https://github.com/Lab41/try41/issues">issue</a>.</p>
                 </div>
             </div>
@@ -76,7 +75,7 @@
             </div>
             <div class="container">
                 <ul class="nav pull-right">
-                    <li>&#169; 2014 In-Q-Tel. All rights reserved.</li>
+                    <li>&#169; 2016 In-Q-Tel. All rights reserved.</li>
                     <li><a href="https://www.lab41.org/terms-of-use/" target="_blank">Terms of Use</a></li>
                     <li><a href="https://www.lab41.org/privacy-policy/" target="_blank">Privacy Policy</a></li>
                 </ul>
