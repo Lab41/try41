@@ -16,7 +16,7 @@ from flask.ext.user import SQLAlchemyAdapter
 from flask.ext.user import UserManager
 from flask.ext.user import UserMixin
 
-from docker import client
+from docker import Client
 
 import json
 import os
@@ -27,11 +27,8 @@ import time
 import uuid
 
 # set defaults
-IMAGE_NAME1 = "lab41/dendrite"
-IMAGE_NAME2 = "lab41/redwood"
-IMAGE_NAME3 = "lab41/hemlock"
+IMAGE_NAME1 = "lab41/gestalt"
 
-DOCKER_HOST = "172.17.42.1"
 DOMAIN = "127.0.0.1"
 REDIS_HOST = "localhost"
 RSYSLOG_HOST = "rsyslog"
@@ -40,7 +37,6 @@ PARENT_HOST = "parent"
 COOKIE="try41-uid"
 
 REDIS_PORT=6379
-DOCKER_PORT=2375
 
 # use user accounts
 USERS=False
@@ -48,19 +44,11 @@ USERS=False
 # use ssl
 SSL=False
 
-# dendrite
+# gestalt
 EXPOSED_PORT1=8000
-EXPOSED_PORT2=8448
-
-# redwood
-EXPOSED_PORT3=8000
-
-# hemlock
-EXPOSED_PORT4=8000
-EXPOSED_PORT5=9200
 
 r = redis.StrictRedis(host=REDIS_HOST, port=int(REDIS_PORT))
-c = client.Client(version="1.6", base_url='http://%s:%s' % (DOCKER_HOST, DOCKER_PORT))
+c = Client(version='auto', base_url='unix://var/run/docker.sock')
 
 BAD = False
 UUID4 = re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
@@ -154,7 +142,7 @@ def create_app():
         urlport = ""
         for exposed_port in exposed_ports:
             container_port = c.port(container_id, exposed_port)
-            url = "%s:%s" % (DOMAIN, container_port)
+            url = "%s:%s" % (DOMAIN, container_port[0]['HostPort'])
             urlport += url+","
 
         hmap = {}
@@ -165,13 +153,16 @@ def create_app():
         hmap['expired'] = 0
         hmap['image'] = image_name
         data = json.dumps(hmap)
+        print data
         check_cookie()
         # check cookie formatting, ensure that it exists in sessions
         # also check that it doesn't already exist
         if not BAD:
             cookie = request.cookies.get(COOKIE)
+            print cookie
             if re.match(UUID4, cookie):
                 if r.sismember('sessions', cookie):
+                    print "here"
                     r.lpush(cookie, data)
                 else:
                     app.logger.info('invalid session')
@@ -241,28 +232,14 @@ def create_app():
     @app.route('/details/wait')
     def wait():
         if SSL:
-            return redirect("/dendrite", code=302)
-        else:
-            return render_template("wait.html")
-
-    @app.route('/details2/wait2')
-    def wait2():
-        if SSL:
-            return redirect("/redwood", code=302)
-        else:
-            return render_template("wait.html")
-
-    @app.route('/details3/wait3')
-    def wait3():
-        if SSL:
-            return redirect("/hemlock", code=302)
+            return redirect("/gestalt", code=302)
         else:
             return render_template("wait.html")
 
     @app.route('/new', methods=["POST"])
     def new():
         if not USERS or current_user.is_authenticated():
-            exposed_ports = [EXPOSED_PORT2, EXPOSED_PORT1]
+            exposed_ports = [EXPOSED_PORT1]
             cookie = request.cookies.get(COOKIE)
             if re.match(UUID4, cookie):
                 spinup = 1
@@ -272,20 +249,20 @@ def create_app():
                     data = r.lrange(cookie, 0, -1)
                     for record in data:
                         jrec = json.loads(record)
-                        if jrec['image'] == "lab41/dendrite":
+                        if jrec['image'] == "lab41/gestalt":
                             if jrec['expired'] == 0:
-                                app.logger.info('a dendrite container is already running for this session') 
+                                app.logger.info('a gestalt container is already running for this session')
                                 spinup = 0
                                 return jsonify(url="wait")
                 if spinup == 1:
+                    host_config = c.create_host_config(publish_all_ports=True)
                     if SSL:
-                        container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
+                        container = c.create_container(image=IMAGE_NAME1, host_config=host_config, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
                     else:
-                        container = c.create_container(IMAGE_NAME1, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
-                    container_id = container["Id"]
-                    c.start(container, publish_all_ports=True)
+                        container = c.create_container(image=IMAGE_NAME1, host_config=host_config, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
+                    c.start(container=container.get('Id'))
                     b = c.inspect_container(container)
-                    bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME1)
+                    bad = store_metadata(exposed_ports, container.get('Id'), container, IMAGE_NAME1)
                     if bad:
                         return render_template("index.html")
                     else:
@@ -295,85 +272,8 @@ def create_app():
         else:
             return jsonify(url="login")
 
-    @app.route('/new2', methods=["POST"])
-    def new2():
-        if not USERS or current_user.is_authenticated():
-            exposed_ports = [EXPOSED_PORT3]
-            cookie = request.cookies.get(COOKIE)
-            if re.match(UUID4, cookie):
-                spinup = 1
-                # check if this image has already been spun up for this session
-                if r.exists(cookie):
-                    # !! TODO error check
-                    data = r.lrange(cookie, 0, -1)
-                    for record in data:
-                        jrec = json.loads(record)
-                        if jrec['image'] == "lab41/redwood":
-                            if jrec['expired'] == 0:
-                                app.logger.info('a redwood container is already running for this session') 
-                                spinup = 0
-                                return jsonify(url="wait2")
-                if spinup == 1:
-                    container = c.create_container(IMAGE_NAME2, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
-                    container_id = container["Id"]
-                    c.start(container, publish_all_ports=True)
-                    b = c.inspect_container(container)
-                    bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME2)
-                    if bad:
-                        return render_template("index.html")
-                    else:
-                        return jsonify(url="launch")
-                else:
-                    return jsonify(url="wait2")
-        else:
-            return jsonify(url="login")
-
-    @app.route('/new3', methods=["POST"])
-    def new3():
-        if not USERS or current_user.is_authenticated():
-            exposed_ports = [EXPOSED_PORT5, EXPOSED_PORT4]
-            cookie = request.cookies.get(COOKIE)
-            if re.match(UUID4, cookie):
-                spinup = 1
-                # check if this image has already been spun up for this session
-                if r.exists(cookie):
-                    # !! TODO error check
-                    data = r.lrange(cookie, 0, -1)
-                    for record in data:
-                        jrec = json.loads(record)
-                        if jrec['image'] == "lab41/hemlock":
-                            if jrec['expired'] == 0:
-                                app.logger.info('a hemlock container is already running for this session') 
-                                spinup = 0
-                                return jsonify(url="wait3")
-                if spinup == 1:
-                    if SSL:
-                        container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST, 'SSL': "True"})
-                    else:
-                        container = c.create_container(IMAGE_NAME3, tty=True, environment={'REMOTE_HOST': RSYSLOG_HOST, 'PARENT_HOST': PARENT_HOST})
-                    container_id = container["Id"]
-                    c.start(container, publish_all_ports=True)
-                    b = c.inspect_container(container)
-                    bad = store_metadata(exposed_ports, container_id, container, IMAGE_NAME3)
-                    if bad:
-                        return render_template("index.html")
-                    else:
-                        return jsonify(url="launch")
-                else:
-                    return jsonify(url="wait3")
-        else:
-            return jsonify(url="login")
-
     @app.route('/details/login')
     def details_login():
-        return redirect(url_for('user.login'))
-
-    @app.route('/details2/login')
-    def details2_login():
-        return redirect(url_for('user.login'))
-
-    @app.route('/details3/login')
-    def details3_login():
         return redirect(url_for('user.login'))
 
     @app.route('/details/launch')
@@ -381,22 +281,6 @@ def create_app():
         if not USERS or current_user.is_authenticated():
             url = get_url(request)
             return render_template("details.html",url=url, USERS=USERS, SSL=SSL, DOMAIN=DOMAIN)
-        else:
-            return jsonify(url="login")
-
-    @app.route('/details2/launch')
-    def details2():
-        if not USERS or current_user.is_authenticated():
-            url = get_url(request)
-            return render_template("details2.html",url=url, USERS=USERS, SSL=SSL, DOMAIN=DOMAIN)
-        else:
-            return jsonify(url="login")
-
-    @app.route('/details3/launch')
-    def details3():
-        if not USERS or current_user.is_authenticated():
-            url = get_url(request)
-            return render_template("details3.html",url=url, USERS=USERS, SSL=SSL, DOMAIN=DOMAIN)
         else:
             return jsonify(url="login")
 
@@ -412,4 +296,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)
